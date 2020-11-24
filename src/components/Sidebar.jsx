@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
 import { Menu, X } from 'react-feather'
+import CreateCourse from './CreateCourse';
 
 const Sidebar = () => {
 
@@ -68,7 +69,7 @@ const Sidebar = () => {
 				</Link>
 			</div>
 			<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-					<div onClick={showSidebar} className="nav-menu-items">
+					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
 						{sidebarData.map((item,index) => {
 							return (
@@ -79,6 +80,7 @@ const Sidebar = () => {
 								</div>
 							)
 						})}
+						<CreateCourse/>
 					</div>
 				</nav>
 		</div>

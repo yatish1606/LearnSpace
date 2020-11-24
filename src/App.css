@@ -9,11 +9,11 @@ button {
   padding: 0.7rem 1rem;
   border: none;
   background-color: #09A407;
-  border-radius: 100px;
+  border-radius: 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 10%;
+  margin-top: 10px;
   box-shadow: 2px 2px 20px #d3d3d3;
   border: 2px #09A407;
 }
