@@ -3,3 +3,46 @@
 * {
   margin: 0;
 }
+
+button {
+  width: auto;
+  padding: 0.7rem 1rem;
+  border: none;
+  background-color: #09A407;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10%;
+  box-shadow: 2px 2px 20px #d3d3d3;
+  border: 2px #09A407;
+}
+
+/* width: '40%', backgroundColor: '#f6f6f6', height: 40, border: '2px solid #eeeeee', borderRadius: 5; */
+
+input {
+  width: 100%;
+  background-color: #fff;
+  border: none;
+  height: 45px;
+  border-bottom: 2.5px solid #eeeeee;
+  /* border-radius: 10px; */
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* padding-left: 10px; */
+  transition: 0.2s ease-in;
+  margin-bottom: 1rem;
+  font-size: 18px;
+}
+
+input::placeholder {
+  color: #ababab;
+  font-size: 18px;
+}
+
+input:focus {
+  border-bottom: 2.5px solid #09A407;
+  transition: 0.2s ease-in;
+}
