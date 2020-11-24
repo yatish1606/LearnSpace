@@ -5,17 +5,19 @@ import Course2 from './Course2';
 import MyCourses from './MyCourses';
 import Sidebar from './Sidebar';
 import Register from './Register'
+import CreateCourse from './CreateCourse'
 
 const AppRouter = () => {
 	return (
 		<div>
 			<Router>
-				{/* <Sidebar/> */}
+				<Sidebar/> 
 				<Switch>
-					{/* <Route path="/" exact component={MyCourses}/>
+					<Route path="/" exact component={MyCourses}/>
+					
 					<Route path="/course1" component={Course1} />
-					<Route path="/course2" component={Course2}/> */}
-					<Route path="/registerlogin" component={Register}/>
+					<Route path="/course2" component={Course2}/> 
+	<Route path="/registerlogin" component={Register}/>
 				</Switch>
 			</Router>
 		</div>
