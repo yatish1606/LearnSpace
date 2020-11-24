@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
+import { Menu, X } from 'react-feather'
 
 const Sidebar = () => {
 
@@ -54,11 +55,16 @@ const Sidebar = () => {
 
 	return (
 		<div>
-			<div className="sidebar">
+			<div className="sidebar" style={{boxShadow: '0px 5px 10px #d3d3d3', backgroundColor: 'white', paddingBottom: 0}}>
 				<Link to="#" className="menu-bars ">
-					<span onClick={showSidebar}>
-					MENU
-					</span>
+					<div style={{padding: 5, borderRadius: 100, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: 'center'}} className="menu-div">
+						<span onClick={showSidebar} onMouseEnter={showSidebar} onMouseDown={showSidebar}>
+						{
+							sidebar ? <X color="#232323" size={30} style={{paddingBottom: 2}} style={{transition: '0.2s opacity ease'}}/>
+									: <Menu color="#232323" size={30} style={{paddingBottom: 2}}/>
+						}
+						</span>
+					</div>
 				</Link>
 			</div>
 			<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
