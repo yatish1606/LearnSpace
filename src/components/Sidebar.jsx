@@ -56,21 +56,12 @@ const Sidebar = () => {
 
 	return (
 		<div>
-			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
-				<Link to="#" className="menu-bars ">
-					<div style={{padding: 5, borderRadius: 100, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: 'center'}} className="menu-div">
-						<span onClick={showSidebar} onMouseEnter={showSidebar} onMouseDown={showSidebar}>
-						{
-							sidebar ? <X color="#232323" size={30} style={{paddingBottom: 2}} style={{transition: '0.2s opacity ease'}}/>
-									: <Menu color="#232323" size={30} style={{paddingBottom: 2}}/>
-						}
-						</span>
-					</div>
-				</Link>
-			</div>
-			<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+			<div className="sidebar" style={{boxShadow: '0px 0px 0px #d3d3d3', backgroundColor: 'white', paddingBottom: 0}}>
+	</div>
+			<nav className={'nav-menu active'}>
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
+			<h2>E-Classroom </h2><br/>
 						{sidebarData.map((item,index) => {
 							return (
 								<div key={index} className={item.cName}>
