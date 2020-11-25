@@ -2,9 +2,15 @@
 	background-color: #f6f6f6;
 	height: 80px;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	align-items: center;
 	z-index: 11;
+	padding-right: 1.8rem;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 9998;
+	border-bottom: 1.5px solid #eeeeee;
 }
 
 .sidebar a {
@@ -20,19 +26,20 @@
 }
 
 .nav-menu {
-	background-color: #f6f6f6;
+	background-color: #F8F8F8;
 	color: #000;
-	box-shadow: 0px 10px 10px #d3d3d3;
-	z-index: 10;
+	/* box-shadow: 0px 10px 10px #d3d3d3; */
+	z-index: 9999;
 	width: 20%;
 	height: 100vh;
 	display: flex;
-	justify-content: center;
 	position: fixed;
 	top: 0;
-	padding-top: 3vh;
 	left: -100%;
 	transition: 0.85s;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .nav-menu.active {
@@ -42,27 +49,40 @@
 
 .nav-text {
 	display: flex;
-	justify-content: center;
+	flex-direction: row;
+	width: calc(100% - 30px);
+	justify-content: flex-start;
+	margin-right: 15px;
+	margin-left: 15px;
+	border-radius: 5px;
 	align-items: center;
-	padding: 2px;
 	list-style: none;
-	height: 60px;
+	height: 50px;
+	text-align: left;
+	cursor: pointer;
+}
+.nav-text:hover {
+	background-color: #EFEFEF;
+}
+
+.nav-text:hover *{
+	color: #04C200;
 }
 
 .nav-text a {
 	text-decoration: none;
-	color: #000;
-	font-size: 20px;
-	width: 95%;
+	color: #232323;
+	font-size: 17px;
+	font-family: 'Mulish';
+	font-weight: 700;
 	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 0 16px;
+	padding: 0 15px;
 }
 .nav-text a:hover {
-	background-color: #09A407;
-	color: white;
+	
 }
 
 .nav-menu-items {
@@ -91,4 +111,24 @@
 .menu-div:hover {
 	background-color: #eeeeee;
 	transition: 0.2s ease-out;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-left: 0px;
+}
+.row * {
+	margin-right: 20px;
+}
+
+.my-profile-box {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	justify-content: flex-start;
+}
+.my-profile-box * {
+	margin-left: 10px;
 }
