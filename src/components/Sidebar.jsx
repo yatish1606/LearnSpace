@@ -56,7 +56,7 @@ const Sidebar = () => {
 
 	return (
 		<div>
-			<div className="sidebar" style={{boxShadow: '0px 5px 10px #d3d3d3', backgroundColor: 'white', paddingBottom: 0}}>
+			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
 				<Link to="#" className="menu-bars ">
 					<div style={{padding: 5, borderRadius: 100, width: 40, height: 40, display: "flex", alignItems: "center", justifyContent: 'center'}} className="menu-div">
 						<span onClick={showSidebar} onMouseEnter={showSidebar} onMouseDown={showSidebar}>

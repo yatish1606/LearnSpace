@@ -16,6 +16,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-swipe-views": "0.0.12",
+    "react-swipeable-views": "^0.13.9",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
