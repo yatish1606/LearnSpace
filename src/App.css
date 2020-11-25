@@ -46,3 +46,10 @@ input:focus {
   border-bottom: 2.5px solid #09A407;
   transition: 0.2s ease-in;
 }
+
+.MuiTypography-body1 {
+  font-family: 'Mulish';
+  font-size: 15px;
+  font-weight: 700;
+  color: #232323;
+}

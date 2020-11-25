@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react'
 import registerPic from '../assets/register.png'
-import { RadioGroup, RadioButton, ReversedRadioButton } from 'react-radio-buttons'
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 
 import { Gift, FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff } from 'react-feather'
 
@@ -36,14 +43,14 @@ const Features = () => {
     })
 }
 
-const GetStarted = () => {
+const GetStarted = ({goNext}) => {
     return (
         <React.Fragment>
         <h2 style={{marginTop: '15%', marginBottom: '10%', width: 'auto', textAlign: "left", fontFamily: 'Mulish', color: '#232323', fontWeight: 700, fontSize: 28}}>Some long witty text here that sounds really good and makes you appear smart af</h2>
             <Features/>
 
         <div>
-            <button>
+            <button onClick={() => goNext()}>
                         {/* <Gift/> */}
                 <p style={{fontSize: 18, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Continue with Google</p>
                 <ArrowRight size={25} color="white" style={{marginLeft: '0.5rem'}}/>
@@ -53,13 +60,14 @@ const GetStarted = () => {
     )
 }
 
-const RegistrationDetails = () => {
+const RegistrationDetails = ({goBack}) => {
 
     const [fName, setFName] = React.useState('')
     const [lName, setLName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-    const [viewPassword, setViewPassword] = React.useState('false')
+    const [viewPassword, setViewPassword] = React.useState(false)
+    const [value, setValue] = React.useState('female');
 
 
     const onChangeFName = e => setFName(e.target.value)
@@ -69,9 +77,15 @@ const RegistrationDetails = () => {
 
     const onclassSelect = () => {}
 
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    };
+
     return (
         <React.Fragment>
-            <ArrowLeft size={25} color="#232323"/>
+           
+            <ArrowLeft size={25} color="#232323" onClick={() => goBack()} style={{cursor: "pointer"}}/>
+            
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%'}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center"}}>
 
@@ -126,14 +140,12 @@ const RegistrationDetails = () => {
             </div>
             
 
-            {fName}
-            {lName}
-            {email}
-            {password}
-
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
-                <div style={{width: '50%', display: "flex", flexDirection: "row"}}>
+                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
                     <p style={{fontFamily: 'Mulish', fontSize: 20, color: '#232323', fontWeight: 800, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Class</p>
+                    <div>
+                        
+                    </div>
                 </div>
                 <div style={{width: '50%'}}>
 
@@ -146,6 +158,9 @@ const RegistrationDetails = () => {
 }
 
 const Register = () => {
+
+    const [showForm, setShowForm] = React.useState(false)
+
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row"}}>
 			
@@ -166,8 +181,11 @@ const Register = () => {
             {/* Right main side */}
             <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start"}}>
                 
-                {/* <GetStarted/> */}
-                <RegistrationDetails/>
+                {
+                    showForm ? <RegistrationDetails goBack={() => setShowForm(false)}/>
+                             : <GetStarted goNext={() => setShowForm(true)}/>
+                }
+                
                 
             </div>
 
