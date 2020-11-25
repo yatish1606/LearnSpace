@@ -4,8 +4,9 @@ import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import SwipeableViews from 'react-swipeable-views';
-import {MoreVertical, Grid, Users, Edit, User} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Info} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import userImage from '../assets/user.png'
 
 import './course.css'
 
@@ -22,13 +23,13 @@ const styles = {
 	  backgroundColor: 'red'
 	},
 	slide1: {
-	  backgroundColor: 'red',
+	  backgroundColor: 'white',
 	},
 	slide2: {
-	  backgroundColor: 'green',
+	  backgroundColor: 'white',
 	},
 	slide3: {
-	  backgroundColor: 'blue',
+	  backgroundColor: 'white',
 	},
   };
 
@@ -57,27 +58,28 @@ const styles = {
 	  },
 	root: {
 	  textTransform: 'none',
-	  color: '#434343',
+	  color: '#232323',
 	  minWidth: 72,
-	  fontWeight: 600,
+	  fontWeight: 500,
 	  marginRight: 15,
 	  fontSize:19,
 	  paddingRight: 20,
 	  paddingLeft: 10,
 	  boxShadow: 'none',
 	  marginLeft: 15,
+	  letterSpacing : -0.3,
 	  fontFamily: [
 		'Lexend Deca'
 	  ].join(','),
 	  '&:hover': {
 		color: '#09A407',
 		opacity: 1,
-		fontWeight: 600,
+		fontWeight: 500,
 		fontSize:19,
 	  },
 	  '&$selected': {
 		color: '#09A407',
-		fontWeight: 600,
+		fontWeight: 500,
 		fontSize:19,
 	  },
 	  '&:focus': {
@@ -86,6 +88,38 @@ const styles = {
 	},
 	selected: {},
   }))((props) => <Tab disableRipple {...props} />);
+
+
+
+const Post = ({postType}) => {
+
+	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
+
+	return (
+		<React.Fragment>
+		<div className="post-container">
+			<div style={{display: "flex", flexDirection: "row", alignItems: "center", flexGrow: 1}}>
+				<div className="post-image">
+					<div className="post-image-base">{icon}</div>
+				</div>
+				<div className="post-info">
+					<h6>Study Material</h6>
+					<h3>Chapter One : Introduction to OS</h3>
+				</div>
+			</div>
+			<div className="post-options">
+				<Download size={22} color="#232323"/>
+				<Info size={22} color="#232323"/>
+			</div>
+			
+		</div>
+		</React.Fragment>
+	)
+}
+
+
+
+
 
 const Course1 = ({courseName}) => {
 
@@ -96,21 +130,50 @@ const Course1 = ({courseName}) => {
 
 	return (
 		<div className="course-container">
+
 			<div className="course-heading-block">
 
-				<MoreVertical style={{position: "absolute", right:40,}} size={30} color="white"/>
+				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
+				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
 
 				<h2 className="course-title">Operating Systems</h2>
+				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>TE Information Technology</p>
+				<div className="instructor-box">
+					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+						<img src={userImage} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+					</div>
+					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>INSTRUCTOR</p>
+						<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
+					</div>
+				</div>
 				
+				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 15}}>Description</p>
+				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
 			</div>
+
+
 			<div style={{width: '100%', marginTop: 20}}>
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
-					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Feed   </div>} />
+					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Stream   </div>} />
 					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
-					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
+					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> Students   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
-				<div style={Object.assign({}, styles.slide, styles.slide1)}>slide n°1</div>
+				<div style={Object.assign({}, styles.slide, styles.slide1)}>
+					
+					<Post/>
+					<Post/>
+					<Post/>
+					<Post/>
+					<Post/>
+					<Post/>
+					<Post/>
+					<Post/>
+					
+					
+					
+				</div>
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>slide n°2</div>
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>slide n°3</div>
 				</SwipeableViews>

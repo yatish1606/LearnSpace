@@ -9,22 +9,206 @@
     z-index: 0;
     margin-top: 0px;
     align-items: flex-start;
+    margin-top: 80px;
 }
 
 .course-heading-block {
     width: 100%;
     border-radius: 10px;
-    height: 200px;
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    background-color: #09A407;
+    /* background-color: #09A407; */
     align-items: flex-start;
 }
 
 .course-title {
     font-size: 40px;
-    font-weight: 500;
-    color: white;
+    font-weight: 600;
+    color: #232323;
     font-family: 'Poppins';
+    letter-spacing: -0.4px;
+}
+
+.instructor-box {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+.instructor-box * {
+	margin-right: 10px;
+}
+
+
+
+
+.checkbox-container {
+    display: block;
+    border: 3px solid #eeeeee;
+    position: relative;
+    margin: 0 15px;
+    margin-bottom: 2px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-family: "Mulish", sans-serif;
+    font-size: 16px;
+    color: #232323;
+    font-weight: 700;
+    margin-top: 4px;
+    padding: 10px 55px 10px 15px;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-left: 0px;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+.checkmark {
+    position: absolute;
+    top: 12px;
+    right: 0px;
+    left: 130px;
+    height: 20px;
+    width: 20px;
+    background-color: #fff;
+    border: 0.5px solid #d3d3d3;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+    background-color: #eee;
+}
+ 
+.checkbox-container input:checked ~ .checkmark {
+    background-color: #09A407;
+    border: 0.5px solid #09A407;
+    transition: 0.3s;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+  
+.checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+}
+.checkbox-container .checkmark:after {
+    left: 6.5px;
+    top: 3.5px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    border-radius: 0.1px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.dropdown {
+    border-radius: 50px;
+}
+
+.Dropdown-control {
+    position: relative;
+    overflow: hidden;
+    background-color: white;
+    border: 1px solid green;
+    border-radius: 7px;
+    box-sizing: border-box;
+    color: #333;
+    cursor: default;
+    outline: none;
+    padding: 8px 52px 8px 10px;
+    transition: all 200ms ease;
+  }
+
+
+  .post-container {
+      width: 100%;
+      padding: 15px;
+      border-radius: 7px;
+      border: 3px solid #eee;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      background-color: #fff;
+      margin-bottom: 10px;
+      min-height: 100px;
+  }
+
+  .post-image {
+      width: 80px;
+      /* height: 100%; */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-right: 10px;
+  }
+
+  .post-image-base {
+      width: 50px;
+      height: 50px;
+      background-color: #f6f6f6;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+  }
+
+  .post-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+  }
+
+  .post-info h6 {
+      font-family: 'Poppins';
+      font-weight: 400;
+      color: #434343;
+      font-size: 13.5px;
+      text-transform: uppercase;
+      margin: 0;
+      letter-spacing: 0.4px;
+      padding: 0;
+  }
+
+  .post-info h3 {
+    font-family: 'Poppins';
+    font-weight: 500;
+    color: #232323;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.post-options {
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: center;
+}
+
+.post-options * {
+    margin-left: 15px;
+    margin-right: 15px;
+    cursor: pointer;
 }

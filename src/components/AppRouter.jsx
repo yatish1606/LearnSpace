@@ -11,12 +11,13 @@ const AppRouter = () => {
 	return (
 		<div>
 			<Router>
+				<Route path="/registerlogin" component={Register}/>
 				<Sidebar/> 
 				<Switch>
 					<Route path="/" exact component={MyCourses}/>		
 					<Route path="/course1" component={Course1} />
 					<Route path="/course2" component={Course2}/> 
-					<Route path="/registerlogin" component={Register}/>
+					
 				</Switch>
 			</Router>
 		</div>

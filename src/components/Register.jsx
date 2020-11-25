@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react'
 import registerPic from '../assets/register.png'
+import userImage from '../assets/user.png'
 
 import "./RadioButton.scss";
 
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
 
-import { Gift, FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff } from 'react-feather'
+
+import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Lock } from 'react-feather'
 
 import '../App.css'
 
@@ -16,6 +20,48 @@ const RadioButton = (props) => {
         </div>
     );
 }
+
+const yearOptions = [
+    {
+        value:'FE',
+        label:'First Year'
+    },
+    {
+        value:'SE',
+        label:'Second Year'
+    },
+    {
+        value:'TE',
+        label:'Third Year'
+    },
+    {
+        value:'BE',
+        label:'Fourth Year'
+    },
+]
+
+const departmentOptions = [
+    {
+        value:'IT',
+        label:'Information Technology'
+    },
+    {
+        value:'CS',
+        label:'Computer Science'
+    },
+    {
+        value:'ME',
+        label:'Mechanical'
+    },
+    {
+        value:'EL',
+        label:'Electrical'
+    },
+    {
+        value:'ENTC',
+        label:'Electronics & Comm'
+    },
+]
 
 
 const featuresInfo = [
@@ -74,6 +120,7 @@ const RegistrationDetails = ({goBack}) => {
     const [viewPassword, setViewPassword] = React.useState(true)
     const [studentClass, setStudentClass] = React.useState('');
     const [studentDepartment, setStudentDepartment] = React.useState('');
+    const [isStudent, setIsStudent] = React.useState(true)
 
 
     const onChangeFName = e => setFName(e.target.value)
@@ -93,11 +140,11 @@ const RegistrationDetails = ({goBack}) => {
     return (
         <React.Fragment>
            
-            <ArrowLeft size={25} color="#232323" onClick={() => goBack()} style={{cursor: "pointer"}}/>
+            <ArrowLeft size={25} color="#232323" onClick={() => goBack()} style={{cursor: "pointer", position: "absolute"}}/>
             
-            <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%'}}>
-                <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center"}}>
-
+            <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
+                <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+                    <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
                     <h2 style={{textAlign: "left", fontFamily: 'Mulish', color: '#232323', fontWeight: 800, fontSize: 28}}>Welcome</h2>
@@ -107,7 +154,31 @@ const RegistrationDetails = ({goBack}) => {
 
             <br/>
 
+
+            {/* User Type */}
+
+            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Are you a student or a teacher/instructor ?</p>
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
+                <div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
+                    <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
+                        <Dribbble size={22} style={{marginRight: 15}} color="#232323"/>
+                        Student
+                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
+                        <Briefcase size={22} style={{marginRight: 15}} color="#232323"/>
+                        Teacher
+                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                
+            </div>
+
+            {/* Name */}
+            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: 10, marginTop: 20}}>Personal Information</p>
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center",}}>
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
                     <input
                         placeholder="First Name"
@@ -122,11 +193,37 @@ const RegistrationDetails = ({goBack}) => {
                 </div>
             </div>
 
-            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#434343', fontWeight: 500, margin:0, textAlign: "left", marginBottom: '0.5rem', marginTop: 10}}>The email and password you enter below will be used while logging in</p>
-          
+        
+            {isStudent ?  
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 5}}>
+                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                        <Dropdown options={yearOptions} onChange={option => setStudentClass(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
+                    </div>
+                </div>
+                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your Department</p>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                        <Dropdown options={departmentOptions} onChange={option => setStudentDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
+                    </div>
+                </div>
+                
+            </div> : null
+            }
 
 
-            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
+            {/* Email Password */}
+
+
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 25}}>
+                {/* <div style={{width: '1.8rem', height: '1.8rem', backgroundColor: '#09a4071a', borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center" , marginRight:15, border: '0px solid #09a407'}}>
+                    <Lock size={19} color="#09a407"/>
+                </div> */}
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left"}}>Email and Password</p>
+            </div>  
+
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 10}}>
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
                     <input
                         type="email"
@@ -151,85 +248,7 @@ const RegistrationDetails = ({goBack}) => {
                 </div>
             </div>
 
-
-
             
-
-            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
-                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
-                <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
-                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                    <RadioButton 
-                        changed={ radioChangeHandler } 
-                        id="1" 
-                        isSelected={studentClass === "FE" } 
-                        label="First Year Engg" 
-                        value="FE" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandler } 
-                        id="2" 
-                        isSelected={studentClass === "SE" } 
-                        label="Second Year Engg" 
-                        value="SE" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandler } 
-                        id="3" 
-                        isSelected={studentClass === "TE" } 
-                        label="Third Year Engg" 
-                        value="TE" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandler } 
-                        id="4" 
-                        isSelected={studentClass === "BE" } 
-                        label="Fourth Year Engg" 
-                        value="BE" 
-                    />
-                    </div>
-                </div>
-                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
-                    <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your department</p>
-                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                    <RadioButton 
-                        changed={ radioChangeHandlerDepartment } 
-                        id="1" 
-                        isSelected={studentDepartment === "IT" } 
-                        label="Information Technology" 
-                        value="IT" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandlerDepartment } 
-                        id="2" 
-                        isSelected={studentDepartment === "CS" } 
-                        label="Computer Science" 
-                        value="CS" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandlerDepartment } 
-                        id="3" 
-                        isSelected={studentDepartment === "ME" } 
-                        label="Mechanical" 
-                        value="ME" 
-                    />
-
-                    <RadioButton 
-                        changed={ radioChangeHandlerDepartment } 
-                        id="4" 
-                        isSelected={studentDepartment === "ENTC" } 
-                        label="Electronics and Communication" 
-                        value="ENTC" 
-                    />
-                    </div>
-                </div>
-                
-            </div>
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
                 <button>
@@ -254,7 +273,7 @@ const Register = () => {
                 <div style={{display: "flex", flexDirection: "row", marginBottom: '1rem', alignItems: "center", alignSelf: "center", marginTop: '15%', justifyContent: "center"}}>
                         <Codesandbox size={30} color="#09A407"/>
                         <div style={{alignItems: "flex-start", display: "flex"}}>
-                            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>NameofWebsite</p>
+                            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>Team FSociety</p>
                         </div>
                 </div>
 
