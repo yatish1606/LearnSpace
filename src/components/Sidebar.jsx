@@ -59,7 +59,6 @@ const Sidebar = () => {
 			<div className="sidebar" style={{boxShadow: '0px 0px 0px #d3d3d3', backgroundColor: 'white', paddingBottom: 0}}>
 	</div>
 			<nav className={'nav-menu active'}>
-
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
 			<h2>E-Classroom </h2><br/>
