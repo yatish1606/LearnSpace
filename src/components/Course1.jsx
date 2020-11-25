@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import SwipeableViews from 'react-swipeable-views';
-import {MoreVertical, Grid, Users, FileText, User} from 'react-feather'
+import {MoreVertical, Grid, Users, Edit, User} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import './course.css'
@@ -18,15 +18,17 @@ const styles = {
 	  padding: 15,
 	  minHeight: 100,
 	  color: '#fff',
+	  height: 1000,
+	  backgroundColor: 'red'
 	},
 	slide1: {
-	  backgroundColor: '#fff',
+	  backgroundColor: 'red',
 	},
 	slide2: {
-	  backgroundColor: '#fff',
+	  backgroundColor: 'green',
 	},
 	slide3: {
-	  backgroundColor: '#fff',
+	  backgroundColor: 'blue',
 	},
   };
 
@@ -104,7 +106,7 @@ const Course1 = ({courseName}) => {
 			<div style={{width: '100%', marginTop: 20}}>
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
 					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Feed   </div>} />
-					<AntTab label={<div><FileText size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
+					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
 					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
