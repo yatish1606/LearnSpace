@@ -1,5 +1,5 @@
 import React from 'react'
-import SwipeViews from 'react-swipe-views'
+
 import {MoreVertical} from 'react-feather'
 
 import './course.css'
@@ -15,17 +15,7 @@ const Course1 = ({courseName}) => {
 				
 			</div>
 			<div>
-				<SwipeViews>
-					<div title="Tab 1">
-					Page 1
-					</div>
-					<div title="Tab 2">
-					Page 2
-					</div>
-					<div title="Tab 3">
-					Page 3
-					</div>
-				</SwipeViews>
+				
 			</div>
 		</div>
 	)
