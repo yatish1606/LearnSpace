@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react'
 import registerPic from '../assets/register.png'
 
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import "./RadioButton.scss";
+
 
 import { Gift, FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff } from 'react-feather'
 
 import '../App.css'
+
+const RadioButton = (props) => {
+    return (
+        <div className="RadioButton">
+            <input id={props.id} onChange={props.changed} value={props.value} type="radio" checked={props.isSelected} />
+            <label htmlFor={props.id} style={{fontFamily: "Mulish", fontSize: 15, fontWeight: 700, color: '#232323'}}><span style={{paddingBottom: '10px'}}>{props.label}</span></label>
+        </div>
+    );
+}
+
 
 const featuresInfo = [
     {
@@ -49,10 +54,10 @@ const GetStarted = ({goNext}) => {
         <h2 style={{marginTop: '15%', marginBottom: '10%', width: 'auto', textAlign: "left", fontFamily: 'Mulish', color: '#232323', fontWeight: 700, fontSize: 28}}>Some long witty text here that sounds really good and makes you appear smart af</h2>
             <Features/>
 
-        <div>
+        <div style={{marginTop: '10%'}}>
             <button onClick={() => goNext()}>
                         {/* <Gift/> */}
-                <p style={{fontSize: 18, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Continue with Google</p>
+                <p style={{fontSize: 18, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Get Started</p>
                 <ArrowRight size={25} color="white" style={{marginLeft: '0.5rem'}}/>
             </button>
         </div>
@@ -66,8 +71,9 @@ const RegistrationDetails = ({goBack}) => {
     const [lName, setLName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
-    const [viewPassword, setViewPassword] = React.useState(false)
-    const [value, setValue] = React.useState('female');
+    const [viewPassword, setViewPassword] = React.useState(true)
+    const [studentClass, setStudentClass] = React.useState('');
+    const [studentDepartment, setStudentDepartment] = React.useState('');
 
 
     const onChangeFName = e => setFName(e.target.value)
@@ -75,11 +81,14 @@ const RegistrationDetails = ({goBack}) => {
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const onclassSelect = () => {}
+    const radioChangeHandler = (event) => {
+        console.log('hi')
+        setStudentClass(event.target.value)
+    }
 
-    const handleChange = (event) => {
-        setValue(event.target.value);
-    };
+    const radioChangeHandlerDepartment = (event) => {
+        setStudentDepartment(event.target.value)
+    }
 
     return (
         <React.Fragment>
@@ -97,8 +106,6 @@ const RegistrationDetails = ({goBack}) => {
             </div>
 
             <br/>
-            <br/>
-            
 
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
@@ -115,44 +122,121 @@ const RegistrationDetails = ({goBack}) => {
                 </div>
             </div>
 
-            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#434343', fontWeight: 500, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>The email and password you enter below will be used while logging in</p>
-            
-            {/* Email */}
-            <input
-                type="email"
-                placeholder="Email ID"
-                onChange={onChangeEmail}
-                style={{width: '80%'}}
-            />
+            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#434343', fontWeight: 500, margin:0, textAlign: "left", marginBottom: '0.5rem', marginTop: 10}}>The email and password you enter below will be used while logging in</p>
+          
 
-            {/* Password */}
-            <div style={{display: "inline-flex", position: 'relative'}}>
-            <input
-                type={viewPassword ? "password" :  "text"}
-                placeholder="Password"
-                onChange={onChangePassword}
-                style={{width: '80%'}}
-            />
-            {
-                viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '75%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
-                              : <EyeOff size={22} color="#ababab" style={{position: "absolute", left: '75%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
-            }
-            </div>
-            
 
-            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
-                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
-                    <p style={{fontFamily: 'Mulish', fontSize: 20, color: '#232323', fontWeight: 800, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Class</p>
-                    <div>
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
+                <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
+                    <input
+                        type="email"
+                        placeholder="Email ID"
+                        onChange={onChangeEmail}
                         
-                    </div>
+                    />
                 </div>
                 <div style={{width: '50%'}}>
-
+                    <div style={{display: "inline-flex", position: 'relative', width: '100%', }}>
+                        <input
+                            type={viewPassword ? "password" :  "text"}
+                            placeholder="Password"
+                            onChange={onChangePassword}
+                            style={{marginRight: 0}}
+                        />
+                        {
+                            viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
+                                        : <EyeOff size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
+                        }
+                    </div>
                 </div>
             </div>
 
 
+
+            
+
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
+                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
+                <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                    <RadioButton 
+                        changed={ radioChangeHandler } 
+                        id="1" 
+                        isSelected={studentClass === "FE" } 
+                        label="First Year Engg" 
+                        value="FE" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandler } 
+                        id="2" 
+                        isSelected={studentClass === "SE" } 
+                        label="Second Year Engg" 
+                        value="SE" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandler } 
+                        id="3" 
+                        isSelected={studentClass === "TE" } 
+                        label="Third Year Engg" 
+                        value="TE" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandler } 
+                        id="4" 
+                        isSelected={studentClass === "BE" } 
+                        label="Fourth Year Engg" 
+                        value="BE" 
+                    />
+                    </div>
+                </div>
+                <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
+                    <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your department</p>
+                    <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+                    <RadioButton 
+                        changed={ radioChangeHandlerDepartment } 
+                        id="1" 
+                        isSelected={studentDepartment === "IT" } 
+                        label="Information Technology" 
+                        value="IT" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandlerDepartment } 
+                        id="2" 
+                        isSelected={studentDepartment === "CS" } 
+                        label="Computer Science" 
+                        value="CS" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandlerDepartment } 
+                        id="3" 
+                        isSelected={studentDepartment === "ME" } 
+                        label="Mechanical" 
+                        value="ME" 
+                    />
+
+                    <RadioButton 
+                        changed={ radioChangeHandlerDepartment } 
+                        id="4" 
+                        isSelected={studentDepartment === "ENTC" } 
+                        label="Electronics and Communication" 
+                        value="ENTC" 
+                    />
+                    </div>
+                </div>
+                
+            </div>
+
+            <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
+                <button>
+                    <p style={{fontSize: 15, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Done</p>
+                </button>
+            </div>
+            
         </React.Fragment>
     )
 }

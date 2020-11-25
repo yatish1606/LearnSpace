@@ -1,0 +1,30 @@
+.course-container {
+    width: 80%;
+    margin-left: 20%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 0.2rem 1.4rem;
+    height: calc(100vh - 110px);
+    z-index: 0;
+    margin-top: 30px;
+    align-items: flex-start;
+}
+
+.course-heading-block {
+    width: 100%;
+    border-radius: 10px;
+    height: 200px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #09A407;
+    align-items: flex-start;
+}
+
+.course-title {
+    font-size: 40px;
+    font-weight: 500;
+    color: white;
+    font-family: 'Poppins';
+}
