@@ -81,3 +81,19 @@ input:focus {
 a:hover {
   text-decoration: none;
 }
+.Toastify__toast {
+  width: 400px;
+  height: 50px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px #eee;
+  bottom: 20px
+}
+
+.Toastify__toast--success {
+  background-color: #67D063;
+  width: 400px;
+  height: 50px;
+  border-radius: 5px;
+  box-shadow: 2px 2px 12px #eee;
+  bottom: 20px
+}

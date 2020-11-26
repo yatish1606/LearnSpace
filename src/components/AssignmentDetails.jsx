@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import {FileText, X, Book, Download, Info, Plus, ArrowLeft} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
+import { toast } from 'react-toastify'
 
 import './course.css'
 
@@ -272,8 +273,7 @@ const AssignmentDetails = ({courseName, history}) => {
                         <X size={22} color="#878787" style={{width: '10%'}}/>
                     </div>
 
-                    <button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}}>
-                        <Plus size={20} color="#09a407"/>
+                    <button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={() => toast.success("Assignment submitted successfully")}>
                         <p style={{fontSize: 17, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Submit</p>
                     </button>
                 </div>
