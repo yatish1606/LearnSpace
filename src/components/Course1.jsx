@@ -1,8 +1,7 @@
 import React from 'react'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
 import {FileText, Grid, Book, Edit, User, Download, Info} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -189,7 +188,10 @@ const Post = ({postType, title, info}) => {
 			<div className="post-options">
 				{
 					isAssignment ? 
-					<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Mulish', fontWeight: 700, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+					<Link to="/assignments">
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Mulish', fontWeight: 700, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+					</Link>
+					
 					: 
 					<React.Fragment>
 						<Download size={22} color="#232323"/>

@@ -242,3 +242,75 @@
     margin: 0;
     padding: 0;
 }
+
+.file-box {
+    width: 350px;
+    height: 100px;
+    border: 3px solid #eee;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 15px;
+    align-items: center;
+    padding-right: 25px;
+}
+
+.file-box-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.file-box-info h5 {
+    font-family: 'Poppins';
+    font-weight: 500;
+    color: #232323;
+    font-size: 17px;
+    text-align: left;
+}
+
+.assignment-upload {
+    width: 35%;
+    border: 2px solid #eee;
+    margin-top: 60px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.assignment-upload h5 {
+    font-family: 'Poppins';
+    font-weight: 500;
+    color: #232323;
+    font-size: 17px;
+    text-align: left;
+}
+
+.uploaded-file {
+    width: 100%;
+    border: 2px solid #eee;
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    margin-top: 20px;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.uploaded-file h6 {
+    font-family: 'Poppins';
+    font-weight: 500;
+    color: #232323;
+    font-size: 15px;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+}
