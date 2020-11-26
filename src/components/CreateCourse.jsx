@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {yearOptions, departmentOptions} from './Register'
-import {Book, Copy, X} from 'react-feather'
+import {Book, Copy, X, Plus} from 'react-feather'
 
 export const customStyles = {
 //   
@@ -31,7 +31,7 @@ content: {
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: '#0000009a',
+	backgroundColor: '#000000ba',
 	zIndex: 9999
   },
 };
@@ -58,14 +58,18 @@ const CreateCourse = () => {
 
 	return (
 		<div>
-		<div className="create-course-div" style={{backgroundColor: 'red'}}>
-        <div onClick={openModal}>Create New Course</div>
-        <Modal
+		<div className="create-course-div">
+        
+		<Plus onClick={openModal} size={23} color="white"/>
+        
+		
+		<Modal
           isOpen={modalIsOpen}
           onAfterOpen={afterOpenModal}
           onRequestClose={closeModal}
           style={customStyles}
 		  contentLabel="Modal"
+		  closeTimeoutMS={200}
         >
 				
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>

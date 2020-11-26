@@ -108,7 +108,7 @@ const Sidebar = (props) => {
 						
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80}}>
 							<Codesandbox size={30} color="#09A407"/>
-							<div style={{alignItems: "flex-start", display: "flex"}}>
+							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
 								<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>Team FSociety</p>
 							</div>
 						</div>
@@ -127,7 +127,13 @@ const Sidebar = (props) => {
 						})}
 
 						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div>
-						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>MY COURSES</p>
+
+						<div style={{display: "flex", flexDirection: "row", alignItems: "center", width: '100%' ,paddingLeft: 30,paddingRight: 20 , justifyContent: "space-between",}}>
+							<p style={{fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
+							<CreateCourse/>
+						</div>
+						
+						
 						{sidebarData.map((item,index) => {
 							return (
 								<div key={index} className="nav-text">
@@ -151,7 +157,7 @@ const Sidebar = (props) => {
 						})}
 						 */}
 						
-						<CreateCourse/>
+						
 					</div>
 				</nav>
 		</div>
