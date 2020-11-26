@@ -139,7 +139,7 @@ const Sidebar = (props) => {
 						})}
 						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
 						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p>
-						
+{/* 						
 						{otherOptions.map((item, index) => {
 							return (
 								<div key={index} className="nav-text">
@@ -149,9 +149,9 @@ const Sidebar = (props) => {
 								</div>
 							)
 						})}
+						 */}
 						
-						
-						{/* <CreateCourse/> */}
+						<CreateCourse/>
 					</div>
 				</nav>
 		</div>

@@ -21,7 +21,7 @@ const RadioButton = (props) => {
     );
 }
 
-const yearOptions = [
+export const yearOptions = [
     {
         value:'FE',
         label:'First Year'
@@ -40,7 +40,7 @@ const yearOptions = [
     },
 ]
 
-const departmentOptions = [
+export const departmentOptions = [
     {
         value:'IT',
         label:'Information Technology'
@@ -64,7 +64,7 @@ const departmentOptions = [
 ]
 
 
-const featuresInfo = [
+export const featuresInfo = [
     {
         img:<FileText color="#09A407" size={22}/>,
         text:'Share assignments and study material easily'

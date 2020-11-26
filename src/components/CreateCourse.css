@@ -9,18 +9,13 @@
 	width: 95%;
 	height: 100%;
 	margin-left: 8px;
-}
+} 
 
 .create-course-div:hover {
 	background-color: #09A407;
 	color: white;
 }
 
-input {
-	width: 100%;
-	border: 0.1px solid grey;
-	/* padding: 10px; */
-}
 
 .create-course-buttons {
 	display: flex;

@@ -18,9 +18,7 @@ const styles = {
 	slide: {
 	  padding: 15,
 	  minHeight: 100,
-	  color: '#fff',
-	  height: 1000,
-	  backgroundColor: 'red'
+	  color: '#232323'
 	},
 	slide1: {
 	  backgroundColor: 'white',
@@ -54,11 +52,11 @@ const styles = {
 
   const AntTab = withStyles((theme) => ({
 	wrapper: {
-		flexDirection: 'row'
+		flexDirection: 'row',
 	  },
 	root: {
 	  textTransform: 'none',
-	  color: '#232323',
+	  color: '#878787',
 	  minWidth: 72,
 	  fontWeight: 500,
 	  marginRight: 15,
@@ -68,11 +66,12 @@ const styles = {
 	  boxShadow: 'none',
 	  marginLeft: 15,
 	  letterSpacing : -0.3,
+	  opacity: 1,
 	  fontFamily: [
 		'Lexend Deca'
 	  ].join(','),
 	  '&:hover': {
-		color: '#09A407',
+		color: '#232323',
 		opacity: 1,
 		fontWeight: 500,
 		fontSize:19,
@@ -90,11 +89,91 @@ const styles = {
   }))((props) => <Tab disableRipple {...props} />);
 
 
+const postInfo = [
+	{
+		type: 'studyMaterial',
+		title: 'Introduction to Operating Systems',
+		info: ''
+	},
+	{
+		type: 'assignment',
+		title: 'OS Programming Assignment 1 : Threads',
+		info: ''
+	},
+	{
+		type: 'studyMaterial',
+		title: 'Operating Systems : Basic Principles',
+		info: ''
+	},
+	{
+		type: 'assignment',
+		title: 'OS Programming Assignment 2 : Multithreading Matrix Multiplication',
+		info: ''
+	},
+	{
+		type: 'studyMaterial',
+		title: 'Processess',
+		info: ''
+	},
+	{
+		type: 'assignment',
+		title: 'OS Programming Assignment 3 : File Management',
+		info: ''
+	},
+]
 
-const Post = ({postType}) => {
+const studentsList = [
+	{
+		fName: 'John',
+		lName: 'Doe',
+		imag: userImage,
+	},
+	{
+		fName: 'Kate',
+		lName: 'Smith',
+		imag: userImage,
+	},
+	{
+		fName: 'Yatish',
+		lName: 'Kelkar',
+		imag: userImage,
+	},
+	{
+		fName: 'Gaurav',
+		lName: 'Khairnar',
+		imag: userImage,
+	},
+	{
+		fName: 'Mahesh',
+		lName: 'Nahak',
+		imag: userImage,
+	},
+	{
+		fName: 'Kshitij',
+		lName: 'Chitnis',
+		imag: userImage,
+	},
+	{
+		fName: 'Ronald',
+		lName: 'Weasley',
+		imag: userImage,
+	},
+]
 
+
+
+
+
+const Post = ({postType, title, info}) => {
+	
 	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
+	// const type = postType.split(" ").forEach(s => s.charAt(0).toUpperCase().concat(s.slice(1, s.length)))
+	let typeArr = postType.split(/(?=[A-Z])/)
+	typeArr.map(s => s.charAt(0).toUpperCase())
+	const type = typeArr.join(' ')
 
+	const isAssignment = postType === 'assignment'
+	
 	return (
 		<React.Fragment>
 		<div className="post-container">
@@ -103,13 +182,21 @@ const Post = ({postType}) => {
 					<div className="post-image-base">{icon}</div>
 				</div>
 				<div className="post-info">
-					<h6>Study Material</h6>
-					<h3>Chapter One : Introduction to OS</h3>
+					<h6>{type}</h6>
+					<h3>{title}</h3>
 				</div>
 			</div>
 			<div className="post-options">
-				<Download size={22} color="#232323"/>
-				<Info size={22} color="#232323"/>
+				{
+					isAssignment ? 
+					<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Mulish', fontWeight: 700, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+					: 
+					<React.Fragment>
+						<Download size={22} color="#232323"/>
+						<Info size={22} color="#232323"/>
+					</React.Fragment>
+				}
+				
 			</div>
 			
 		</div>
@@ -160,22 +247,38 @@ const Course1 = ({courseName}) => {
 					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> Students   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
+				
+				{/* Stream */}
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
-					
-					<Post/>
-					<Post/>
-					<Post/>
-					<Post/>
-					<Post/>
-					<Post/>
-					<Post/>
-					<Post/>
-					
-					
+						
+					{postInfo.map((item, index) => {
+						return <Post postType={item.type} title={item.title} info={item.info}/>
+					})}
 					
 				</div>
-				<div style={Object.assign({}, styles.slide, styles.slide2)}>slide n°2</div>
-				<div style={Object.assign({}, styles.slide, styles.slide3)}>slide n°3</div>
+
+
+				<div style={Object.assign({}, styles.slide, styles.slide2)}>
+
+					{postInfo.filter(p => p.type === 'assignment').map((item, index) => {
+						return <Post postType={item.type} title={item.title} info={item.info}/>
+					})}
+
+				</div>
+
+
+				<div style={Object.assign({}, styles.slide, styles.slide3)}>
+
+					{studentsList.map((item, index) => {
+						let name = item.fName.concat(" ").concat(item.lName)
+						return (
+						<div className="student-box" key={index}>
+							<div className="student-box-photo"><img src={item.imag} style={{width: 35, height: 35, marginTop: 4}}/></div>
+							<h5>{name}</h5>
+						</div>
+						)
+					})}
+				</div>
 				</SwipeableViews>
 			</div>
 		</div>
