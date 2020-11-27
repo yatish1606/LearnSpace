@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Info} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, Copy, Dribbble, Briefcase} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
+import Modal from 'react-modal';
+import {customStyles} from './CreateCourse'
+// import {enUS} from 'date-fns'
+// import en from 'react-intl/locale-data/en';
+// import { DatePicker } from 'react-nice-dates'
+// import 'react-nice-dates/build/style.css'
 
 import './course.css'
+
+let userType = 'teacher'
 
 const styles = {
 	tabs: {
@@ -216,14 +224,58 @@ const Course1 = ({courseName}) => {
 
 	const handleChange = (event,value) => setIndex(value)
 	const handleChangeIndex = index => setIndex(index)
+	const [modalIsOpen,setIsOpen] = React.useState(false);
+	const [year, setYear] = React.useState('');
+	const [department, setDepartment] = React.useState('');
+	const [isAssignment, setIsAssignment] = React.useState(false)
+	const [dueDate, setDueDate] = useState(null)
+
+	const [attachment, setAttachment] = React.useState(null)
+	const [attachmentObject, setAttachmentObject] = React.useState({
+		name: null,
+		size: null
+	})
+
+	const handleFileUpload = event => {
+		if(event) {
+			setAttachment(event.target.files[0])
+			setAttachmentObject({name : event.target.files[0].name,  size : event.target.files[0].size})
+		} else {
+			setAttachment(null)
+			setAttachmentObject({name: null, size: null})
+		}
+	}
+
+	function openModal() {
+    setIsOpen(true);
+	}
+	
+	function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+  	}
+ 
+	function closeModal(){
+		setIsOpen(false);
+	}
 
 	return (
 		<div className="course-container">
 
+
+			<div className="new-post">
+				<Plus size={40} color="white" onClick={openModal}/>
+			</div>
+
+
+
 			<div className="course-heading-block">
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
-				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
+				{userType === 'student' ? 
+					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
+				:
+				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+				}
 
 				<h2 className="course-title">Operating Systems</h2>
 				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>TE Information Technology</p>
@@ -283,6 +335,147 @@ const Course1 = ({courseName}) => {
 				</div>
 				</SwipeableViews>
 			</div>
+
+
+
+
+			<Modal
+			isOpen={modalIsOpen}
+			onAfterOpen={afterOpenModal}
+			onRequestClose={closeModal}
+			style={customStyles}
+			contentLabel="Modal"
+			closeTimeoutMS={200}
+			>
+				
+				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
+					<div style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+						<FileText size={25} color="#09a407"/>
+					</div>
+					<div style={{marginLeft: '1rem'}}>
+						<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>Post New Material</h2>
+						<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>Send new study material or assignments to students</p>
+					</div>
+            	</div>
+
+				
+				
+				{/* <div style={{width: '100%', display: "flex", flexDirection: "row-reverse", alignItems: "center", marginTop: 15}}>
+					
+					<div style={{display: "flex", flexDirection: "column",}}>
+					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Department</p>
+						<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+							<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
+						</div>
+					</div>
+					
+					<div style={{display: "flex", flexDirection: "column", marginRight: 15}}>
+					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Year</p>
+						<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+							<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
+						</div>
+					</div>
+
+					<div style={{flexGrow: 1, marginRight: 15}}>
+						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
+						<input type="text" style={{height:40,}}></input>
+					</div>
+					
+					
+                
+            	</div> */}
+
+				{/* <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem', marginTop: 30}}>Log in as a student or a teacher/instructor ?</p> */}
+				<div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30}}>
+					<div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
+						<label class="checkbox-container" style={{borderColor: !isAssignment ? '#09a407' : '#eee'}}>
+							<Book size={22} style={{marginRight: 15}} color="#545454"/>
+							Study Material
+							<input type="checkbox" onClick={() => setIsAssignment(false)} checked={!isAssignment}/>
+							<span class="checkmark" style={{right: 0, left: 180}}></span>
+						</label>
+						<label class="checkbox-container" style={{borderColor: isAssignment ? '#09a407' : '#eee'}}>
+							<FileText size={22} style={{marginRight: 15}} color="#545454"/>
+							Assignment
+							<input type="checkbox" onClick={() => setIsAssignment(true)} checked={isAssignment}/>
+							<span class="checkmark" style={{right: 0, left: 160}}></span>
+						</label>
+					</div>
+					
+				</div>
+
+				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
+				<input type="text" style={{height:40, width: '50%'}}></input>
+
+				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
+				<input type="text" style={{height:40}}></input>
+
+
+				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
+
+				{attachment ? null : 
+				<button style={{backgroundColor: "transparent", border: '2px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden"}}>
+					<input type="file" onChange={handleFileUpload} className="file-upload"/>
+					<Plus size={18} color="#09a407" style={{marginRight: 10}}/>
+					<p style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
+				</button>
+				}
+								
+
+				{attachment ? 		
+					<div className="uploaded-file" style={{width: '40%', marginTop: 10}}>
+						<h6>{attachment.name}</h6>
+						<X size={22} color="#878787" style={{width: '10%'}} onClick={() => handleFileUpload(null)} style={{cursor: "pointer"}}/>
+					</div>
+					: null 
+				}
+
+				{/* <DatePicker date={dueDate} onDateChange={setDueDate} locale={en}>
+				{({ inputProps, focused }) => (
+					<input
+					className={'input' + (focused ? ' -focused' : '')}
+					{...inputProps}
+					/>
+				)}
+				</DatePicker> */}
+								
+				
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button>
+						<p style={{fontSize: 16, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8,}}>Create</p>
+					</button>
+					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
+				
+        </Modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		</div>
 	)
 }

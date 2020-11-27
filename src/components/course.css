@@ -318,11 +318,28 @@
     flex-grow: 1;
 }
 
-.assignment-upload input[type="file"] {
+.assignment-upload input[type="file"] , .file-upload{
     position: absolute;
     cursor: pointer;
     opacity: 0.0;
     filter: alpha(opacity=0); 
     height: 50px;
     width: 20%;
+}
+
+.new-post {
+    position: fixed;
+    right: 5vh;
+    bottom: 5vh;
+    z-index: 9999;
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    box-shadow: 3px 3px 15px #ababab;
+    cursor: pointer;
+    background-color: #09A407;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
