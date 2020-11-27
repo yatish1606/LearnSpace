@@ -264,6 +264,7 @@ const Login = ({goBack, setLogin}) => {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [viewPassword, setViewPassword] = React.useState(true)
+    const [isStudent, setIsStudent] = React.useState(true)
 
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
@@ -274,6 +275,8 @@ const Login = ({goBack, setLogin}) => {
             <ArrowLeft size={25} color="#545454" onClick={() => goBack()} style={{cursor: "pointer", position: "absolute"}}/>
             <div style={{position: "absolute", right: 30, fontFamily: 'Poppins', fontSize: 16, color: '#09a407', fontWeight: 600, cursor: "pointer"}} onClick={() => setLogin()}>New here ? Register now</div>
             
+
+
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
                     <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
@@ -282,6 +285,26 @@ const Login = ({goBack, setLogin}) => {
                     <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome Back</h2>
                     <p style={{fontFamily: 'Mulish', fontSize: 17, color: '#ababab', fontWeight: 600, margin:0}}>Enter your login credentials to access your classroom</p>
                 </div>
+            </div>
+
+            
+            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem', marginTop: 30}}>Log in as a student or a teacher/instructor ?</p>
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
+                <div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
+                    <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
+                        <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
+                        Student
+                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
+                        <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
+                        Teacher
+                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                
             </div>
 
             <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 25}}>
@@ -342,7 +365,7 @@ const Register = () => {
                 <div style={{display: "flex", flexDirection: "row", marginBottom: '1rem', alignItems: "center", alignSelf: "center", marginTop: '15%', justifyContent: "center"}}>
                         <Codesandbox size={30} color="#09A407"/>
                         <div style={{alignItems: "flex-start", display: "flex"}}>
-                            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
+                            <p style={{fontFamily: 'Poppins', fontSize: 19, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
                         </div>
                 </div>
 
