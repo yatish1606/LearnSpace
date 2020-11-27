@@ -12,15 +12,24 @@ const AppRouter = () => {
 	return (
 		<div>
 			<Router>
-				<Route path="/registerlogin" component={Register}/>
-				<Sidebar/> 
 				<Switch>
-					<Route path="/" exact component={MyCourses}/>		
-					<Route path="/course1" component={Course1} />
-					<Route path="/course2" component={Course2}/> 
-					<Route path="/assignments" component={AssignmentDetails}/> 
+					<Route path="/registerlogin" component={Register}/>
 					
+					{/* <Sidebar/>  */}
+					<div>
+					
+						<Route path="/" exact component={MyCourses} exact/>		
+						<Route path="/course1" component={Course1} exact/>
+						<Route path="/course2" component={Course2} exact/> 
+						<Route path="/assignments" component={AssignmentDetails} exact/> 
+						<Route path="*" component={Sidebar} exact/> 
+						
+						
+					</div>
 				</Switch>
+				
+				
+				
 			</Router>
 		</div>
 	)

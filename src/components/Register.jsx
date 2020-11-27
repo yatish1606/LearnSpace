@@ -8,7 +8,7 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 
 
-import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Lock } from 'react-feather'
+import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
 import '../App.css'
 
@@ -66,15 +66,19 @@ export const departmentOptions = [
 
 export const featuresInfo = [
     {
-        img:<FileText color="#09A407" size={22}/>,
-        text:'Share assignments and study material easily'
+        img:<Grid color="#09A407" size={22}/>,
+        text:'Join multiple courses under a single classroom'
     },
     {
         img:<Download color="#09A407" size={22}/>,
         text:'Download files for study'
     },
     {
-        img:<Grid color="#09A407" size={22}/>,
+        img:<FileText color="#09A407" size={22}/>,
+        text:'Share assignments and study material easily'
+    },
+    {
+        img:<Box color="#09A407" size={22}/>,
         text:'All features on a single platform'
     },
 ]
@@ -82,12 +86,12 @@ export const featuresInfo = [
 const Features = () => {
     return featuresInfo.map(feature => {
         return (
-            <div style={{width: '100%', display: "flex", flexDirection: "row", marginBottom: '1rem', alignItems: "center"}}>
+            <div style={{width: '100%', display: "flex", flexDirection: "row", marginBottom: '15px', alignItems: "center"}}>
                 <div style={{width: '2.1rem', height: '2.1rem', backgroundColor: '#09A4071a', borderRadius: 15, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     {feature.img}
                 </div>
                 <div style={{flexGrow: 1, alignItems: "flex-start", display: "flex"}}>
-                    <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, paddingLeft: 10, margin:0}}>{feature.text}</p>
+                    <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#878787', fontWeight: 500, paddingLeft: 20, margin:0}}>{feature.text}</p>
                 </div>
             </div>
         )
@@ -97,13 +101,16 @@ const Features = () => {
 const GetStarted = ({goNext}) => {
     return (
         <React.Fragment>
-        <h2 style={{marginTop: '15%', marginBottom: '10%', width: 'auto', textAlign: "left", fontFamily: 'Mulish', color: '#232323', fontWeight: 700, fontSize: 28}}>Some long witty text here that sounds really good and makes you appear smart af</h2>
+        <h2 style={{marginTop: '10%', marginBottom: '10%', width: 'auto', textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 22, paddingRight: '10%'}}>
+            Online learning has never been more easy! 
+            <br/><br/>
+            Share and download study material, and submit assignments with ease</h2>
             <Features/>
 
         <div style={{marginTop: '10%'}}>
             <button onClick={() => goNext()}>
                         {/* <Gift/> */}
-                <p style={{fontSize: 18, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Get Started</p>
+                <p style={{fontSize: 17, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Get Started</p>
                 <ArrowRight size={25} color="white" style={{marginLeft: '0.5rem'}}/>
             </button>
         </div>
@@ -111,7 +118,7 @@ const GetStarted = ({goNext}) => {
     )
 }
 
-const RegistrationDetails = ({goBack}) => {
+const RegistrationDetails = ({goBack, setLogin}) => {
 
     const [fName, setFName] = React.useState('')
     const [lName, setLName] = React.useState('')
@@ -128,26 +135,18 @@ const RegistrationDetails = ({goBack}) => {
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const radioChangeHandler = (event) => {
-        console.log('hi')
-        setStudentClass(event.target.value)
-    }
-
-    const radioChangeHandlerDepartment = (event) => {
-        setStudentDepartment(event.target.value)
-    }
-
     return (
         <React.Fragment>
            
-            <ArrowLeft size={25} color="#232323" onClick={() => goBack()} style={{cursor: "pointer", position: "absolute"}}/>
+            <ArrowLeft size={25} color="#545454" onClick={() => goBack()} style={{cursor: "pointer", position: "absolute"}}/>
+            <div style={{position: "absolute", right: 30, fontFamily: 'Poppins', fontSize: 16, color: '#09a407', fontWeight: 600, cursor: "pointer"}} onClick={() => setLogin()}>Already have an account ? Login now</div>
             
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
                     <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
-                    <h2 style={{textAlign: "left", fontFamily: 'Mulish', color: '#232323', fontWeight: 800, fontSize: 28}}>Welcome</h2>
+                    <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome</h2>
                     <p style={{fontFamily: 'Mulish', fontSize: 17, color: '#ababab', fontWeight: 600, margin:0}}>Enter few more details to get started</p>
                 </div>
             </div>
@@ -157,17 +156,17 @@ const RegistrationDetails = ({goBack}) => {
 
             {/* User Type */}
 
-            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Are you a student or a teacher/instructor ?</p>
+            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Are you a student or a teacher/instructor ?</p>
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center"}}>
                 <div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
                     <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
-                        <Dribbble size={22} style={{marginRight: 15}} color="#232323"/>
+                        <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
                         Student
                         <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
-                        <Briefcase size={22} style={{marginRight: 15}} color="#232323"/>
+                        <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
                         Teacher
                         <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
                         <span class="checkmark"></span>
@@ -177,7 +176,7 @@ const RegistrationDetails = ({goBack}) => {
             </div>
 
             {/* Name */}
-            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: 10, marginTop: 20}}>Personal Information</p>
+            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: 10, marginTop: 20}}>Personal Information</p>
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center",}}>
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
                     <input
@@ -197,13 +196,13 @@ const RegistrationDetails = ({goBack}) => {
             {isStudent ?  
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 5}}>
                 <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
-                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
                     <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                         <Dropdown options={yearOptions} onChange={option => setStudentClass(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
                     </div>
                 </div>
                 <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
-                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your Department</p>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your Department</p>
                     <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
                         <Dropdown options={departmentOptions} onChange={option => setStudentDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
                     </div>
@@ -220,7 +219,7 @@ const RegistrationDetails = ({goBack}) => {
                 {/* <div style={{width: '1.8rem', height: '1.8rem', backgroundColor: '#09a4071a', borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center" , marginRight:15, border: '0px solid #09a407'}}>
                     <Lock size={19} color="#09a407"/>
                 </div> */}
-                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left"}}>Email and Password</p>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left"}}>Email and Password</p>
             </div>  
 
             <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 10}}>
@@ -252,7 +251,7 @@ const RegistrationDetails = ({goBack}) => {
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
                 <button>
-                    <p style={{fontSize: 15, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Done</p>
+                <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Register</p>
                 </button>
             </div>
             
@@ -260,32 +259,103 @@ const RegistrationDetails = ({goBack}) => {
     )
 }
 
+const Login = ({goBack, setLogin}) => {
+
+    const [email, setEmail] = React.useState('')
+    const [password, setPassword] = React.useState('')
+    const [viewPassword, setViewPassword] = React.useState(true)
+
+    const onChangeEmail = e => setEmail(e.target.value)
+    const onChangePassword = e => setPassword(e.target.value)
+
+    return (
+        <React.Fragment>
+            
+            <ArrowLeft size={25} color="#545454" onClick={() => goBack()} style={{cursor: "pointer", position: "absolute"}}/>
+            <div style={{position: "absolute", right: 30, fontFamily: 'Poppins', fontSize: 16, color: '#09a407', fontWeight: 600, cursor: "pointer"}} onClick={() => setLogin()}>New here ? Register now</div>
+            
+            <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
+                <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+                    <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
+                </div>
+                <div style={{marginLeft: '1rem'}}>
+                    <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome Back</h2>
+                    <p style={{fontFamily: 'Mulish', fontSize: 17, color: '#ababab', fontWeight: 600, margin:0}}>Enter your login credentials to access your classroom</p>
+                </div>
+            </div>
+
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 25}}>
+                <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left"}}>Email and Password</p>
+            </div>  
+
+            <div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 10}}>
+                <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
+                    <input
+                        type="email"
+                        placeholder="Email ID"
+                        onChange={onChangeEmail}
+                        
+                    />
+                </div>
+                <div style={{width: '50%'}}>
+                    <div style={{display: "inline-flex", position: 'relative', width: '100%', }}>
+                        <input
+                            type={viewPassword ? "password" :  "text"}
+                            placeholder="Password"
+                            onChange={onChangePassword}
+                            style={{marginRight: 0}}
+                        />
+                        {
+                            viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
+                                        : <EyeOff size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
+                <button>
+                    <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Login</p>
+                </button>
+            </div>
+
+            <br/>
+        </React.Fragment>
+    )
+}
+
+
+
+
+
 const Register = () => {
 
     const [showForm, setShowForm] = React.useState(false)
+    const [isLogin, setIsLogin] = React.useState(true)
 
 	return (
-		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row"}}>
+		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
 			
             {/* Left side */}
-            <div style={{width: '50%', height: '100%', backgroundColor: '#f6f6f6'}}>
+            <div style={{width: '50%', height: '100%', backgroundColor: '#f6f6f6', overflow: 'visible', zIndex: 999}}>
                 
                 <div style={{display: "flex", flexDirection: "row", marginBottom: '1rem', alignItems: "center", alignSelf: "center", marginTop: '15%', justifyContent: "center"}}>
                         <Codesandbox size={30} color="#09A407"/>
                         <div style={{alignItems: "flex-start", display: "flex"}}>
-                            <p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>Team FSociety</p>
+                            <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
                         </div>
                 </div>
 
-                <img src={registerPic} style={{width: '90%', alignSelf: "center", marginTop: '20%'}}/>
+                <img src={registerPic} style={{width: '110%', alignSelf: "center", marginTop: '20%', zIndex: 999, marginLeft: '-2%'}}/>
 
             </div>
 
             {/* Right main side */}
-            <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start"}}>
+            <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start", zIndex: 998, paddingLeft: '3rem'}}>
                 
                 {
-                    showForm ? <RegistrationDetails goBack={() => setShowForm(false)}/>
+                    showForm ? isLogin ? <Login  goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
+                                       : <RegistrationDetails goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
                              : <GetStarted goNext={() => setShowForm(true)}/>
                 }
                 
