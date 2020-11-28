@@ -197,7 +197,7 @@ const Post = ({postType, title, info}) => {
 				{
 					isAssignment ? 
 					<Link to="/assignments">
-						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Mulish', fontWeight: 700, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 					</Link>
 					
 					: 
@@ -294,9 +294,9 @@ const Course1 = ({courseName}) => {
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
 				{userType === 'student' ? 
-					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
+					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
 				:
-				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
 				}
 
 				<h2 className="course-title">Operating Systems</h2>

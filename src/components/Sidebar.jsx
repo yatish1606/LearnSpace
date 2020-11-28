@@ -109,7 +109,7 @@ const Sidebar = (props) => {
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80}}>
 							<Codesandbox size={30} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
-								<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>Team FSociety</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
 							</div>
 						</div>
 					
@@ -143,6 +143,7 @@ const Sidebar = (props) => {
 								</div>
 							)
 						})}
+
 						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
 						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p>
 {/* 						
