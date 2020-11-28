@@ -197,7 +197,7 @@ const Post = ({postType, title, info}) => {
 				{
 					isAssignment ? 
 					<Link to="/assignments">
-						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Mulish', fontWeight: 700, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 					</Link>
 					
 					: 
@@ -294,9 +294,9 @@ const Course1 = ({courseName}) => {
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
 				{userType === 'student' ? 
-					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
+					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
 				:
-				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
 				}
 
 				<h2 className="course-title">Operating Systems</h2>
@@ -312,7 +312,7 @@ const Course1 = ({courseName}) => {
 				</div>
 				
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 15}}>Description</p>
-				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
+				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
 			</div>
 
 
