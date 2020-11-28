@@ -3,19 +3,19 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, Copy, Dribbble, Briefcase} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, Copy, Dribbble, ArrowLeft} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
 import {customStyles} from './CreateCourse'
-// import {enUS} from 'date-fns'
-// import en from 'react-intl/locale-data/en';
-// import { DatePicker } from 'react-nice-dates'
-// import 'react-nice-dates/build/style.css'
-
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import "react-day-picker/lib/style.css";
 import './course.css'
 
 let userType = 'teacher'
+
+
+
 
 const styles = {
 	tabs: {
@@ -258,9 +258,31 @@ const Course1 = ({courseName}) => {
 		setIsOpen(false);
 	}
 
+	const datePickerProps = {
+		datePicker: () => ({
+			id: 'date-picker',
+			light: false,
+			onChange: console.log('onPickerChange'),
+			onClose: console.log('onClose'),
+		}),
+		datePickerInput: () => ({
+			id: 'date-picker-input-id',
+			className: 'some-class',
+			labelText: 'Date Picker label',
+			placeholder: 'mm/dd/yyyy',
+			disabled: false,
+			invalid: false,
+			invalidText: 'A valid value is required',
+			iconDescription: 'Icon description',
+			onClick: console.log('onClick'),
+			onChange: console.log('onInputChange'),
+		}),
+	};
+
 	return (
 		<div className="course-container">
-
+			
+			
 
 			<div className="new-post">
 				<Plus size={40} color="white" onClick={openModal}/>
@@ -358,34 +380,7 @@ const Course1 = ({courseName}) => {
 					</div>
             	</div>
 
-				
-				
-				{/* <div style={{width: '100%', display: "flex", flexDirection: "row-reverse", alignItems: "center", marginTop: 15}}>
-					
-					<div style={{display: "flex", flexDirection: "column",}}>
-					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Department</p>
-						<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-							<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
-						</div>
-					</div>
-					
-					<div style={{display: "flex", flexDirection: "column", marginRight: 15}}>
-					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Year</p>
-						<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-							<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
-						</div>
-					</div>
-
-					<div style={{flexGrow: 1, marginRight: 15}}>
-						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
-						<input type="text" style={{height:40,}}></input>
-					</div>
-					
-					
-                
-            	</div> */}
-
-				{/* <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem', marginTop: 30}}>Log in as a student or a teacher/instructor ?</p> */}
+			
 				<div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30}}>
 					<div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
 						<label class="checkbox-container" style={{borderColor: !isAssignment ? '#09a407' : '#eee'}}>
@@ -404,8 +399,35 @@ const Course1 = ({courseName}) => {
 					
 				</div>
 
-				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
-				<input type="text" style={{height:40, width: '50%'}}></input>
+				<div style={{display: "flex", flexDirection: "row"}}>
+
+					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
+						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
+						<input type="text" style={{height:40, width: '100%'}}></input>
+					</div>
+
+					{isAssignment ?
+						<React.Fragment>
+							<div style={{display: "flex", flexDirection: "column", width: '25%', marginRight: 25}}>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
+								<DayPickerInput 
+									onDayChange={day => console.log(day)}
+									style={{fontFamily: 'Poppins', fontSize: 14}} 
+									navbarElement={<ArrowLeft size={15}/>}
+								/>
+							</div>
+
+							<div style={{display: "flex", flexDirection: "column", width: '15%'}}>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
+								<input type="text" style={{height:40, width: '100%'}}></input>
+							</div>
+						</React.Fragment>
+					: null 
+					}
+
+					
+
+				</div>
 
 				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
 				<input type="text" style={{height:40}}></input>
@@ -425,20 +447,11 @@ const Course1 = ({courseName}) => {
 				{attachment ? 		
 					<div className="uploaded-file" style={{width: '40%', marginTop: 10}}>
 						<h6>{attachment.name}</h6>
-						<X size={22} color="#878787" style={{width: '10%'}} onClick={() => handleFileUpload(null)} style={{cursor: "pointer"}}/>
+						<X size={22} color="#878787" style={{width: '10%', cursor: "pointer"}} onClick={() => handleFileUpload(null)}/>
 					</div>
 					: null 
 				}
 
-				{/* <DatePicker date={dueDate} onDateChange={setDueDate} locale={en}>
-				{({ inputProps, focused }) => (
-					<input
-					className={'input' + (focused ? ' -focused' : '')}
-					{...inputProps}
-					/>
-				)}
-				</DatePicker> */}
-								
 				
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>

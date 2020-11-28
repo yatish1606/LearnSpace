@@ -127,7 +127,7 @@
     position: relative;
     overflow: hidden;
     background-color: white;
-    border: 1px solid green;
+    border: 3px solid #eee;
     border-radius: 7px;
     box-sizing: border-box;
     color: #333;
@@ -342,4 +342,34 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+
+.DayPickerInput input {
+    height: 40px;
+}
+
+
+.DayPickerInput-wrapper {
+    position: relative;
+    flex-direction: row;
+    user-select: none;
+    width: 40px;
+}
+
+.DayPicker-Caption {
+    font-size: 14px;
+}
+
+.DayPicker-Day {
+    font-size: 13px;
+}
+
+.DayPicker-Weekdays {
+    font-size: 14px;
+    font-family: 'Poppins';
+}
+
+.DayPicker-Day:hover {
+    background-color: transparent;
 }
