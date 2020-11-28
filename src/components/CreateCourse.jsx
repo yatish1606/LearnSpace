@@ -10,10 +10,10 @@ export const customStyles = {
 //   
 content: {
 	position: 'absolute',
-	top: '15%',
+	top: '12%',
 	left: '20%',
-	right: 'auto',
-	bottom: '15%',
+	right: '20%',
+	bottom: '12%',
 	background: '#fff',
 	overflow: 'auto',
 	WebkitOverflowScrolling: 'touch',
