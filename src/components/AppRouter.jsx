@@ -11,6 +11,7 @@ import AssignmentDetails from './AssignmentDetails'
 const AppRouter = () => {
 	return (
 		<div>
+			
 			<Router>
 				<Switch>
 					<Route path="/registerlogin" component={Register}/>
@@ -18,7 +19,7 @@ const AppRouter = () => {
 					{/* <Sidebar/>  */}
 					<div>
 					
-						<Route path="/" exact component={MyCourses} exact/>		
+						<Route path="/" exact component={MyCourses} exact/>	
 						<Route path="/course1" component={Course1} exact/>
 						<Route path="/course2" component={Course2} exact/> 
 						<Route path="/assignments" component={AssignmentDetails} exact/> 
@@ -31,6 +32,7 @@ const AppRouter = () => {
 				
 				
 			</Router>
+			
 		</div>
 	)
 }

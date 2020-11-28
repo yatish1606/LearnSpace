@@ -312,7 +312,7 @@ const Course1 = ({courseName}) => {
 				</div>
 				
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 15}}>Description</p>
-				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
+				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
 			</div>
 
 
