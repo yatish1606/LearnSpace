@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, Copy, Dribbble, ArrowLeft} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, UserX, ArrowLeft, Database} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -11,6 +11,7 @@ import {customStyles} from './CreateCourse'
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import "react-day-picker/lib/style.css";
 import './course.css'
+import { getRandomUser } from './random'
 
 let userType = 'teacher'
 
@@ -67,26 +68,26 @@ const styles = {
 	  minWidth: 72,
 	  fontWeight: 500,
 	  marginRight: 15,
-	  fontSize:19,
+	  fontSize:17,
 	  paddingRight: 20,
 	  paddingLeft: 10,
 	  boxShadow: 'none',
 	  marginLeft: 15,
-	  letterSpacing : -0.3,
+	  letterSpacing : 0.3,
 	  opacity: 1,
 	  fontFamily: [
-		'Lexend Deca'
+		'Poppins'
 	  ].join(','),
 	  '&:hover': {
 		color: '#232323',
 		opacity: 1,
 		fontWeight: 500,
-		fontSize:19,
+		fontSize:17,
 	  },
 	  '&$selected': {
 		color: '#09A407',
 		fontWeight: 500,
-		fontSize:19,
+		fontSize:17,
 	  },
 	  '&:focus': {
 		color: '#09A407',
@@ -229,6 +230,8 @@ const Course1 = ({courseName}) => {
 	const [department, setDepartment] = React.useState('');
 	const [isAssignment, setIsAssignment] = React.useState(false)
 	const [dueDate, setDueDate] = useState(null)
+	const [maxMarks, setMaxMarks] = useState(null)
+	const [title, setTitle] = useState(null)
 
 	const [attachment, setAttachment] = React.useState(null)
 	const [attachmentObject, setAttachmentObject] = React.useState({
@@ -303,7 +306,7 @@ const Course1 = ({courseName}) => {
 				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>TE Information Technology</p>
 				<div className="instructor-box">
 					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={userImage} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+						<img src={getRandomUser()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
 						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>INSTRUCTOR</p>
@@ -320,7 +323,8 @@ const Course1 = ({courseName}) => {
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
 					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Stream   </div>} />
 					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
-					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> Students   </div>} />
+					<AntTab label={<div><Database size={22} style={{marginBottom: 5}} /> Study Material   </div>} />
+					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
 				
@@ -342,6 +346,14 @@ const Course1 = ({courseName}) => {
 
 				</div>
 
+				<div style={Object.assign({}, styles.slide, styles.slide2)}>
+
+					{postInfo.filter(p => p.type === 'studyMaterial').map((item, index) => {
+						return <Post postType={item.type} title={item.title} info={item.info}/>
+					})}
+
+				</div>
+
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
 
@@ -349,8 +361,11 @@ const Course1 = ({courseName}) => {
 						let name = item.fName.concat(" ").concat(item.lName)
 						return (
 						<div className="student-box" key={index}>
-							<div className="student-box-photo"><img src={item.imag} style={{width: 35, height: 35, marginTop: 4}}/></div>
+							<div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
+							<div className="student-box-photo"><img src={getRandomUser()} style={{width: 35, height: 35, marginTop: 4}}/></div>
 							<h5>{name}</h5>
+							</div>
+							<UserX size={22} style={{cursor: "pointer"}} className="remove-user-icon"/>
 						</div>
 						)
 					})}
@@ -403,7 +418,7 @@ const Course1 = ({courseName}) => {
 
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
 						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
-						<input type="text" style={{height:40, width: '100%'}}></input>
+						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t)}></input>
 					</div>
 
 					{isAssignment ?
@@ -411,7 +426,7 @@ const Course1 = ({courseName}) => {
 							<div style={{display: "flex", flexDirection: "column", width: '25%', marginRight: 25}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
 								<DayPickerInput 
-									onDayChange={day => console.log(day)}
+									onDayChange={day => setDueDate(day)}
 									style={{fontFamily: 'Poppins', fontSize: 14}} 
 									navbarElement={<ArrowLeft size={15}/>}
 								/>
@@ -419,7 +434,7 @@ const Course1 = ({courseName}) => {
 
 							<div style={{display: "flex", flexDirection: "column", width: '15%'}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
-								<input type="text" style={{height:40, width: '100%'}}></input>
+								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t)}></input>
 							</div>
 						</React.Fragment>
 					: null 

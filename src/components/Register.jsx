@@ -11,6 +11,7 @@ import 'react-dropdown/style.css';
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
 import '../App.css'
+import { getRandomUser } from './random';
 
 const RadioButton = (props) => {
     return (
@@ -143,7 +144,7 @@ const RegistrationDetails = ({goBack, setLogin}) => {
             
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
-                    <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
+                    <img src={getRandomUser()} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
                     <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome</h2>
@@ -279,7 +280,7 @@ const Login = ({goBack, setLogin}) => {
 
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
-                    <img src={userImage} style={{width: '3.5rem', marginTop: 10}}/>
+                    <img src={getRandomUser()} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
                     <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome Back</h2>
@@ -354,7 +355,7 @@ const Login = ({goBack, setLogin}) => {
 const Register = () => {
 
     const [showForm, setShowForm] = React.useState(false)
-    const [isLogin, setIsLogin] = React.useState(true)
+    const [isLogin, setIsLogin] = React.useState(false)
 
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
