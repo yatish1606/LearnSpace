@@ -5,6 +5,7 @@ import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings } from 'reac
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
+import { getRandomUser } from './random';
 
 const Sidebar = (props) => {
 
@@ -95,7 +96,7 @@ const Sidebar = (props) => {
 			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
 				<div className="my-profile-box">
 					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={userImage} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
+						<img src={getRandomUser()} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>John Doe</h6>

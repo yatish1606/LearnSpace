@@ -4,21 +4,22 @@ import userImage from '../assets/user.png'
 import userImage2 from '../assets/user2.png'
 import userImage3 from '../assets/user3.png'
 import userImage4 from '../assets/user4.png'
+import { getRandomColor } from './random'
 
 
 const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
 
 	let yearF = year.toUpperCase()
 	let deptF = dept.toUpperCase()
-
+	const color = getRandomColor()
 	return (
 		
 		<div className="course-box">
-			<div className="course-box-top">
+			<div className="course-box-top" style={{backgroundColor: color,}}>
 				<h3>{courseTitle}</h3>
 				<h6>{yearF} {deptF}</h6>
 			</div>
-			<div className="course-box-bottom">
+			<div className="course-box-bottom"  style={{ borderColor: '#eee', borderTopWidth: 0}}>
 				<div className="instructor-box" style={{marginTop: 5}}>
 					<div style={{width: 35, height: 35, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
 						<img src={userImage} style={{width: 30, height: 30, marginRight: 0, marginTop: 5}}/>

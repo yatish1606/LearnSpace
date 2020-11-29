@@ -215,10 +215,14 @@
 }
 
 .student-box {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    padding: 5px;
     display: flex;
     flex-direction: row;
     align-items: center;
+    border-bottom: 1px solid #eee;
+    justify-content: space-between;
+    padding-bottom: 15px;
 }
 
 .student-box-photo {
@@ -393,7 +397,8 @@
     /* box-shadow: 2px 2px 10px #eee; */
     cursor: pointer;
     margin-right: 15px;
-    transition: 0.2s ease-in
+    transition: 0.2s ease-in;
+    /* border: 3px solid transparent; */
 }
 .course-box:hover {
     transform: scale(1.04);
@@ -401,14 +406,16 @@
 }
 
 .course-box-top {
-    width: 100%;
-    background-color: #eee;
+    width: 103%;
     height: 125px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
     position: relative;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 .course-box-bottom {
@@ -417,13 +424,17 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    border: 3px solid #eee;
+    background-color: #fff;
+    border-width: 3px;
+    border-style: solid;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .course-box-top h3 {
     font-family: 'Poppins';
     font-size: 19px;
-    color: #545454;
+    color: #fff;
     font-weight: 500;
     text-align: left;
     margin: 0;
@@ -436,7 +447,7 @@
 .course-box-top h6 {
     font-family: 'Poppins';
     font-size: 15.5px;
-    color: #09a407;
+    color: #eee;
     font-weight: 500;
     text-align: left;
     margin: 0;
@@ -474,4 +485,14 @@
     width: 23px;
     height: 23px;
     margin-top: 3px;
+}
+
+.remove-user-icon {
+    color: #ababab;
+    transition: 0.1s ease-in;
+}
+
+.remove-user-icon:hover {
+    color: #545454;
+    transition: 0.1s ease-in;
 }
