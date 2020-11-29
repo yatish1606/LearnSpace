@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import registerPic from '../assets/register.png'
 import userImage from '../assets/user.png'
 
@@ -12,6 +12,7 @@ import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeO
 
 import '../App.css'
 import { getRandomUser } from './random';
+import { UserTypeContext } from './contexts/UserTypeContext';
 
 const RadioButton = (props) => {
     return (
@@ -119,7 +120,7 @@ const GetStarted = ({goNext}) => {
     )
 }
 
-const RegistrationDetails = ({goBack, setLogin}) => {
+const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
 
     const [fName, setFName] = React.useState('')
     const [lName, setLName] = React.useState('')
@@ -163,13 +164,19 @@ const RegistrationDetails = ({goBack, setLogin}) => {
                     <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
                         <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
                         Student
-                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(true);
+                            setUserType("student"); 
+                        }} checked={isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
                         <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
                         Teacher
-                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(false);
+                            setUserType("teacher");
+                        }} checked={!isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -260,7 +267,7 @@ const RegistrationDetails = ({goBack, setLogin}) => {
     )
 }
 
-const Login = ({goBack, setLogin}) => {
+const Login = ({goBack, setLogin,userType,setUserType}) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -295,13 +302,20 @@ const Login = ({goBack, setLogin}) => {
                     <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
                         <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
                         Student
-                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(true);
+                            setUserType("student");
+
+                        } } checked={isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
                         <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
                         Teacher
-                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(false);
+                            setUserType("teacher");
+                        }} checked={!isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -357,6 +371,8 @@ const Register = () => {
     const [showForm, setShowForm] = React.useState(false)
     const [isLogin, setIsLogin] = React.useState(false)
 
+    const {userType,setUserType} = useContext(UserTypeContext);
+
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
 			
@@ -378,8 +394,8 @@ const Register = () => {
             <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start", zIndex: 998, paddingLeft: '3rem'}}>
                 
                 {
-                    showForm ? isLogin ? <Login  goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
-                                       : <RegistrationDetails goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
+                    showForm ? isLogin ? <Login  userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
+                                       : <RegistrationDetails userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
                              : <GetStarted goNext={() => setShowForm(true)}/>
                 }
                 
