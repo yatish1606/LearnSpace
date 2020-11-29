@@ -6,6 +6,7 @@ import "./RadioButton.scss";
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import Axios from 'axios';
 
 
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
@@ -122,8 +123,8 @@ const GetStarted = ({goNext}) => {
 
 const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
 
-    const [fName, setFName] = React.useState('')
-    const [lName, setLName] = React.useState('')
+    const [fName, setfName] = React.useState('')
+    const [lName, setlName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [viewPassword, setViewPassword] = React.useState(true)
@@ -132,10 +133,41 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
     const [isStudent, setIsStudent] = React.useState(true)
 
 
-    const onChangeFName = e => setFName(e.target.value)
-    const onChangeLName = e => setLName(e.target.value)
+    const onChangefName = e => setfName(e.target.value)
+    const onChangelName = e => setlName(e.target.value)
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
+
+    const registerStudent = () => {
+        Axios.post("http://localhost:8000/student",{
+            "fname":fName,
+            "lname":lName,
+            "email":email,
+            "password":password,
+            "year": studentClass,
+            "department": studentDepartment
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+    }
+
+    const registerTeacher = () => {
+        Axios.post("http://localhost:8000/teachers",{
+            "fname":fName,
+            "lname":lName,
+            "email":email,
+            "password":password
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+    }
+
+
+    
 
     return (
         <React.Fragment>
@@ -189,13 +221,13 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
                     <input
                         placeholder="First Name"
-                        onChange={onChangeFName}
+                        onChange={onChangefName}
                     />
                 </div>
                 <div style={{width: '50%'}}>
                     <input
                         placeholder="Last Name"
-                        onChange={onChangeLName}
+                        onChange={onChangelName}
                     />
                 </div>
             </div>
@@ -258,7 +290,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
             
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button>
+                <button onClick={ userType === "student" ?  registerStudent : registerTeacher}>
                 <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Register</p>
                 </button>
             </div>
@@ -276,6 +308,16 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
 
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
+
+    const loginStudent = () => {
+        Axios.get("http://localhost:8000/student")
+        .then(res => {
+            console.log(res)
+        }) 
+            
+    }
+
+   
 
     return (
         <React.Fragment>
@@ -352,7 +394,7 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
             </div>
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button>
+                <button onClick={loginStudent}>
                     <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Login</p>
                 </button>
             </div>
