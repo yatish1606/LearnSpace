@@ -7,11 +7,12 @@ import Sidebar from './Sidebar';
 import Register from './Register'
 import CreateCourse from './CreateCourse'
 import AssignmentDetails from './AssignmentDetails'
+import UserTypeContextProvider from './contexts/UserTypeContext';
 
 const AppRouter = () => {
 	return (
 		<div>
-			
+			<UserTypeContextProvider>
 			<Router>
 				<Switch>
 					<Route path="/registerlogin" component={Register}/>
@@ -25,13 +26,11 @@ const AppRouter = () => {
 						<Route path="/assignments" component={AssignmentDetails} exact/> 
 						<Route path="*" component={Sidebar} exact/> 
 						
-						
 					</div>
 				</Switch>
 				
-				
-				
 			</Router>
+			</UserTypeContextProvider>
 			
 		</div>
 	)
