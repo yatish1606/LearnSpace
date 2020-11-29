@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import registerPic from '../assets/register.png'
 import userImage from '../assets/user.png'
 
@@ -6,12 +6,14 @@ import "./RadioButton.scss";
 
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
+import Axios from 'axios';
 
 
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
 import '../App.css'
 import { getRandomUser } from './random';
+import { UserTypeContext } from './contexts/UserTypeContext';
 
 const RadioButton = (props) => {
     return (
@@ -119,10 +121,10 @@ const GetStarted = ({goNext}) => {
     )
 }
 
-const RegistrationDetails = ({goBack, setLogin}) => {
+const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
 
-    const [fName, setFName] = React.useState('')
-    const [lName, setLName] = React.useState('')
+    const [fName, setfName] = React.useState('')
+    const [lName, setlName] = React.useState('')
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [viewPassword, setViewPassword] = React.useState(true)
@@ -131,10 +133,41 @@ const RegistrationDetails = ({goBack, setLogin}) => {
     const [isStudent, setIsStudent] = React.useState(true)
 
 
-    const onChangeFName = e => setFName(e.target.value)
-    const onChangeLName = e => setLName(e.target.value)
+    const onChangefName = e => setfName(e.target.value)
+    const onChangelName = e => setlName(e.target.value)
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
+
+    const registerStudent = () => {
+        Axios.post("http://localhost:8000/student",{
+            "fname":fName,
+            "lname":lName,
+            "email":email,
+            "password":password,
+            "year": studentClass,
+            "department": studentDepartment
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+    }
+
+    const registerTeacher = () => {
+        Axios.post("http://localhost:8000/teachers",{
+            "fname":fName,
+            "lname":lName,
+            "email":email,
+            "password":password
+        })
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+    }
+
+
+    
 
     return (
         <React.Fragment>
@@ -163,13 +196,19 @@ const RegistrationDetails = ({goBack, setLogin}) => {
                     <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
                         <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
                         Student
-                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(true);
+                            setUserType("student"); 
+                        }} checked={isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
                         <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
                         Teacher
-                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(false);
+                            setUserType("teacher");
+                        }} checked={!isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -182,13 +221,13 @@ const RegistrationDetails = ({goBack, setLogin}) => {
                 <div style={{width: '50%', alignItems: 'flex-start', display: "flex"}}>
                     <input
                         placeholder="First Name"
-                        onChange={onChangeFName}
+                        onChange={onChangefName}
                     />
                 </div>
                 <div style={{width: '50%'}}>
                     <input
                         placeholder="Last Name"
-                        onChange={onChangeLName}
+                        onChange={onChangelName}
                     />
                 </div>
             </div>
@@ -251,7 +290,7 @@ const RegistrationDetails = ({goBack, setLogin}) => {
             
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button>
+                <button onClick={ userType === "student" ?  registerStudent : registerTeacher}>
                 <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Register</p>
                 </button>
             </div>
@@ -260,7 +299,7 @@ const RegistrationDetails = ({goBack, setLogin}) => {
     )
 }
 
-const Login = ({goBack, setLogin}) => {
+const Login = ({goBack, setLogin,userType,setUserType}) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -269,6 +308,16 @@ const Login = ({goBack, setLogin}) => {
 
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
+
+    const loginStudent = () => {
+        Axios.get("http://localhost:8000/student")
+        .then(res => {
+            console.log(res)
+        }) 
+            
+    }
+
+   
 
     return (
         <React.Fragment>
@@ -295,13 +344,20 @@ const Login = ({goBack, setLogin}) => {
                     <label class="checkbox-container" style={{borderColor: isStudent ? '#09a407' : '#eee'}}>
                         <Dribbble size={22} style={{marginRight: 15}} color="#545454"/>
                         Student
-                        <input type="checkbox" onClick={() => setIsStudent(true)} checked={isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(true);
+                            setUserType("student");
+
+                        } } checked={isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                     <label class="checkbox-container" style={{borderColor: !isStudent ? '#09a407' : '#eee'}}>
                         <Briefcase size={22} style={{marginRight: 15}} color="#545454"/>
                         Teacher
-                        <input type="checkbox" onClick={() => setIsStudent(false)} checked={!isStudent}/>
+                        <input type="checkbox" onClick={() => {
+                            setIsStudent(false);
+                            setUserType("teacher");
+                        }} checked={!isStudent}/>
                         <span class="checkmark"></span>
                     </label>
                 </div>
@@ -338,7 +394,7 @@ const Login = ({goBack, setLogin}) => {
             </div>
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button>
+                <button onClick={loginStudent}>
                     <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Login</p>
                 </button>
             </div>
@@ -356,6 +412,8 @@ const Register = () => {
 
     const [showForm, setShowForm] = React.useState(false)
     const [isLogin, setIsLogin] = React.useState(false)
+
+    const {userType,setUserType} = useContext(UserTypeContext);
 
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
@@ -378,8 +436,8 @@ const Register = () => {
             <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start", zIndex: 998, paddingLeft: '3rem'}}>
                 
                 {
-                    showForm ? isLogin ? <Login  goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
-                                       : <RegistrationDetails goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
+                    showForm ? isLogin ? <Login  userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
+                                       : <RegistrationDetails userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
                              : <GetStarted goNext={() => setShowForm(true)}/>
                 }
                 
