@@ -310,7 +310,7 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
     const onChangePassword = e => setPassword(e.target.value)
 
     const loginStudent = () => {
-        Axios.get("http://localhost:8000/student")
+        Axios.get("http://localhost:8000/student_login",{"email":email,"password":password})
         .then(res => {
             console.log(res)
         }) 
