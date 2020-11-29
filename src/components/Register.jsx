@@ -8,12 +8,14 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Axios from 'axios';
 
-
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
 import '../App.css'
 import { getRandomUser } from './random';
 import { UserTypeContext } from './contexts/UserTypeContext';
+
+const md5 = require('md5');
+
 
 const RadioButton = (props) => {
     return (
@@ -121,6 +123,12 @@ const GetStarted = ({goNext}) => {
     )
 }
 
+const encrypt = (password) => {
+    var buffer1 = md5(password)
+    var buffer2 = md5(buffer1)
+    return md5(buffer2)
+}
+
 const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
 
     const [fName, setfName] = React.useState('')
@@ -143,12 +151,11 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
             "fname":fName,
             "lname":lName,
             "email":email,
-            "password":password,
+            "password":encrypt(password),
             "year": studentClass,
             "department": studentDepartment
         })
         .then(res => {
-            console.log(res);
             console.log(res.data);
         })
     }
@@ -158,10 +165,9 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
             "fname":fName,
             "lname":lName,
             "email":email,
-            "password":password
+            "password":encrypt(password)
         })
         .then(res => {
-            console.log(res);
             console.log(res.data);
         })
     }
@@ -310,14 +316,15 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
     const onChangePassword = e => setPassword(e.target.value)
 
     const loginStudent = () => {
-        Axios.get("http://localhost:8000/student_login",{"email":email,"password":password})
+        Axios.post('http://localhost:8000/student_login',{
+            "email":email,
+            "password":encrypt(password)
+        })
         .then(res => {
-            console.log(res)
-        }) 
-            
+            console.log(res.data);
+        })
     }
 
-   
 
     return (
         <React.Fragment>
