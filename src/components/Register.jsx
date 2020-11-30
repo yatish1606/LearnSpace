@@ -14,6 +14,7 @@ import '../App.css'
 import { getRandomUser } from './random';
 import { UserTypeContext } from './contexts/UserTypeContext';
 import { StudentDetailsContext } from './contexts/StudentDetailsContext';
+import { TeacherDetailsContext } from './contexts/TeacherDetailsContext';
 
 const md5 = require('md5');
 let randomUser =  getRandomUser()
@@ -313,7 +314,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     )
 }
 
-const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentDetails}) => {
+const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentDetails,teacherDetails,setTeacherDetails}) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -324,36 +325,26 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangePassword = e => setPassword(e.target.value)
 
     const loginStudent = () => {
-        // setStudentDetails({
-        //     department: "fdx",
-        //     year: "sads",
-        //     fname: "cxc",
-        //     lname: "dv",
-        //     email: "cx",
-        //     password: "xcx",
-        //     _id: ""
-        // });
-
-       Axios.post('https://dbms-back.herokuapp.com/student_login',{
+        Axios.post('https://dbms-back.herokuapp.com/student_login',{
             "email":email,
             "password":encrypt(password)
         })
         .then(res => {
-            if(res.data.student == "found"){
-                window.location.href = '/'
-            } else console.log('user not found')
+            const a = res.data.data;
+			const details = a[0];
+    	    setStudentDetails(details);
         })
 		}
 		
 		const loginTeacher = () => {
 			Axios.post("https://dbms-back.herokuapp.com/teacher_login", {
                 "email":email,
-                "password":password
+                "password":encrypt(password)
             })
 			.then(res => {
-                if(res.data.teacher == "found"){
-                    window.location.href = '/'
-                } else console.log('user not found')
+                const a = res.data.data;
+                const details = a[0];
+                setTeacherDetails(details);
 			}) 
 					
 	}
@@ -455,8 +446,9 @@ const Register = () => {
 
 
 		const {userType,setUserType} = useContext(UserTypeContext);
-    console.log(userType)
+        console.log(userType)
 		const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
+		const {teacherDetails,setTeacherDetails} = useContext(TeacherDetailsContext);
 
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
@@ -480,7 +472,9 @@ const Register = () => {
                 
                 {
 										showForm ? isLogin ? <Login 
-										 userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails} studentDetails={studentDetails}
+                                         userType={userType} setUserType={setUserType} 
+                                         setStudentDetails={setStudentDetails} studentDetails={studentDetails}
+                                         setTeacherDetails={setTeacherDetails} teacherDetails={teacherDetails}
 										 goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}
 										 />								 
 										 : <RegistrationDetails 

@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import './course.css'
 import userImage from '../assets/user.png'
 import userImage2 from '../assets/user2.png'
 import userImage3 from '../assets/user3.png'
 import userImage4 from '../assets/user4.png'
 import { getRandomColor } from './random'
+import { StudentDetailsContext } from './contexts/StudentDetailsContext'
 
 
 const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
@@ -47,6 +48,10 @@ const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStud
 
 
 const MyCourses = () => {
+
+	const {studentDetails} = useContext(StudentDetailsContext);
+	console.log(studentDetails)
+
 	return (
 		<div className="course-container">
 
@@ -54,8 +59,8 @@ const MyCourses = () => {
                 <div style={{width: '5rem', height: '5rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
                     <img src={userImage} style={{width: '4.5rem', marginTop: 10}}/>
                 </div>
-                <div style={{marginLeft: '1rem'}}>
-                    <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 28}}>John Doe</h2>
+								<div style={{marginLeft: '1rem'}}>
+									<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 28}}>John Doe</h2>
                     <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#545454', fontWeight: 600, margin:0, textAlign: 'left'}}>Student</p>
 					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>Third Year Information Technology</p>
                 </div>

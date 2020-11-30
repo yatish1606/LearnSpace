@@ -9,10 +9,12 @@ import CreateCourse from './CreateCourse'
 import AssignmentDetails from './AssignmentDetails'
 import UserTypeContextProvider from './contexts/UserTypeContext';
 import StudentDetailsContextProvider from './contexts/StudentDetailsContext';
+import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
 
 const AppRouter = () => {
 	return (
 		<div>
+			<TeacherDetailsContextProvider>
 			<StudentDetailsContextProvider>
 			<UserTypeContextProvider>
 			<Router>
@@ -34,6 +36,7 @@ const AppRouter = () => {
 			</Router>
 			</UserTypeContextProvider>
 			</StudentDetailsContextProvider>
+			</TeacherDetailsContextProvider>
 			
 		</div>
 	)
