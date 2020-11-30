@@ -322,7 +322,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
             setStudentDetails(details);
             console.log(studentDetails);
             if(details) {
-                e.preventDefault();
+                //e.preventDefault();
                window.location.href='/course1';
             }
         })
