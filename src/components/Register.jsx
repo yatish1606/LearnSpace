@@ -139,8 +139,9 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
+
     const registerStudent = () => {
-        Axios.post("localhost:8000/student",{
+        Axios.post("https://dbms-class.herokuapp.com/student", {
             "fname":fName,
             "lname":lName,
             "email":email,
@@ -149,8 +150,14 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "department": studentDepartment
         })
         .then(res => {
-            console.log(res.data)
-            window.location.href="/"
+            console.log(res.data.success)
+            if(res.data.success)
+                window.location.href="/"
+            else if(res.data.success == false)
+                console.log(res.data.message)
+            else console.log("error")
+        }).catch(err => {
+            console.log(err)
         })
     }
 
@@ -162,8 +169,14 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "password":encrypt(password)
         })
         .then(res => {
-            console.log(res.data);
-            window.location.href="/"
+            console.log(res.data.success)
+            if(res.data.success)
+                window.location.href="/"
+            else if(res.data.success == false)
+                console.log(res.data.message)
+                else console.log("error")
+        }).catch(err => {
+            console.log(err)
         })
     }
 
@@ -311,27 +324,36 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangePassword = e => setPassword(e.target.value)
 
     const loginStudent = () => {
-        Axios.post('http://localhost:8000/student_login',{
+        // setStudentDetails({
+        //     department: "fdx",
+        //     year: "sads",
+        //     fname: "cxc",
+        //     lname: "dv",
+        //     email: "cx",
+        //     password: "xcx",
+        //     _id: ""
+        // });
+
+       Axios.post('https://dbms-class.herokuapp.com/student_login',{
             "email":email,
             "password":encrypt(password)
         })
         .then(res => {
-						console.log(res.data);
-						const a = res.data.data;
-            const details = a[0];
-            setStudentDetails(details);
-            console.log(studentDetails);
-            if(details) {
-                //e.preventDefault();
-               window.location.href='/course1';
-            }
+            if(res.data.student == "found"){
+                window.location.href = '/'
+            } else console.log('user not found')
         })
 		}
 		
 		const loginTeacher = () => {
-			Axios.post("http://localhost:8000/teacher_login", {"email":email,"password":password})
+			Axios.post("https://dbms-class.herokuapp.com/teacher_login", {
+                "email":email,
+                "password":password
+            })
 			.then(res => {
-					console.log(res)
+                if(res.data.teacher == "found"){
+                    window.location.href = '/'
+                } else console.log('user not found')
 			}) 
 					
 	}

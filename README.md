@@ -1,3 +1,6 @@
+[![Build Actions Status](https://github.com/yatish1606/DBMS_Frontend/workflows/Node.js%20CI/badge.svg)](https://github.com/yatish1606/DBMS_Frontend/actions)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
