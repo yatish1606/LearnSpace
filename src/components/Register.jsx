@@ -8,13 +8,15 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Axios from 'axios';
 
-
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
 import '../App.css'
 import { getRandomUser } from './random';
 import { UserTypeContext } from './contexts/UserTypeContext';
 import { StudentDetailsContext } from './contexts/StudentDetailsContext';
+
+const md5 = require('md5');
+
 
 const RadioButton = (props) => {
     return (
@@ -122,6 +124,12 @@ const GetStarted = ({goNext}) => {
     )
 }
 
+const encrypt = (password) => {
+    var buffer1 = md5(password)
+    var buffer2 = md5(buffer1)
+    return md5(buffer2)
+}
+
 const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDetails}) => {
 
     const [fName, setfName] = React.useState('')
@@ -144,12 +152,11 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "fname":fName,
             "lname":lName,
             "email":email,
-            "password":password,
+            "password":encrypt(password),
             "year": studentClass,
             "department": studentDepartment
         })
         .then(res => {
-            console.log(res);
             console.log(res.data);
         })
     }
@@ -159,10 +166,9 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "fname":fName,
             "lname":lName,
             "email":email,
-            "password":password
+            "password":encrypt(password)
         })
         .then(res => {
-            console.log(res);
             console.log(res.data);
         })
     }
@@ -300,7 +306,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     )
 }
 
-const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentDetails,}) => {
+const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentDetails}) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -310,36 +316,32 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const loginStudent = async (e) => {
-        e.preventDefault();
-        var details = {};
-         await Axios.post("http://localhost:8000/student_login", {"email":email,"password":password})
+    const loginStudent = () => {
+        Axios.post('http://localhost:8000/student_login',{
+            "email":email,
+            "password":encrypt(password)
+        })
         .then(res => {
-            //console.log(res)
-            const a = res.data.data;
-            details = a[0];
+						console.log(res.data);
+						const a = res.data.data;
+            const details = a[0];
             setStudentDetails(details);
             console.log(studentDetails);
             if(details) {
                 e.preventDefault();
                window.location.href='/course1';
             }
-        }) 
-        console.log(studentDetails);
+        })
+		}
+		
+		const loginTeacher = () => {
+			Axios.post("http://localhost:8000/teacher_login", {"email":email,"password":password})
+			.then(res => {
+					console.log(res)
+			}) 
+					
+	}
 
-            //   setStudentDetails(details);
-              
-            
-    }
-
-    const loginTeacher = () => {
-        Axios.post("http://localhost:8000/teacher_login", {"email":email,"password":password})
-        .then(res => {
-            console.log(res)
-        }) 
-            
-    }
-   
 
     return (
         <React.Fragment>
@@ -416,7 +418,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
             </div>
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button  onClick={ userType === "student" ?  loginStudent : loginTeacher}>
+						<button  onClick={ userType === "student" ?  loginStudent : loginTeacher}>
                     <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Login</p>
                 </button>
             </div>
@@ -435,8 +437,8 @@ const Register = () => {
     const [showForm, setShowForm] = React.useState(false)
     const [isLogin, setIsLogin] = React.useState(false)
 
-    const {userType,setUserType} = useContext(UserTypeContext);
-    const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
+		const {userType,setUserType} = useContext(UserTypeContext);
+		const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
 
 
 	return (
@@ -460,17 +462,15 @@ const Register = () => {
             <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start", zIndex: 998, paddingLeft: '3rem'}}>
                 
                 {
-                    showForm ? isLogin ? <Login  
-                    userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails} studentDetails={studentDetails}
-                     goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}
-                     />
-                                       
-                     : <RegistrationDetails 
-                     userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails}
-                     goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}
-                     />
-                             
-                     : <GetStarted goNext={() => setShowForm(true)}/>
+										showForm ? isLogin ? <Login 
+										 userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails} studentDetails={studentDetails}
+										 goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}
+										 />								 
+										 : <RegistrationDetails 
+										 userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails}
+										 goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}
+										 />
+                             : <GetStarted goNext={() => setShowForm(true)}/>
                 }
                 
                 

@@ -5,9 +5,14 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {yearOptions, departmentOptions} from './Register'
 import {Book, Copy, X, Plus} from 'react-feather'
+var randomstring = require("randomstring");
 
+let userType = 'teacher'
 
-let userType = 'student'
+let randomString = randomstring.generate({
+	length: 5,
+	charset: 'alphabetic'
+})
 
 export const customStyles = {
 //   
@@ -128,7 +133,7 @@ const CreateCourse = () => {
 								<Copy size={22} color="#434343"/>
 							</div>
 							<p style={{fontFamily:'Poppins', fontSize: 17, color: '#434343', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, letterSpacing: 0.3}}>
-								f6A8B2g6h
+								{randomString}
 							</p>
 						</div>
 						<p style={{fontFamily:'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, marginTop: 10}}>
