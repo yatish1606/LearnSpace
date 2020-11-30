@@ -14,13 +14,15 @@ const StudentDetailsContextProvider = (props) => {
 		_id: ""
 	});
 	
-	const setStudentDetails = (props) => {
-		 setTheStudentDetails(props);
+	const setStudentDetails = (details) => {
+			
+		setTheStudentDetails(details);
 		console.log(studentDetails);
+
+			if(studentDetails.fname) {
+				window.location.href='/'
+			}
 	}
-
-
-	
 
 	return(
 		<StudentDetailsContext.Provider value={{studentDetails,setStudentDetails}}>
