@@ -13,6 +13,7 @@ import "react-day-picker/lib/style.css";
 import './course.css'
 import { getRandomUser } from './random'
 import { StudentDetailsContext } from './contexts/StudentDetailsContext';
+import Autograde from './Autograde'
 
 let userType = 'teacher'
 
@@ -227,6 +228,7 @@ const Course1 = ({courseName}) => {
 	const handleChange = (event,value) => setIndex(value)
 	const handleChangeIndex = index => setIndex(index)
 	const [modalIsOpen,setIsOpen] = React.useState(false);
+	const [modalIsOpenAutograde,setIsOpenAutograde] = React.useState(false);
 	const [year, setYear] = React.useState('');
 	const [department, setDepartment] = React.useState('');
 	const [isAssignment, setIsAssignment] = React.useState(false)
@@ -259,6 +261,10 @@ const Course1 = ({courseName}) => {
 	function openModal() {
     setIsOpen(true);
 	}
+
+	function openAutogradeModal() {
+		setIsOpenAutograde(true);
+		}
 	
 	function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -266,6 +272,10 @@ const Course1 = ({courseName}) => {
  
 	function closeModal(){
 		setIsOpen(false);
+	}
+
+	function closeAutogradeModal(){
+		setIsOpenAutograde(false);
 	}
 
 	const datePickerProps = {
@@ -297,6 +307,14 @@ const Course1 = ({courseName}) => {
 			<div className="new-post">
 				<Plus size={40} color="white" onClick={openModal}/>
 			</div>
+
+			<div className="new-post" style={{bottom: 120, backgroundColor: '#fff', boxShadow: '2px 2px 15px #d3d3d3'}}>
+				<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
+			</div>
+
+			{modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null}
+
+
 
 
 

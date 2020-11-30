@@ -7,6 +7,7 @@ import Sidebar from './Sidebar';
 import Register from './Register'
 import CreateCourse from './CreateCourse'
 import AssignmentDetails from './AssignmentDetails'
+import Autograde from './Autograde'
 import UserTypeContextProvider from './contexts/UserTypeContext';
 import StudentDetailsContextProvider from './contexts/StudentDetailsContext';
 
