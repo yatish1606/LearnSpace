@@ -14,10 +14,9 @@ const StudentDetailsContextProvider = (props) => {
 		_id: ""
 	});
 	
-	const setStudentDetails = async (props) => {
-		await setTheStudentDetails(props);
-		//setTheStudentDetails(props);
-		//console.log(studentDetails);
+	const setStudentDetails = (props) => {
+		 setTheStudentDetails(props);
+		console.log(studentDetails);
 	}
 
 

@@ -311,7 +311,17 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangePassword = e => setPassword(e.target.value)
 
     const loginStudent = () => {
-        Axios.post('http://localhost:8000/student_login',{
+        setStudentDetails({
+            department: "fdx",
+            year: "sads",
+            fname: "cxc",
+            lname: "dv",
+            email: "cx",
+            password: "xcx",
+            _id: ""
+        });
+
+       /* Axios.post('http://localhost:8000/student_login',{
             "email":email,
             "password":encrypt(password)
         })
@@ -325,7 +335,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                 //e.preventDefault();
                window.location.href='/course1';
             }
-        })
+        })*/
 		}
 		
 		const loginTeacher = () => {
