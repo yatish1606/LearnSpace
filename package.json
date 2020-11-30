@@ -12,6 +12,7 @@
     "carbon-components-react": "^7.24.0",
     "carbon-icons": "^7.0.7",
     "date-fns": "^1.0.0",
+    "express": "^4.17.1",
     "md5": "^2.3.0",
     "randomstring": "^1.1.5",
     "react": "^17.0.1",
@@ -33,7 +34,7 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
