@@ -14,6 +14,7 @@ import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeO
 import '../App.css'
 import { getRandomUser } from './random';
 import { UserTypeContext } from './contexts/UserTypeContext';
+import { StudentDetailsContext } from './contexts/StudentDetailsContext';
 
 const RadioButton = (props) => {
     return (
@@ -121,7 +122,7 @@ const GetStarted = ({goNext}) => {
     )
 }
 
-const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
+const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDetails}) => {
 
     const [fName, setfName] = React.useState('')
     const [lName, setlName] = React.useState('')
@@ -299,7 +300,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType}) => {
     )
 }
 
-const Login = ({goBack, setLogin,userType,setUserType}) => {
+const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentDetails,}) => {
 
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
@@ -309,14 +310,35 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const loginStudent = () => {
-        Axios.get("http://localhost:8000/student_login",{"email":email,"password":password})
+    const loginStudent = async (e) => {
+        e.preventDefault();
+        var details = {};
+         await Axios.post("http://localhost:8000/student_login", {"email":email,"password":password})
+        .then(res => {
+            //console.log(res)
+            const a = res.data.data;
+            details = a[0];
+            setStudentDetails(details);
+            console.log(studentDetails);
+            if(details) {
+                e.preventDefault();
+               window.location.href='/course1';
+            }
+        }) 
+        console.log(studentDetails);
+
+            //   setStudentDetails(details);
+              
+            
+    }
+
+    const loginTeacher = () => {
+        Axios.post("http://localhost:8000/teacher_login", {"email":email,"password":password})
         .then(res => {
             console.log(res)
         }) 
             
     }
-
    
 
     return (
@@ -394,7 +416,7 @@ const Login = ({goBack, setLogin,userType,setUserType}) => {
             </div>
 
             <div style={{marginTop: 20, alignItems: "flex-end", display: "flex", flexDirection: "column", marginRight: 10}}>
-                <button onClick={loginStudent}>
+                <button  onClick={ userType === "student" ?  loginStudent : loginTeacher}>
                     <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.4}}>Login</p>
                 </button>
             </div>
@@ -414,6 +436,8 @@ const Register = () => {
     const [isLogin, setIsLogin] = React.useState(false)
 
     const {userType,setUserType} = useContext(UserTypeContext);
+    const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
+
 
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
@@ -436,9 +460,17 @@ const Register = () => {
             <div style={{width: '50%', height: '100%', backgroundColor: 'white', display: "flex", padding: '2rem', flexDirection: "column", justifyContent: "flex-start", zIndex: 998, paddingLeft: '3rem'}}>
                 
                 {
-                    showForm ? isLogin ? <Login  userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}/>
-                                       : <RegistrationDetails userType={userType} setUserType={setUserType} goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}/>
-                             : <GetStarted goNext={() => setShowForm(true)}/>
+                    showForm ? isLogin ? <Login  
+                    userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails} studentDetails={studentDetails}
+                     goBack={() => setShowForm(false)} setLogin={() => setIsLogin(false)}
+                     />
+                                       
+                     : <RegistrationDetails 
+                     userType={userType} setUserType={setUserType} setStudentDetails={setStudentDetails}
+                     goBack={() => setShowForm(false)} setLogin={() => setIsLogin(true)}
+                     />
+                             
+                     : <GetStarted goNext={() => setShowForm(true)}/>
                 }
                 
                 
