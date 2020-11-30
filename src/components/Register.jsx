@@ -141,7 +141,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
 
 
     const registerStudent = () => {
-        Axios.post("https://dbms-class.herokuapp.com/student", {
+        Axios.post("https://dbms-back.herokuapp.com/student", {
             "fname":fName,
             "lname":lName,
             "email":email,
@@ -162,7 +162,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     }
 
     const registerTeacher = () => {
-        Axios.post("https://dbms-class.herokuapp.com/teacher",{
+        Axios.post("https://dbms-back.herokuapp.com/teacher",{
             "fname":fName,
             "lname":lName,
             "email":email,
@@ -334,7 +334,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
         //     _id: ""
         // });
 
-       Axios.post('https://dbms-class.herokuapp.com/student_login',{
+       Axios.post('https://dbms-back.herokuapp.com/student_login',{
             "email":email,
             "password":encrypt(password)
         })
@@ -346,7 +346,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
 		}
 		
 		const loginTeacher = () => {
-			Axios.post("https://dbms-class.herokuapp.com/teacher_login", {
+			Axios.post("https://dbms-back.herokuapp.com/teacher_login", {
                 "email":email,
                 "password":password
             })
