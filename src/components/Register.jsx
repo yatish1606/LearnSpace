@@ -16,16 +16,8 @@ import { UserTypeContext } from './contexts/UserTypeContext';
 import { StudentDetailsContext } from './contexts/StudentDetailsContext';
 
 const md5 = require('md5');
+let randomUser =  getRandomUser()
 
-
-const RadioButton = (props) => {
-    return (
-        <div className="RadioButton">
-            <input id={props.id} onChange={props.changed} value={props.value} type="radio" checked={props.isSelected} />
-            <label htmlFor={props.id} style={{fontFamily: "Mulish", fontSize: 15, fontWeight: 700, color: '#232323'}}><span style={{paddingBottom: '10px'}}>{props.label}</span></label>
-        </div>
-    );
-}
 
 export const yearOptions = [
     {
@@ -139,7 +131,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const [viewPassword, setViewPassword] = React.useState(true)
     const [studentClass, setStudentClass] = React.useState('');
     const [studentDepartment, setStudentDepartment] = React.useState('');
-    const [isStudent, setIsStudent] = React.useState(true)
+    const [isStudent, setIsStudent] = React.useState(userType === 'student')
 
 
     const onChangefName = e => setfName(e.target.value)
@@ -148,7 +140,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const onChangePassword = e => setPassword(e.target.value)
 
     const registerStudent = () => {
-        Axios.post("http://localhost:8000/student",{
+        Axios.post("localhost:8000/student",{
             "fname":fName,
             "lname":lName,
             "email":email,
@@ -157,12 +149,13 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "department": studentDepartment
         })
         .then(res => {
-            console.log(res.data);
+            console.log(res.data)
+            window.location.href="/"
         })
     }
 
     const registerTeacher = () => {
-        Axios.post("http://localhost:8000/teachers",{
+        Axios.post("https://dbms-class.herokuapp.com/teacher",{
             "fname":fName,
             "lname":lName,
             "email":email,
@@ -170,11 +163,12 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
         })
         .then(res => {
             console.log(res.data);
+            window.location.href="/"
         })
     }
 
 
-    
+    console.log('User type recieved in registration page is "', userType, '" ')
 
     return (
         <React.Fragment>
@@ -184,7 +178,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
-                    <img src={getRandomUser()} style={{width: '3.5rem', marginTop: 10}}/>
+                    <img src={randomUser} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
                     <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome</h2>
@@ -437,9 +431,10 @@ const Register = () => {
     const [showForm, setShowForm] = React.useState(false)
     const [isLogin, setIsLogin] = React.useState(false)
 
-		const {userType,setUserType} = useContext(UserTypeContext);
-		const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
 
+		const {userType,setUserType} = useContext(UserTypeContext);
+    console.log(userType)
+		const {studentDetails,setStudentDetails} = useContext(StudentDetailsContext);
 
 	return (
 		<div style={{width:'100%', height: window.innerHeight, display: "flex", flexDirection: "row", overflow: 'visible'}}>
