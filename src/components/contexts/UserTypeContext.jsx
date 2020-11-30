@@ -4,7 +4,7 @@ export const UserTypeContext = createContext();
 
 const UserTypeContextProvider = (props) => {
 
-	const [userType,setTheUserType] = useState("");
+	const [userType,setTheUserType] = useState("student");
 	
 	const setUserType = (props) => {
 		setTheUserType(props);

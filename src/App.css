@@ -46,6 +46,8 @@ input {
   transition: 0.2s ease-in;
   margin-bottom: 1rem;
   font-size: 18px;
+  font-family: 'Poppins';
+  font-weight: 400;
 }
 
 input::placeholder {
