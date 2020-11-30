@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
@@ -12,6 +12,7 @@ import DayPickerInput from 'react-day-picker/DayPickerInput';
 import "react-day-picker/lib/style.css";
 import './course.css'
 import { getRandomUser } from './random'
+import { StudentDetailsContext } from './contexts/StudentDetailsContext';
 
 let userType = 'teacher'
 
@@ -238,6 +239,12 @@ const Course1 = ({courseName}) => {
 		name: null,
 		size: null
 	})
+
+	const {studentDetails} = useContext(StudentDetailsContext);
+
+	useEffect(() => {
+		console.log(studentDetails);
+	},[])
 
 	const handleFileUpload = event => {
 		if(event) {
