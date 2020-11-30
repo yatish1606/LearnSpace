@@ -5,6 +5,7 @@ import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings } from 'reac
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
+import { getRandomUser } from './random';
 
 const Sidebar = (props) => {
 
@@ -95,7 +96,7 @@ const Sidebar = (props) => {
 			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
 				<div className="my-profile-box">
 					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={userImage} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
+						<img src={getRandomUser()} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>John Doe</h6>
@@ -109,7 +110,7 @@ const Sidebar = (props) => {
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80}}>
 							<Codesandbox size={30} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
-								<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#232323', fontWeight: 800, paddingLeft: 10, margin:0}}>Team FSociety</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
 							</div>
 						</div>
 					
@@ -143,6 +144,7 @@ const Sidebar = (props) => {
 								</div>
 							)
 						})}
+
 						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
 						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p>
 {/* 						
