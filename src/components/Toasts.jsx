@@ -19,6 +19,7 @@ export const ToastContainerCustom = () => {
         pauseOnHover
         closeButton={<X size={18} color="#fff" style={{marginTop: 8}}/>}
         limit={1}
+        style={{zIndex: 99999, backgroundColor: 'transparent', boxShadow: 'none'}}
         />
     )
 }

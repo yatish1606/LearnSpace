@@ -14,6 +14,8 @@ import './course.css'
 import { getRandomUser } from './random'
 import { StudentDetailsContext } from './contexts/StudentDetailsContext';
 import Autograde from './Autograde'
+import {toast} from 'react-toastify'
+import Axios from 'axios'
 
 let userType = 'teacher'
 
@@ -229,8 +231,10 @@ const Course1 = ({courseName}) => {
 	const handleChangeIndex = index => setIndex(index)
 	const [modalIsOpen,setIsOpen] = React.useState(false);
 	const [modalIsOpenAutograde,setIsOpenAutograde] = React.useState(false);
+	
 	const [year, setYear] = React.useState('');
 	const [department, setDepartment] = React.useState('');
+	
 	const [isAssignment, setIsAssignment] = React.useState(false)
 	const [dueDate, setDueDate] = useState(null)
 	const [maxMarks, setMaxMarks] = useState(null)

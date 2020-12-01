@@ -87,8 +87,9 @@ a:hover {
   width: 400px;
   height: 50px;
   border-radius: 5px;
-  box-shadow: 2px 2px 12px #eee;
-  bottom: 20px
+  box-shadow: none;
+  bottom: 20px;
+  z-index: 99999;
 }
 
 .Toastify__toast--success {
@@ -96,6 +97,11 @@ a:hover {
   width: 400px;
   height: 50px;
   border-radius: 5px;
-  box-shadow: 2px 2px 12px #eee;
-  bottom: 20px
+  box-shadow: none;
+  bottom: 20px;
+  z-index: 99999;
+}
+
+.Toastify__toast--error {
+  box-shadow: none;
 }
