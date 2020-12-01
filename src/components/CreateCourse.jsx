@@ -5,6 +5,8 @@ import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {yearOptions, departmentOptions} from './Register'
 import {Book, Copy, X, Plus} from 'react-feather'
+import {toast} from 'react-toastify'
+import Axios from 'axios'
 var randomstring = require("randomstring");
 
 let userType = 'teacher'
@@ -50,8 +52,10 @@ const CreateCourse = () => {
 
 	const [modalIsOpen,setIsOpen] = React.useState(false);
 	
-	const [year, setYear] = React.useState('');
-    const [department, setDepartment] = React.useState('');
+	const [year, setYear] = React.useState(yearOptions[0].label);
+	const [department, setDepartment] = React.useState(departmentOptions[0].label);
+	const [courseName, setCourseName] = React.useState('')
+	const [description, setDescription] = React.useState('')
 
 	function openModal() {
     setIsOpen(true);
@@ -63,6 +67,35 @@ const CreateCourse = () => {
  
 	function closeModal(){
 		setIsOpen(false);
+	}
+
+	const createCourse = () => {
+		
+		let courseObject = {teacher_id : 456, name : courseName, description, year, department}
+	
+		if(!courseName.length || !year.length || !department.length) {
+			return toast.error('Please fill out required fields')
+		}
+		
+		Axios.post("https://dbms-back.herokuapp.com/course", courseObject, {
+			header: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+		})
+		.then(res => {	
+			if(res.data.success) {
+				
+				const courseID = res.data.data.insertId
+				setTimeout(() => {
+                    toast.success('Course created')
+                },2000)
+				//window.location.href = `/course/${courseID}`
+
+			} else {
+				return toast.error('Could not create a new course')
+			}
+		})
+		.catch( () => toast.error('Error creating a new course'))
 	}
 
 	return (
@@ -113,7 +146,7 @@ const CreateCourse = () => {
 
 							<div style={{flexGrow: 1, marginRight: 15}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
-								<input type="text" style={{height:40,}}></input>
+								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)}></input>
 							</div>
 							
 							
@@ -123,7 +156,7 @@ const CreateCourse = () => {
 
 
 						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Course Description</p>
-						<input type="text" style={{height:40}}></input>
+						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)}></input>
 
 
 						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Course Code</p>
@@ -158,7 +191,7 @@ const CreateCourse = () => {
 				}
 				
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-					<button>
+					<button onClick={userType === 'teacher' ? createCourse : () => {}}>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>{userType === 'student' ? 'Join' : 'Create'}</p>
 					</button>
 					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
