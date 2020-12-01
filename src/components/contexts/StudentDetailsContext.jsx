@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 export const StudentDetailsContext = createContext();
 
@@ -13,9 +13,11 @@ const StudentDetailsContextProvider = (props) => {
 		password: "",
 		_id: ""
 	});
-	
+
 	const setStudentDetails = (details) => {
-			
+		localStorage.setItem('userDetails',JSON.stringify(details))
+		localStorage.setItem('userType',JSON.stringify('student'))
+
 		setTheStudentDetails(details);
 		console.log(studentDetails);
 

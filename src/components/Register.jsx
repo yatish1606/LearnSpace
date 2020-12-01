@@ -4,8 +4,6 @@ import userImage from '../assets/user.png'
 
 import "./RadioButton.scss";
 
-import { toast } from 'react-toastify'
-
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Axios from 'axios';
@@ -142,10 +140,6 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const teleport = () => {
-            window.location.href="/"
-    }
-
 
     const registerStudent = () => {
         Axios.post("https://dbms-back.herokuapp.com/student", {
@@ -155,30 +149,16 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "password":encrypt(password),
             "year": studentClass,
             "department": studentDepartment
-        },{
-            header: {
-                "Content-Type": "application/json; charset=utf-8"
-            }
         })
         .then(res => {
             console.log(res.data.success)
-            if(res.data.success){
-                setTimeout(() => {
-                    toast.success("Registration successful")
-                },2000)
-                teleport()
-            }
-            // else if(res.data.success === false){
-            //     console.log(res.data.message)
-            //     toast.error("Registration failed")
-            // }
-            else {
-                console.log("error")
-                toast.error("Registration failed")
-            }
+            if(res.data.success)
+                window.location.href="/"
+            else if(res.data.success == false)
+                console.log(res.data.message)
+            else console.log("error")
         }).catch(err => {
             console.log(err)
-            toast.error("Registration failed")
         })
     }
 
@@ -191,23 +171,13 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
         })
         .then(res => {
             console.log(res.data.success)
-            if(res.data.success){
-                setTimeout(() => {
-                    toast.success("Registration successful")
-                },2000)
-                teleport()
-            }
-            // else if(res.data.success === false){
-            //     console.log(res.data.message)
-            //     toast.error("Registration failed")
-            // }
-            else {
-                console.log("error")
-                toast.error("Registration failed")
-            }
+            if(res.data.success)
+                window.location.href="/"
+            else if(res.data.success == false)
+                console.log(res.data.message)
+                else console.log("error")
         }).catch(err => {
             console.log(err)
-            toast.error("Registration failed")
         })
     }
 
@@ -354,43 +324,39 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
+    useEffect(() => {
+        localStorage.setItem('fsociety',JSON.stringify(studentDetails))
+    },[studentDetails]);
+    
+    let localdata = localStorage.getItem('fsociety');
+    let details = localdata ? JSON.parse(localdata) : {};
     const loginStudent = () => {
+
+
+        
         Axios.post('https://dbms-back.herokuapp.com/student_login',{
             "email":email,
             "password":encrypt(password)
         })
         .then(res => {
-            if(res.data.student === 'found'){
-                const a = res.data.data;
-                const details = a[0];
-                setStudentDetails(details)
-                toast.success("Login Success");
-            }
-            else {
-                console.log(res.data)
-                toast.error("Login Failed")
-            }
-
+            let a = res.data.data;
+            let details = a[0];
+            
+    	    setStudentDetails(details);
         })
-	}
+		}
 		
-    const loginTeacher = () => {
-        Axios.post("https://dbms-back.herokuapp.com/teacher_login", {
-            "email":email,
-            "password":encrypt(password)
-        })
-        .then(res => {
-            if(res.data.student === 'found'){
+		const loginTeacher = () => {
+			Axios.post("https://dbms-back.herokuapp.com/teacher_login", {
+                "email":email,
+                "password":encrypt(password)
+            })
+			.then(res => {
                 const a = res.data.data;
                 const details = a[0];
-                setStudentDetails(details)
-                toast.success("Login Success");
-            }
-            else {
-                console.log(res.data)
-                toast.error("Login Failed")
-            }
-        }) 		
+                setTeacherDetails(details);
+			}) 
+					
 	}
 
 

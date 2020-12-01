@@ -14,6 +14,8 @@ const TeacherDetailsContextProvider = (props) => {
 	
 	const setTeacherDetails = (details) => {
 			
+		localStorage.setItem('userDetails',JSON.stringify(details))
+		localStorage.setItem('userType',JSON.stringify('teacher'))
 		setTheTeacherDetails(details);
 		console.log(TeacherDetails);
 
