@@ -14,6 +14,21 @@ const Sidebar = (props) => {
 
 	const showSidebar = () => setSidebar(!sidebar);
 
+	const a = localStorage.getItem('userDetails');
+	const user = a ? JSON.parse(a) : {
+		department: "",
+		year: "",
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: ""
+	};
+	console.log(user)
+
+	const b = localStorage.getItem('userType');
+	const userType = b ? JSON.parse(b) : "student";
+	console.log(userType)
 
 	function GetCurrentPath () {
 		return useLocation().pathname
@@ -99,8 +114,10 @@ const Sidebar = (props) => {
 						<img src={getRandomUser()} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>John Doe</h6>
-						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>Teacher</p>
+						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+						{user.fname} {user.lname}</h6>
+						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
+						{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>
 					</div>
 				</div>
 			</div>

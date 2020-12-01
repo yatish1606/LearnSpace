@@ -50,7 +50,23 @@ const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStud
 const MyCourses = () => {
 
 	const {studentDetails} = useContext(StudentDetailsContext);
-	console.log(studentDetails)
+	//console.log(studentDetails)
+
+	const a = localStorage.getItem('userDetails');
+	const user = a ? JSON.parse(a) : {
+		department: "",
+		year: "",
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: ""
+	};
+	console.log(user)
+
+	const b = localStorage.getItem('userType');
+	const userType = b ? JSON.parse(b) : "student";
+	console.log(userType)
 
 	return (
 		<div className="course-container">
@@ -60,9 +76,12 @@ const MyCourses = () => {
                     <img src={userImage} style={{width: '4.5rem', marginTop: 10}}/>
                 </div>
 								<div style={{marginLeft: '1rem'}}>
-									<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 28}}>John Doe</h2>
-                    <p style={{fontFamily: 'Poppins', fontSize: 17, color: '#545454', fontWeight: 600, margin:0, textAlign: 'left'}}>Student</p>
-					<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>Third Year Information Technology</p>
+									<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 28}}>
+									{user.fname} {user.lname}</h2>
+										<p style={{fontFamily: 'Poppins', fontSize: 17, color: '#545454', fontWeight: 600, margin:0, textAlign: 'left'}}>
+										{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>
+								{user.year} {user.department}</p>
                 </div>
             </div>
 
