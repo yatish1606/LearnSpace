@@ -142,10 +142,8 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
-    const teleport = (res) => {
-        while(res.data.success){
+    const teleport = () => {
             window.location.href="/"
-        }
     }
 
 
@@ -157,17 +155,23 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "password":encrypt(password),
             "year": studentClass,
             "department": studentDepartment
+        },{
+            header: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
         })
         .then(res => {
             console.log(res.data.success)
             if(res.data.success){
-                toast.success("Registration successful")
+                setTimeout(() => {
+                    toast.success("Registration successful")
+                },2000)
                 teleport()
             }
-            else if(res.data.success === false){
-                console.log(res.data.message)
-                toast.error("This email has been used before")
-            }
+            // else if(res.data.success === false){
+            //     console.log(res.data.message)
+            //     toast.error("Registration failed")
+            // }
             else {
                 console.log("error")
                 toast.error("Registration failed")
@@ -188,13 +192,15 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
         .then(res => {
             console.log(res.data.success)
             if(res.data.success){
-                toast.success("Registration successful")
+                setTimeout(() => {
+                    toast.success("Registration successful")
+                },2000)
                 teleport()
             }
-            else if(res.data.success === false){
-                console.log(res.data.message)
-                toast.error("This email has been used before")
-            }
+            // else if(res.data.success === false){
+            //     console.log(res.data.message)
+            //     toast.error("Registration failed")
+            // }
             else {
                 console.log("error")
                 toast.error("Registration failed")
