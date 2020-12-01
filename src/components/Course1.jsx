@@ -17,7 +17,7 @@ import Autograde from './Autograde'
 
 let userType = 'teacher'
 
-
+let randomUser = getRandomUser()
 
 
 const styles = {
@@ -278,27 +278,7 @@ const Course1 = ({courseName}) => {
 		setIsOpenAutograde(false);
 	}
 
-	const datePickerProps = {
-		datePicker: () => ({
-			id: 'date-picker',
-			light: false,
-			onChange: console.log('onPickerChange'),
-			onClose: console.log('onClose'),
-		}),
-		datePickerInput: () => ({
-			id: 'date-picker-input-id',
-			className: 'some-class',
-			labelText: 'Date Picker label',
-			placeholder: 'mm/dd/yyyy',
-			disabled: false,
-			invalid: false,
-			invalidText: 'A valid value is required',
-			iconDescription: 'Icon description',
-			onClick: console.log('onClick'),
-			onChange: console.log('onInputChange'),
-		}),
-	};
-
+	
 	return (
 		<div className="course-container">
 			
@@ -331,7 +311,7 @@ const Course1 = ({courseName}) => {
 				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>TE Information Technology</p>
 				<div className="instructor-box">
 					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={getRandomUser()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+						<img src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
 						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>INSTRUCTOR</p>

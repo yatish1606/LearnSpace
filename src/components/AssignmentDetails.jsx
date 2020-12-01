@@ -1,47 +1,64 @@
 import React, { useState } from 'react'
-import {X, Book, Download, Plus, ArrowLeft, Rewind} from 'react-feather'
-import userImage from '../assets/user.png'
+import {X, Book, Download, Plus, ArrowLeft, Rewind, Edit3} from 'react-feather'
+import {getRandomUser} from './random'
 import { toast } from 'react-toastify'
+import Modal from 'react-modal';
 
 import './course.css'
 
-let userType = 'student'
+let userType = 'teacher'
+let userImage = getRandomUser()
 
 const studentsList = [
 	{
 		fName: 'John',
 		lName: 'Doe',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Kate',
 		lName: 'Smith',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Yatish',
 		lName: 'Kelkar',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Gaurav',
 		lName: 'Khairnar',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Mahesh',
 		lName: 'Nahak',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Kshitij',
 		lName: 'Chitnis',
-		imag: userImage,
+		imag: getRandomUser(),
 	},
 	{
 		fName: 'Ronald',
 		lName: 'Weasley',
-		imag: userImage,
+		imag: getRandomUser(),
+	},
+	{
+		fName: 'Mahesh',
+		lName: 'Nahak',
+		imag: getRandomUser(),
+	},
+	{
+		fName: 'Kshitij',
+		lName: 'Chitnis',
+		imag: getRandomUser(),
+	},
+	{
+		fName: 'Ronald',
+		lName: 'Weasley',
+		imag: getRandomUser(),
 	},
 ]
 
@@ -53,6 +70,11 @@ const AssignmentDetails = ({courseName, history}) => {
 		name: null,
 		size: null
 	})
+
+	const [modalIsOpen, setModal] = React.useState(false)
+
+	const openModal = () => setModal(true)
+	const closeModal = () => setModal(false)
 
 	const handleSubmission = event => {
 		if(event) {
@@ -99,13 +121,20 @@ const AssignmentDetails = ({courseName, history}) => {
                     <p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Description</p>
                     <p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Implement multithreading using pthread class in C++. Attach output of program with 3 valid test cases</p>
                 
-                    <div className="file-box">
+                    {/* <div className="file-box">
                         <div className="file-box-info">
                             <h5>Assignment 1 : Multithreading in C++</h5>
                             
                         </div>
-                        <Download size={22} color="#232323" style={{width: '15%'}}/>
-                    </div>
+                        <Download size={22} color="#232323" style={{width: 50}}/>
+                    </div> */}
+
+					<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
+					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by 10 students. Click on the assessment report to get a detailed analysis of the performance by students</p>
+
+					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
+							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Assessment Report</p>
+					</button>
                 
                 
                 
@@ -113,7 +142,11 @@ const AssignmentDetails = ({courseName, history}) => {
 
                 <div className="assignment-upload">
 
+					
 					<h5>{userType === 'student' ? 'My Submission' : 'Student Submissions'}</h5>
+					
+					
+					
 
 					{
 						userType === 'student' ?
@@ -141,15 +174,22 @@ const AssignmentDetails = ({courseName, history}) => {
 							</React.Fragment>
 						: 	<React.Fragment>
 								<br/>
+								
 								{studentsList.map((item, index) => {
 									let name = item.fName.concat(" ").concat(item.lName)
 									return (
 									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
 										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<div className="student-box-photo" style={{width: 30, height: 30}}><img src={item.imag} style={{width: 25, height: 25, marginTop: 3}}/></div>
+											<div className="student-box-photo" style={{width: 35, height: 35}}><img src={item.imag} style={{width: 30, height: 30, marginTop: 3}}/></div>
 											<h5 style={{fontSize: 15}}>{name}</h5>
 										</div>
-										<Download size={20} color="#232323"/>
+										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+											<Download size={20} color="#232323" style={{cursor: "pointer"}}/>
+											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={openModal}>
+												<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Grade</p>
+											</button>
+										</div>
+										
 									</div>
 									)
 								})}
@@ -161,6 +201,60 @@ const AssignmentDetails = ({courseName, history}) => {
 
             </div>
 
+
+			<Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				contentLabel="Modal"
+				closeTimeoutMS={200}
+			>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
+
+
+				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
+					<div style={{width: '2rem', height: '2rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+						<Edit3 size={18} color="#09a407"/>
+					</div>
+					<div style={{marginLeft: '10px'}}>
+						<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 20, padding:0, marginBottom:0}}>Grade Assignment</h2>
+					</div>
+            	</div>
+
+				<div className="file-box" style={{height: 'auto', alignItems: "center", borderWidth: 0, padding: '10px 0'}}>
+                        <div className="file-box-info">
+						
+                            <h5 style={{fontSize: 16}}>Assignment 1 : Multithreading in C++</h5>
+                        </div>
+
+						<div className="instructor-box" style={{marginTop: 0, flexDirection: 'row-reverse'}}>
+							<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+								<img src={getRandomUser()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+							</div>
+							<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+								<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>SUBMITTED BY</p>
+								<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>John Doe</h6>
+							</div>
+						</div>       
+                </div>
+
+				
+				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Marks out of 25</p>
+				<input type="text" style={{height:40, width: '50%'}} autoFocus></input>
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button>
+						<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save marks</p>
+					</button>
+					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+				
+
+			</Modal>
+
 			
 		</div>
 	)
@@ -168,3 +262,36 @@ const AssignmentDetails = ({courseName, history}) => {
 
 export default AssignmentDetails
 
+
+
+export const customStyles = {
+	//   
+	content: {
+		position: 'absolute',
+		top: '25%',
+		left: '30%',
+		right: '30%',
+		bottom: '25%',
+		background: '#fff',
+		overflow: 'auto',
+		WebkitOverflowScrolling: 'touch',
+		borderRadius: '10px',
+		outline: 'none',
+		
+		padding: '25px',
+		alignSelf: 'center',
+		height: 'auto',
+		paddingTop: '30px'
+	  },
+	  overlay: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: '#000000ba',
+		zIndex: 9999
+	  },
+	};
+	
+	
