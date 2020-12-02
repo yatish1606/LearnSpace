@@ -116,8 +116,10 @@ const Sidebar = (props) => {
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
 						{user.fname} {user.lname}</h6>
-						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
-						{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>
+						{/*<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
+	{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>*/}
+						<Link to="/registerlogin"><p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 400, margin:0, padding: 0}}>
+						Log out</p></Link>
 					</div>
 				</div>
 			</div>

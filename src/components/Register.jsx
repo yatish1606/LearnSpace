@@ -5,6 +5,7 @@ import userImage from '../assets/user.png'
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Axios from 'axios';
+import {toast} from 'react-toastify'
 
 import { FileText, Download, Grid, ArrowRight, Codesandbox, ArrowLeft, Eye, EyeOff, Briefcase, Dribbble, Box } from 'react-feather'
 
@@ -149,11 +150,25 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "department": studentDepartment
         })
         .then(res => {
-            console.log(res.data.success)
-            if(res.data.success)
+            console.log(res.data)
+            if(res.data.success) {
+                let details = {
+                    fname: fName,
+                    lname: lName,
+                    email: email,
+                    password: encrypt(password),
+                    year: studentClass,
+                    department: studentDepartment
+                };
+                localStorage.setItem('userDetails',JSON.stringify(details))
+                localStorage.setItem('userType',JSON.stringify('student'))
+                toast.success('Registration Successful! Logging in..')
                 window.location.href="/"
-            else if(res.data.success == false)
+            }
+             else if(res.data.success == false) {
                 console.log(res.data.message)
+                toast.error('Error')
+            }
             else console.log("error")
         }).catch(err => {
             console.log(err)
@@ -168,13 +183,26 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             "password":encrypt(password)
         })
         .then(res => {
-            console.log(res.data.success)
-            if(res.data.success)
+            console.log(res.data)
+            if(res.data.success) {
+                let details = {
+                    fname: fName,
+                    lname: lName,
+                    email: email,
+                    password: encrypt(password)
+                };
+                localStorage.setItem('userDetails',JSON.stringify(details))
+                localStorage.setItem('userType',JSON.stringify('teacher'))
+                toast.success('Registration Successful! Logging in..')
                 window.location.href="/"
-            else if(res.data.success == false)
+            }
+             else if(res.data.success == false) {
                 console.log(res.data.message)
-                else console.log("error")
+                toast.error('Error')
+            }
+            else console.log("error")
         }).catch(err => {
+            toast.error('Error')
             console.log(err)
         })
     }
@@ -341,10 +369,17 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
             "password":encrypt(password)
         })
         .then(res => {
-            let a = res.data.data;
-            let details = a[0];
-            
-    	    setStudentDetails(details);
+            console.log(res.data.student)
+            if(res.data.student === "found") {
+                const a = res.data.data;
+                const details = a[0];
+                setStudentDetails(details);
+            }
+            else if(res.data.student !== "found") {
+                toast.error('User not found')
+                console.log(res.data.message)
+            }
+            else console.log("error")
         })
 		}
 		
@@ -354,9 +389,17 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                 "password":encrypt(password)
             })
 			.then(res => {
-                const a = res.data.data;
-                const details = a[0];
-                setTeacherDetails(details);
+                console.log(res.data)
+                if(res.data.teacher === "found") {
+                    const a = res.data.data;
+                    const details = a[0];
+                    setTeacherDetails(details);
+                }
+                else if(res.data.teacher !== "found") {
+                    toast.error('User not found')
+                    console.log(res.data.message)
+                }
+                else console.log("error")
 			}) 
 					
 	}
