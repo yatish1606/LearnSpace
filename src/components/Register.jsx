@@ -2,8 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import registerPic from '../assets/register.png'
 import userImage from '../assets/user.png'
 
-import "./RadioButton.scss";
-
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import Axios from 'axios';
