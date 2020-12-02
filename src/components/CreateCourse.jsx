@@ -105,7 +105,13 @@ const CreateCourse = () => {
                 },2000)
 				//window.location.href = `/course/${courseID}`
 
-			} else {
+			} else if(res.data.success === false){
+				if(res.data.reason === 'course code exists'){
+					toast.error('Course Code exists, Try again !')
+				}
+				else toast.error('Error')
+			} 
+			else {
 				return toast.error('Could not create a new course')
 			}
 		})
