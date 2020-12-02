@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './CreateCourse.css';
 import Modal from 'react-modal';
 import Dropdown from 'react-dropdown';
@@ -10,10 +10,10 @@ import Axios from 'axios'
 var randomstring = require("randomstring");
 
 
-let randomString = randomstring.generate({
-	length: 7,
-	charset: 'alphanumeric'
-})
+// let randomString = randomstring.generate({
+// 	length: 7,
+// 	charset: 'alphanumeric'
+// })
 
 let localdata = JSON.parse(localStorage.getItem('userDetails'))
 let user = localdata ? localdata : {
@@ -65,11 +65,18 @@ const CreateCourse = () => {
 
 	const [modalIsOpen,setIsOpen] = React.useState(false);
 	
-	const [year, setYear] = React.useState(yearOptions[0].label);
-	const [department, setDepartment] = React.useState(departmentOptions[0].label);
+	const [year, setYear] = React.useState('');
+	const [department, setDepartment] = React.useState('');
 	const [courseName, setCourseName] = React.useState('')
 	const [description, setDescription] = React.useState('')
 	const [code, setCode] = React.useState('')
+
+	const [randomString,setRandomString] = useState(() => {
+		return randomstring.generate({
+			length: 7,
+			charset: 'alphanumeric'
+		})
+	})
 
 	function openModal() {
     setIsOpen(true);
@@ -100,9 +107,21 @@ const CreateCourse = () => {
 			if(res.data.success) {
 				
 				const courseID = res.data.data.insertId
+				setCourseName("");
+				setYear("");
+				setDepartment("");
+				setDescription("");
+				setIsOpen(false);
+				setRandomString(() => {
+					return randomstring.generate({
+						length: 7,
+						charset: 'alphanumeric'
+					})
+				})
+
 				setTimeout(() => {
                     toast.success('Course created')
-                },2000)
+                },500)
 				//window.location.href = `/course/${courseID}`
 
 			} else if(res.data.success === false){
@@ -201,14 +220,14 @@ const CreateCourse = () => {
 							<div style={{display: "flex", flexDirection: "column",}}>
 							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Department</p>
 								<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-									<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
+									<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value="" placeholder="Select an option" className="dropdown" />
 								</div>
 							</div>
 							
 							<div style={{display: "flex", flexDirection: "column", marginRight: 15}}>
 							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Year</p>
 								<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-									<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
+									<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value="" placeholder="Select an option" className="dropdown" />
 								</div>
 							</div>
 

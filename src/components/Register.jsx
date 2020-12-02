@@ -129,8 +129,8 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [viewPassword, setViewPassword] = React.useState(true)
-    const [studentClass, setStudentClass] = React.useState('');
-    const [studentDepartment, setStudentDepartment] = React.useState('');
+    const [studentClass, setStudentClass] = React.useState(yearOptions[0].label);
+    const [studentDepartment, setStudentDepartment] = React.useState(departmentOptions[0].label);
     const [isStudent, setIsStudent] = React.useState(userType === 'student')
 
 
@@ -301,13 +301,13 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                 <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
                 <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your class</p>
                     <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                        <Dropdown options={yearOptions} onChange={option => setStudentClass(option.value)} value={yearOptions[0]} placeholder="Select an option" className="dropdown" />
+                        <Dropdown options={yearOptions} onChange={option => setStudentClass(option.value)} value={yearOptions[0].value} placeholder="Select an option" className="dropdown" />
                     </div>
                 </div>
                 <div style={{width: '50%', display: "flex", flexDirection: "column"}}>
                 <p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Select your Department</p>
                     <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-                        <Dropdown options={departmentOptions} onChange={option => setStudentDepartment(option.value)} value={departmentOptions[0]} placeholder="Select an option" className="dropdown" />
+                        <Dropdown options={departmentOptions} onChange={option => setStudentDepartment(option.value)} value={departmentOptions[0].value} placeholder="Select an option" className="dropdown" />
                     </div>
                 </div>
                 
@@ -437,7 +437,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
 
             <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", paddingTop: '5%', marginTop: 10}}>
                 <div style={{width: '4rem', height: '4rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
-                    <img src={getRandomUser()} style={{width: '3.5rem', marginTop: 10}}/>
+                    <img src={randomUser} style={{width: '3.5rem', marginTop: 10}}/>
                 </div>
                 <div style={{marginLeft: '1rem'}}>
                     <h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#545454', fontWeight: 600, fontSize: 26}}>Welcome Back</h2>
