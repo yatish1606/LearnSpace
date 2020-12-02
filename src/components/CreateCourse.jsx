@@ -15,7 +15,15 @@ let randomString = randomstring.generate({
 	charset: 'alphanumeric'
 })
 
-let user = JSON.parse(localStorage.getItem('userDetails'))
+let localdata = JSON.parse(localStorage.getItem('userDetails'))
+let user = localdata ? localdata : {
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: "404"
+}
+
 let {_id, fname, lname, email} = user
 
 let userType = JSON.parse(localStorage.getItem('userType'))
