@@ -17,10 +17,14 @@ import Autograde from './Autograde'
 import {toast} from 'react-toastify'
 import Axios from 'axios'
 
-let userType = 'teacher'
+
 
 let randomUser = getRandomUser()
 
+let user = JSON.parse(localStorage.getItem('userDetails'))
+let {_id, fname, lname, email} = user
+
+let userType = JSON.parse(localStorage.getItem('userType'))
 
 const styles = {
 	tabs: {
@@ -223,7 +227,7 @@ const Post = ({postType, title, info}) => {
 
 
 
-const Course1 = ({courseName}) => {
+const Course1 = () => {
 
 	const [index, setIndex] = React.useState(0)
 
@@ -287,15 +291,19 @@ const Course1 = ({courseName}) => {
 		<div className="course-container">
 			
 			
+			{userType === 'teacher' ? 
+			<React.Fragment>
+				<div className="new-post">
+					<Plus size={40} color="white" onClick={openModal}/>
+				</div>
 
-			<div className="new-post">
-				<Plus size={40} color="white" onClick={openModal}/>
-			</div>
+				<div className="new-post" style={{bottom: 120, backgroundColor: '#fff', boxShadow: '2px 2px 15px #d3d3d3'}}>
+					<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
+				</div>
+			</React.Fragment>
+			: null }
 
-			<div className="new-post" style={{bottom: 120, backgroundColor: '#fff', boxShadow: '2px 2px 15px #d3d3d3'}}>
-				<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
-			</div>
-
+			
 			{modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null}
 
 
