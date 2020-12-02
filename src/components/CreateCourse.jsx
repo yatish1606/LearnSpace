@@ -9,11 +9,11 @@ import {toast} from 'react-toastify'
 import Axios from 'axios'
 var randomstring = require("randomstring");
 
-let userType = 'teacher'
+let userType = 'student'
 
 let randomString = randomstring.generate({
-	length: 5,
-	charset: 'alphabetic'
+	length: 7,
+	charset: 'alphanumeric'
 })
 
 export const customStyles = {
@@ -56,6 +56,7 @@ const CreateCourse = () => {
 	const [department, setDepartment] = React.useState(departmentOptions[0].label);
 	const [courseName, setCourseName] = React.useState('')
 	const [description, setDescription] = React.useState('')
+	const [code, setCode] = React.useState('')
 
 	function openModal() {
     setIsOpen(true);
@@ -71,9 +72,9 @@ const CreateCourse = () => {
 
 	const createCourse = () => {
 		
-		let courseObject = {teacher_id : 456, name : courseName, description, year, department}
+		let courseObject = {teacher_id : 456, name : courseName, description, year, department, course_code : randomString}
 	
-		if(!courseName.length || !year.length || !department.length) {
+		if(!courseName.length || !year.length || !department.length || !randomString.length) {
 			return toast.error('Please fill out required fields')
 		}
 		
@@ -97,6 +98,47 @@ const CreateCourse = () => {
 		})
 		.catch( () => toast.error('Error creating a new course'))
 	}
+
+
+	const joinCourse = () => {
+		
+		if(!code.length) {
+			return toast.error('Please fill out required fields')
+		}
+
+		let codeObject = {course_code : code}
+		console.log(code)
+		Axios.post("https://dbms-back.herokuapp.com/course_check", codeObject, {
+			header: {
+                "Content-Type": "application/json; charset=utf-8"
+            }
+		})
+		.then(res => {
+			if(res.data.success) {
+				
+				let courseID = res.data.data[0]._id
+				let courseName = res.data.data[0].name
+				console.log(courseName)
+				
+				let recordObject = {student_id : 633, course_id : courseID}
+				toast.info('Enrolling you in course ' + courseName)
+				Axios.post("https://dbms-back.herokuapp.com/records", recordObject, {
+					header: {
+						"Content-Type": "application/json; charset=utf-8"
+					}
+				})
+				.then(res => {
+					console.log(res)
+				})
+				.catch( () => toast.error('Could not join course. Please try again'))
+			} else {
+				return toast.error('Course code is not valid')
+			}
+		})
+		.catch( () => toast.error('Error joining course'))
+	}
+
+
 
 	return (
 		<div>
@@ -163,7 +205,10 @@ const CreateCourse = () => {
 
 						<div style={{width: '30%', height: 40, backgroundColor: '#f6f6f6', borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between"}}>
 							<div style={{width: 40, borderRadius: 0, height: 40, backgroundColor: '#ddd', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}}>
-								<Copy size={22} color="#434343"/>
+								<Copy size={22} color="#434343" onClick={() =>  {
+									navigator.clipboard.writeText(randomString)
+									toast.info("Course code copied to clipboard")
+								}}/>
 							</div>
 							<p style={{fontFamily:'Poppins', fontSize: 17, color: '#434343', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, letterSpacing: 0.3}}>
 								{randomString}
@@ -177,7 +222,7 @@ const CreateCourse = () => {
 					<React.Fragment>
 						<div style={{flexGrow: 1, marginRight: 15}}>
 							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Code</p>
-							<input type="text" style={{height:40,}}></input>
+							<input type="text" style={{height:40,}} onChange={t => setCode(t.target.value)}></input>
 
 							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>When you join a course,</p>
 							<ul style={{margin:0, padding: 0, marginLeft: 20}}>
@@ -191,7 +236,7 @@ const CreateCourse = () => {
 				}
 				
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-					<button onClick={userType === 'teacher' ? createCourse : () => {}}>
+					<button onClick={userType === 'teacher' ? createCourse : joinCourse}>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>{userType === 'student' ? 'Join' : 'Create'}</p>
 					</button>
 					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
