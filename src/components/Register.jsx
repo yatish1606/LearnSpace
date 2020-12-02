@@ -160,18 +160,30 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                     year: studentClass,
                     department: studentDepartment
                 };
-                localStorage.setItem('userDetails',JSON.stringify(details))
-                localStorage.setItem('userType',JSON.stringify('student'))
                 toast.success('Registration Successful! Logging in..')
-                window.location.href="/" 
+                setTimeout(() => {
+                    localStorage.setItem('userDetails',JSON.stringify(details))
+                    localStorage.setItem('userType',JSON.stringify('student'))
+                    window.location.href="/" 
+                }, 2000);
+                
             }
-             else if(res.data.success == false) {
-                console.log(res.data.message)
+             else if(res.data.success === false) {
+                 if(res.data.reason === 'Email exists'){
+                    console.log(res.data.reason)
+                toast.error('Account with this Email already exists') 
+                 } else {
+                    console.log(res.data.message)
+                    toast.error('Error')
+                 }
+            }
+            else {
+                console.log("error")
                 toast.error('Error')
             }
-            else console.log("error")
         }).catch(err => {
             console.log(err)
+            toast.error('Error')
         })
     }
 
@@ -191,20 +203,30 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                     email: email,
                     password: encrypt(password)
                 };
-                localStorage.setItem('userDetails',JSON.stringify(details))
-                localStorage.setItem('userType',JSON.stringify('teacher'))
                 toast.success('Registration Successful! Logging in..')
-                window.location.href="/"
+                setTimeout(() => {
+                    localStorage.setItem('userDetails',JSON.stringify(details))
+                    localStorage.setItem('userType',JSON.stringify('teacher'))
+                    window.location.href="/"
+                }, 2000)
             }
-             else if(res.data.success == false) {
-                console.log(res.data.message)
-                toast.error('Error')
-            }
-            else console.log("error")
-        }).catch(err => {
-            toast.error('Error')
-            console.log(err)
-        })
+            else if(res.data.success === false) {
+                if(res.data.reason === 'Email exists'){
+                   console.log(res.data.reason)
+               toast.error('Account with this Email already exists') 
+                } else {
+                   console.log(res.data.message)
+                   toast.error('Error')
+                }
+           }
+           else {
+               console.log("error")
+               toast.error('Error')
+           }
+       }).catch(err => {
+           console.log(err)
+           toast.error('Error')
+       })
     }
 
 
