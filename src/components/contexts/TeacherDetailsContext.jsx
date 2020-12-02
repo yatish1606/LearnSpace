@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react';
+import {toast} from 'react-toastify'
 
 export const TeacherDetailsContext = createContext();
 
@@ -20,6 +21,7 @@ const TeacherDetailsContextProvider = (props) => {
 		console.log(TeacherDetails);
 
 			if(TeacherDetails.fname) {
+				toast.success('Logging in');
 				window.location.href='/'
 			}
 	}
