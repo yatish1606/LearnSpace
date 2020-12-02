@@ -323,11 +323,15 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     const onChangePassword = e => setPassword(e.target.value)
 
     useEffect(() => {
-        localStorage.setItem('fsociety',JSON.stringify(studentDetails))
+        localStorage.setItem('fsocietyStudent',JSON.stringify(studentDetails))
     },[studentDetails]);
+
+    useEffect(() => {
+        localStorage.setItem('fsocietyTeacher',JSON.stringify(teacherDetails))
+    },[teacherDetails]);
     
-    let localdata = localStorage.getItem('fsociety');
-    let details = localdata ? JSON.parse(localdata) : {};
+    // let localdata = localStorage.getItem('fsociety');
+    // let details = localdata ? JSON.parse(localdata) : {};
     const loginStudent = () => {
 
 

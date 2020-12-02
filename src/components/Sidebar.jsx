@@ -103,7 +103,7 @@ const Sidebar = (props) => {
 		
 	]
 
-	console.log(GetCurrentPath())
+	// console.log(GetCurrentPath())
 
 	return (
 		
