@@ -9,12 +9,17 @@ import {toast} from 'react-toastify'
 import Axios from 'axios'
 var randomstring = require("randomstring");
 
-let userType = 'student'
 
 let randomString = randomstring.generate({
 	length: 7,
 	charset: 'alphanumeric'
 })
+
+let user = JSON.parse(localStorage.getItem('userDetails'))
+let {_id, fname, lname, email} = user
+
+let userType = JSON.parse(localStorage.getItem('userType'))
+
 
 export const customStyles = {
 //   
@@ -72,7 +77,7 @@ const CreateCourse = () => {
 
 	const createCourse = () => {
 		
-		let courseObject = {teacher_id : 456, name : courseName, description, year, department, course_code : randomString}
+		let courseObject = {teacher_id : _id, name : courseName, description, year, department, course_code : randomString}
 	
 		if(!courseName.length || !year.length || !department.length || !randomString.length) {
 			return toast.error('Please fill out required fields')
@@ -118,17 +123,24 @@ const CreateCourse = () => {
 				
 				let courseID = res.data.data[0]._id
 				let courseName = res.data.data[0].name
-				console.log(courseName)
 				
-				let recordObject = {student_id : 633, course_id : courseID}
 				toast.info('Enrolling you in course ' + courseName)
+				
+				let recordObject = {student_id : _id, course_id : courseID}
+				
 				Axios.post("https://dbms-back.herokuapp.com/records", recordObject, {
 					header: {
 						"Content-Type": "application/json; charset=utf-8"
 					}
 				})
 				.then(res => {
-					console.log(res)
+					if(res.data.success) {
+						toast.success('Course joined successfully')
+						//window.location.href=`/course/${courseID}`
+						closeModal()
+					} else {
+						toast.error('Error joining course')
+					}		
 				})
 				.catch( () => toast.error('Could not join course. Please try again'))
 			} else {
@@ -138,7 +150,7 @@ const CreateCourse = () => {
 		.catch( () => toast.error('Error joining course'))
 	}
 
-
+	
 
 	return (
 		<div>
