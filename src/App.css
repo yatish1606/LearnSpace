@@ -87,7 +87,7 @@ a:hover {
   width: 400px;
   height: 50px;
   border-radius: 5px;
-  box-shadow: none;
+  box-shadow: none !important;
   bottom: 20px;
   z-index: 99999;
 }
