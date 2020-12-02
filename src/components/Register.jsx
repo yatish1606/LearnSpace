@@ -163,7 +163,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                 localStorage.setItem('userDetails',JSON.stringify(details))
                 localStorage.setItem('userType',JSON.stringify('student'))
                 toast.success('Registration Successful! Logging in..')
-                window.location.href="/"
+                window.location.href="/" 
             }
              else if(res.data.success == false) {
                 console.log(res.data.message)
