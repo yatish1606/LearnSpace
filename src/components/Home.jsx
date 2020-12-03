@@ -14,8 +14,16 @@ import { toast } from 'react-toastify'
 
 let randomUser = getRandomUser()
 
-let user = JSON.parse(localStorage.getItem('userDetails'))
-let {_id, fname, lname, email, year, department} = user
+let localdata = JSON.parse(localStorage.getItem('userDetails'))
+let user = localdata ? localdata : {
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: "404"
+}
+let {_id, fname, lname, email, year, department} = user;
+console.log(_id)
 
 let userType = JSON.parse(localStorage.getItem('userType'))
 

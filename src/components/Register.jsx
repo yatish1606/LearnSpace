@@ -152,20 +152,36 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
         .then(res => {
             console.log(res.data)
             if(res.data.success) {
-                let details = {
-                    fname: fName,
-                    lname: lName,
-                    email: email,
-                    password: encrypt(password),
-                    year: studentClass,
-                    department: studentDepartment
-                };
-                toast.success('Registration Successful! Logging in..')
-                setTimeout(() => {
-                    localStorage.setItem('userDetails',JSON.stringify(details))
-                    localStorage.setItem('userType',JSON.stringify('student'))
-                    window.location.href="/" 
-                }, 2000);
+                Axios.post('https://dbms-back.herokuapp.com/student_login',{
+                    "email":email,
+                    "password":encrypt(password)
+                }).then(res => {
+                    console.log(res.data.student)
+                    if(res.data.student === "found") {
+                        const a = res.data.data;
+                        const details = a[0];
+                        toast.success('Registration Successful! Logging in..')
+                    setTimeout(() => {
+                        localStorage.setItem('userDetails',JSON.stringify(details))
+                        localStorage.setItem('userType',JSON.stringify('student'))
+                        window.location.href="/" 
+                    }, 2000);
+                    }
+                })
+                // let details = {
+                //     fname: fName,
+                //     lname: lName,
+                //     email: email,
+                //     password: encrypt(password),
+                //     year: studentClass,
+                //     department: studentDepartment
+                // };
+                // toast.success('Registration Successful! Logging in..')
+                // setTimeout(() => {
+                //     localStorage.setItem('userDetails',JSON.stringify(details))
+                //     localStorage.setItem('userType',JSON.stringify('student'))
+                //     window.location.href="/" 
+                // }, 2000);
                 
             }
              else if(res.data.success === false) {
@@ -197,18 +213,22 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
         .then(res => {
             console.log(res.data)
             if(res.data.success) {
-                let details = {
-                    fname: fName,
-                    lname: lName,
-                    email: email,
-                    password: encrypt(password)
-                };
-                toast.success('Registration Successful! Logging in..')
-                setTimeout(() => {
-                    localStorage.setItem('userDetails',JSON.stringify(details))
-                    localStorage.setItem('userType',JSON.stringify('teacher'))
-                    window.location.href="/"
-                }, 2000)
+                Axios.post('https://dbms-back.herokuapp.com/teacher_login',{
+                    "email":email,
+                    "password":encrypt(password)
+                }).then(res => {
+                    console.log(res.data.teacher)
+                    if(res.data.teacher === "found") {
+                        const a = res.data.data;
+                        const details = a[0];
+                        toast.success('Registration Successful! Logging in..')
+                    setTimeout(() => {
+                        localStorage.setItem('userDetails',JSON.stringify(details))
+                        localStorage.setItem('userType',JSON.stringify('teacher'))
+                        window.location.href="/" 
+                    }, 2000);
+                    }
+                })
             }
             else if(res.data.success === false) {
                 if(res.data.reason === 'Email exists'){
