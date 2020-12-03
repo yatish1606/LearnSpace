@@ -134,3 +134,20 @@
 .my-profile-box * {
 	margin-left: 10px;
 }
+
+.settings-icon {
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 40px;
+	overflow: hidden;
+	margin: 10px;
+	transform: 0.2s ease;
+	cursor: pointer;
+}
+.settings-icon:hover {
+	background-color: #eee;
+	transition: 0.2s ease;
+}
