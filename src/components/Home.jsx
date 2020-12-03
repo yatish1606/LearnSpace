@@ -64,10 +64,8 @@ const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStud
 
 const MyCourses = () => {
 
-	const {studentDetails} = useContext(StudentDetailsContext);
 	const [courses, setCourses] = React.useState([])
 	const [courseTeachers, setCourseTeachers] = React.useState([])
-	//console.log(studentDetails)
 
 	React.useEffect(() => {
 			toast.info('Fetching courses...')
@@ -79,48 +77,48 @@ const MyCourses = () => {
 			.then(res => {
 				
 				if(res.data.success) {
-					toast.success('Fetched courses')
 					setCourses(res.data.data)
+					toast.success('Fetched courses')
+					// console.log(courses)
+					// getTeachers()
 				} else {
 					return toast.error('Error fetching courses')
 				}			
 			})
 			.catch(() => toast.error('Could not fetch your courses. Please try again'))
-
-			// setTimeout(() => {
-				
-			// }, 5000)
-
-			getTeachers()
+			
 			console.log(courses)
 			
 	}, [])
 
 	const getTeachers = () => {
-		console.log(courses)
-		// if(!courses.length) 
-		// 	console.log('there are no courses')
+		 
 		courses.map(course => {
-			console.log('running for course')
-			Axios.get(`https://dbms-back.herokuapp.com/coursesenrolled/${course.teacher_id}`, {
+			// replace 11 by ${course.teacher_id}
+			Axios.get(`https://dbms-back.herokuapp.com/teacher/11`, {
 				header: {
 					"Content-Type": "application/json; charset=utf-8"
 				}
 			})
 			.then (res => {
-				console.log(res.data.success)
-				setCourseTeachers(old => [...old, res.data.data])
-				console.log('found a teacher')
+				setCourseTeachers(old => [...old, res.data.data[0].fname.concat(' ').concat(res.data.data[0].lname)] )
 			})
 			.catch(() => toast.error('Error fetching courses'))
 		})
+		return courseTeachers
 	}
+
+	React.useEffect(() => {
+		getTeachers()
+	}, [courses])
+	
+	
 	
 	return (
 		
 		<div className="course-container">
 			
-			{/* {getTeachers()} */}
+			
 			
 			<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20, marginLeft: 15}}>
                 <div style={{width: '5rem', height: '5rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
