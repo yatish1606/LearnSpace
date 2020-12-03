@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
 import { getRandomUser } from './random';
 
+let randomUser = getRandomUser()
+
 const Sidebar = (props) => {
 
 	const [sidebar,setSidebar] = useState(false);
@@ -109,9 +111,14 @@ const Sidebar = (props) => {
 		
 		<div>
 			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
+
+				<div className="settings-icon">
+					<Settings size={22} color="#232323"/>
+				</div>
+
 				<div className="my-profile-box">
 					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={getRandomUser()} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
+						<img src={randomUser} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
@@ -122,6 +129,7 @@ const Sidebar = (props) => {
 						Log out</p></Link>
 					</div>
 				</div>
+				
 			</div>
 			<nav className={'nav-menu active'}>
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
@@ -164,8 +172,8 @@ const Sidebar = (props) => {
 							)
 						})}
 
-						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
-						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p>
+						{/* <div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
+						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p> */}
 {/* 						
 						{otherOptions.map((item, index) => {
 							return (
