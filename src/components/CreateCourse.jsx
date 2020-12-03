@@ -10,6 +10,7 @@ import Axios from 'axios'
 var randomstring = require("randomstring");
 
 
+let theme = JSON.parse(localStorage.getItem('theme'))
 // let randomString = randomstring.generate({
 // 	length: 7,
 // 	charset: 'alphanumeric'
@@ -27,7 +28,7 @@ let user = localdata ? localdata : {
 let {_id, fname, lname, email} = user
 
 let userType = JSON.parse(localStorage.getItem('userType'))
-
+console.log(theme)
 
 export const customStyles = {
 //   
@@ -37,7 +38,7 @@ content: {
 	left: '20%',
 	right: '20%',
 	bottom: '12%',
-	background: '#fff',
+	background: theme == 'light' ? '#232323' : '#fff',
 	overflow: 'auto',
 	WebkitOverflowScrolling: 'touch',
 	borderRadius: '10px',
@@ -54,7 +55,7 @@ content: {
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: '#000000ba',
+	backgroundColor: '#0000002a',
 	zIndex: 9999
   },
 };
@@ -64,6 +65,7 @@ content: {
 const CreateCourse = () => {
 
 	const [modalIsOpen,setIsOpen] = React.useState(false);
+	
 	
 	const [year, setYear] = React.useState('');
 	const [department, setDepartment] = React.useState('');
