@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
-import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings } from 'react-feather'
+import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon } from 'react-feather'
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
 import { getRandomUser } from './random';
+import Toggle from 'react-toggle'
+import "react-toggle/style.css"
 
 let randomUser = getRandomUser()
 
+
 const Sidebar = (props) => {
+
+	localStorage.setItem('theme', JSON.stringify(document.documentElement.style.getPropertyValue('--theme')))
 
 	const [sidebar,setSidebar] = useState(false);
 	const [window,setWindow] = useState(null)
+	const [isLightTheme, setIsLightTheme] = useState(true)
 
 	const showSidebar = () => setSidebar(!sidebar);
 
@@ -36,6 +42,16 @@ const Sidebar = (props) => {
 		return useLocation().pathname
 	} 
 	
+	const handleThemeChange = e => {
+		setIsLightTheme(e.target.checked)
+		isLightTheme ? document.documentElement.style.setProperty('--filterPercent', '100%')
+					: document.documentElement.style.setProperty('--filterPercent', '0%')
+		isLightTheme ? document.documentElement.style.setProperty('--theme', 'dark')
+					: document.documentElement.style.setProperty('--theme', 'light')
+		localStorage.setItem('theme', JSON.stringify(document.documentElement.style.getPropertyValue('--theme')))
+	}
+
+	console.log(JSON.parse(localStorage.getItem('theme')))
 
 	const menuOptions = [
 		{
@@ -105,6 +121,7 @@ const Sidebar = (props) => {
 		
 	]
 
+
 	// console.log(GetCurrentPath())
 
 	return (
@@ -112,8 +129,21 @@ const Sidebar = (props) => {
 		<div>
 			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
 
+				
+				{/* <ToggleButton size="medium" color="primary" className={useStyles}/> */}
+				<Toggle
+					defaultChecked={isLightTheme}
+					icons={{
+					checked: <Moon size={17} color="#232323" style={{position: "absolute", top: -3}}/>,
+					unchecked: <Sun size={14} color="#fff" style={{position: "absolute", top: -2,}}/>,
+					}}
+					className="toggle"
+					onChange={handleThemeChange} 
+				/>
+				
+				
 				<div className="settings-icon">
-					<Settings size={22} color="#232323"/>
+					<Settings size={21} color="#232323"/>
 				</div>
 
 				<div className="my-profile-box">
@@ -129,6 +159,10 @@ const Sidebar = (props) => {
 						Log out</p></Link>
 					</div>
 				</div>
+
+				{/* <div className="settings-icon">
+					<LogOut size={22} color="#232323"/>
+				</div> */}
 				
 			</div>
 			<nav className={'nav-menu active'}>

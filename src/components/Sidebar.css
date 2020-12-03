@@ -146,8 +146,44 @@
 	margin: 10px;
 	transform: 0.2s ease;
 	cursor: pointer;
+	margin: 0 20px 0 20px;
 }
 .settings-icon:hover {
 	background-color: #eee;
 	transition: 0.2s ease;
+}
+
+.MuiSwitch-colorPrimary {
+	color: #04C200;
+}
+
+.toggle.react-toggle--focus .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.toggle * {
+	box-shadow: none;
+}
+
+.toggle.react-toggle--checked .react-toggle-track {
+	background-color: #d3d3d3;
+}
+.toggle.react-toggle--checked .react-toggle-track:hover{
+	background-color: #d3d3d3;
+}
+
+.toggle.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+	background-color: #d3d3d3;
+}
+
+.toggle.react--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+	background-color: #d3d3d3;
+}
+
+.toggle.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.toggle.react-toggle--checked .react-toggle-thumb {
+	border: 2px solid #d3d3d3;
 }
