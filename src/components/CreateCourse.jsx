@@ -160,7 +160,7 @@ const CreateCourse = () => {
 				toast.info('Enrolling you in course ' + courseName)
 				
 				let recordObject = {student_id : _id, course_id : courseID}
-				
+				console.log(recordObject)
 				Axios.post("https://dbms-back.herokuapp.com/records", recordObject, {
 					header: {
 						"Content-Type": "application/json; charset=utf-8"
