@@ -26,7 +26,7 @@ let {_id, fname, lname, email, year, department} = user;
 console.log(_id)
 
 let userType = JSON.parse(localStorage.getItem('userType'))
-
+let theme = JSON.parse(localStorage.getItem('theme'))
 
 const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
 
@@ -67,15 +67,14 @@ const CourseBox = ({courseTitle, year, dept, teacher, teacherImage, numberOfStud
 
 
 
-
-
-
-const MyCourses = () => {
+const MyCourses = (props) => {
 
 	const [courses, setCourses] = React.useState([])
 	const [courseTeachers, setCourseTeachers] = React.useState([])
+	
 
 	React.useEffect(() => {
+			if(userType === 'teacher') return 
 			toast.info('Fetching courses...')
 			Axios.get(`https://dbms-back.herokuapp.com/coursesenrolled/${_id}`, {
 				header: {
@@ -103,7 +102,7 @@ const MyCourses = () => {
 		 
 		courses.map(course => {
 			// replace 11 by ${course.teacher_id}
-			Axios.get(`https://dbms-back.herokuapp.com/teacher/11`, {
+			Axios.get(`https://dbms-back.herokuapp.com/teacher/${course.teacher_id}`, {
 				header: {
 					"Content-Type": "application/json; charset=utf-8"
 				}
@@ -117,6 +116,7 @@ const MyCourses = () => {
 	}
 
 	React.useEffect(() => {
+		if(userType ==='teacher') return 
 		getTeachers()
 	}, [courses])
 	
@@ -129,21 +129,21 @@ const MyCourses = () => {
 			
 			
 			<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20, marginLeft: 15}}>
-                <div style={{width: '5rem', height: '5rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
-                    <img src={userImage} style={{width: '4.5rem', marginTop: 10}}/>
+                <div className="changeColorBG" style={{width: '5rem', height: '5rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+                    <img src={userImage} style={{width: '4.5rem', marginTop: 10}} className="changeColorBG"/>
                 </div>
 								<div style={{marginLeft: '1rem'}}>
-									<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 28}}>
+									<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: theme === 'dark' ? '#eee' : '#232323', fontWeight: 600, fontSize: 28}}>
 									{user.fname} {user.lname}</h2>
-										<p style={{fontFamily: 'Poppins', fontSize: 17, color: '#545454', fontWeight: 600, margin:0, textAlign: 'left'}}>
+									<p className="sub" style={{fontFamily: 'Poppins', fontSize: 17, color: '#545454', fontWeight: 600, margin:0, textAlign: 'left'}}>
 										{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>
+								<p className="sub" style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>
 								{year} {department}</p>
                 </div>
             </div>
 
 
-			<p style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20}}>My Courses</p>
+			<p className="sub" style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20}}>My Courses</p>
 			<div className="my-courses-box">
 				{/* <CourseBox courseTitle="Operating Systems" year="te" dept="IT" teacher="Satish Kamble" numberOfStudents={60}/>
 				<CourseBox courseTitle="Database Management Systems" year="te" dept="IT" teacher="Nilesh Sonawane" numberOfStudents={56}/>

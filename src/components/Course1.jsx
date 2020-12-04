@@ -20,7 +20,7 @@ import Axios from 'axios'
 
 
 let randomUser = getRandomUser()
-
+let theme = JSON.parse(localStorage.getItem('theme'))
 let user = JSON.parse(localStorage.getItem('userDetails'))
 let {_id, fname, lname, email} = user
 
@@ -28,7 +28,7 @@ let userType = JSON.parse(localStorage.getItem('userType'))
 
 const styles = {
 	tabs: {
-	  background: '#fff',
+	  background: theme === 'dark' ? '#1B1B1B' :'#fff',
 	},
 	
 	slide: {
@@ -37,13 +37,13 @@ const styles = {
 	  color: '#232323'
 	},
 	slide1: {
-	  backgroundColor: 'white',
+	//   backgroundColor: 'white',
 	},
 	slide2: {
-	  backgroundColor: 'white',
+	//   backgroundColor: 'white',
 	},
 	slide3: {
-	  backgroundColor: 'white',
+	//   backgroundColor: 'white',
 	},
   };
 
@@ -66,7 +66,7 @@ const styles = {
 	  },
   })(Tabs);
 
-  const AntTab = withStyles((theme) => ({
+  const AntTab = withStyles(() => ({
 	wrapper: {
 		flexDirection: 'row',
 	  },
@@ -87,7 +87,7 @@ const styles = {
 		'Poppins'
 	  ].join(','),
 	  '&:hover': {
-		color: '#232323',
+		color: theme === 'dark' ? "#eee" : '#232323',
 		opacity: 1,
 		fontWeight: 500,
 		fontSize:17,
@@ -195,7 +195,7 @@ const Post = ({postType, title, info}) => {
 		<div className="post-container">
 			<div style={{display: "flex", flexDirection: "row", alignItems: "center", flexGrow: 1}}>
 				<div className="post-image">
-					<div className="post-image-base">{icon}</div>
+					<div className={"post-image-base changeColorBG"}>{icon}</div>
 				</div>
 				<div className="post-info">
 					<h6>{type}</h6>
@@ -297,7 +297,7 @@ const Course1 = () => {
 					<Plus size={40} color="white" onClick={openModal}/>
 				</div>
 
-				<div className="new-post" style={{bottom: 120, backgroundColor: '#fff', boxShadow: '2px 2px 15px #d3d3d3'}}>
+				<div className={"new-post background"} style={{bottom: 120, backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff', boxShadow: 'none'}}>
 					<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
 				</div>
 			</React.Fragment>
@@ -320,19 +320,19 @@ const Course1 = () => {
 				}
 
 				<h2 className="course-title">Operating Systems</h2>
-				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>TE Information Technology</p>
+				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">TE Information Technology</p>
 				<div className="instructor-box">
-					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+						<img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
 						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>INSTRUCTOR</p>
-						<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
+						<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}} className="heading">Satish Kamble</h6>
 					</div>
 				</div>
 				
-				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 15}}>Description</p>
-				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}}>This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
+				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 20}} className="heading">Description</p>
+				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
 			</div>
 
 
@@ -379,8 +379,8 @@ const Course1 = () => {
 						return (
 						<div className="student-box" key={index}>
 							<div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
-							<div className="student-box-photo"><img src={getRandomUser()} style={{width: 35, height: 35, marginTop: 4}}/></div>
-							<h5>{name}</h5>
+								<div className={"student-box-photo changeColorBG"}><img src={getRandomUser()} style={{width: 35, height: 35, marginTop: 4}}/></div>
+								<h5 className="changeColor">{name}</h5>
 							</div>
 							<UserX size={22} style={{cursor: "pointer"}} className="remove-user-icon"/>
 						</div>
@@ -497,22 +497,6 @@ const Course1 = () => {
 				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
 				
         </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

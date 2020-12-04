@@ -8,7 +8,7 @@ import './course.css'
 
 let userType = 'teacher'
 let userImage = getRandomUser()
-
+let theme = JSON.parse(localStorage.getItem('theme'))
 const studentsList = [
 	{
 		fName: 'John',
@@ -98,27 +98,27 @@ const AssignmentDetails = ({courseName, history}) => {
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
 
                    
-                    <ArrowLeft size={27} color="#232323" style={{marginBottom: 25, cursor: "pointer"}} onClick={() => history.goBack()}/>
+                    <ArrowLeft size={27} color='#ababab' style={{marginBottom: 25, cursor: "pointer"}} onClick={() => history.goBack()}/>
                    
                     
 
                     <h2 className="course-title">Assignment 1 : Threading in C++</h2>
                     
 
-                    <p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Operating Systems</p>
+                    <p className="sub" style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Operating Systems</p>
                     <p style={{fontSize: 15, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 15}}>Posted 9th November 2020</p>
                     
                     <div className="instructor-box">
-                        <div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-                            <img src={userImage} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+                        <div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+                            <img className="changeColorBG" src={userImage} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
                         </div>
                         <div style={{display: "flex", flexDirection: "column", alignItems: "flex-start", marginTop: 0}}>
                             <p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>POSTED BY</p>
-                            <h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
+                            <h6 className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
                         </div>
                     </div>
                     
-                    <p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Description</p>
+                    <p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Description</p>
                     <p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Implement multithreading using pthread class in C++. Attach output of program with 3 valid test cases</p>
                 
                     {/* <div className="file-box">
@@ -129,7 +129,7 @@ const AssignmentDetails = ({courseName, history}) => {
                         <Download size={22} color="#232323" style={{width: 50}}/>
                     </div> */}
 
-					<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
+					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
 					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by 10 students. Click on the assessment report to get a detailed analysis of the performance by students</p>
 
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
@@ -143,7 +143,7 @@ const AssignmentDetails = ({courseName, history}) => {
                 <div className="assignment-upload">
 
 					
-					<h5>{userType === 'student' ? 'My Submission' : 'Student Submissions'}</h5>
+					<h5 className="heading">{userType === 'student' ? 'My Submission' : 'Student Submissions'}</h5>
 					
 					
 					
@@ -180,11 +180,11 @@ const AssignmentDetails = ({courseName, history}) => {
 									return (
 									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
 										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<div className="student-box-photo" style={{width: 35, height: 35}}><img src={item.imag} style={{width: 30, height: 30, marginTop: 3}}/></div>
-											<h5 style={{fontSize: 15}}>{name}</h5>
+											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={item.imag} style={{width: 30, height: 30, marginTop: 3}}/></div>
+											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
 										</div>
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<Download size={20} color="#232323" style={{cursor: "pointer"}}/>
+											<Download size={20} color='#ababab' style={{cursor: "pointer"}}/>
 											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={openModal}>
 												<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Grade</p>
 											</button>

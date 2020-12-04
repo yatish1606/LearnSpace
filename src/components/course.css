@@ -1,23 +1,47 @@
 * {
     text-align: left;
+    transition: 0.15 ease-in;
     /* background-color: inherit; */
 }
 
 
 :root {
     --background: white;
-    --darkText: #232323;
+    /* --darkText: #232323; */
     --filterPercent : 0%;
-    filter: invert(var(--filterPercent));
+    --textColor : #232323;
+    --grey : #efefef;
+    --sub : #545454;
+    /* filter: invert(var(--filterPercent)); */
     background-color:  #fefefe;
     --theme : 'light'
 }
 html img{
-    filter: invert(var(--filterPercent)) hue-rotate(0deg);
+    /* filter: invert(var(--filterPercent)) hue-rotate(0deg); */
 }
 /* img:not([src*=".svg"]), video {  
     filter: invert(100%);
  } */
+
+.changeColor {
+    color: var(--textColor) !important;
+}
+
+.changeColorBG {
+    background-color: var(--grey) !important;
+}
+
+.sub {
+    color: var(--sub) !important;
+}
+
+.heading {
+    color: var(--textColor) !important;
+}
+
+.background {
+    background-color: var(--background) !important;
+}
 
 .course-container {
     width: 80%;
@@ -26,7 +50,7 @@ html img{
     display: flex;
     flex-direction: column;
     padding: 0.2rem 1.4rem;
-    min-height: calc(100vh - 90px);
+    min-height: calc(100vh - 80px);
     z-index: 0;
     margin-top: 0px;
     align-items: flex-start;
@@ -46,7 +70,7 @@ html img{
 .course-title {
     font-size: 40px;
     font-weight: 600;
-    color: #232323;
+    color: var(--textColor);
     font-family: 'Poppins';
     letter-spacing: -0.4px;
 }
@@ -166,7 +190,7 @@ html img{
       width: 100%;
       padding: 15px;
       border-radius: 7px;
-      border: 3px solid #eee;
+      border: 3px solid var(--grey);
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -206,7 +230,7 @@ html img{
   .post-info h6 {
       font-family: 'Poppins';
       font-weight: 400;
-      color: #434343;
+      color: var(--sub);
       font-size: 13.5px;
       text-transform: uppercase;
       margin: 0;
@@ -218,7 +242,7 @@ html img{
   .post-info h3 {
     font-family: 'Poppins';
     font-weight: 500;
-    color: #232323;
+    color: var(--textColor);
     font-size: 18px;
     margin: 0;
     padding: 0;
@@ -244,7 +268,7 @@ html img{
     display: flex;
     flex-direction: row;
     align-items: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--grey);
     justify-content: space-between;
     padding-bottom: 15px;
 }
@@ -305,7 +329,7 @@ html img{
 
 .assignment-upload {
     width: 35%;
-    border: 2px solid #eee;
+    border: 2px solid var(--grey);
     margin-top: 60px;
     border-radius: 10px;
     display: flex;
@@ -363,7 +387,7 @@ html img{
     width: 70px;
     height: 70px;
     border-radius: 50px;
-    box-shadow: 3px 3px 15px #ababab;
+    box-shadow: 2px 2px 10px #434343;
     cursor: pointer;
     background-color: #09A407;
     display: flex;

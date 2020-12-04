@@ -13,6 +13,10 @@ import StudentDetailsContextProvider from './contexts/StudentDetailsContext';
 import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
 
 const AppRouter = () => {
+
+
+	const [theme, setTheme] = React.useState('light')
+
 	return (
 		<div>
 			<TeacherDetailsContextProvider>
