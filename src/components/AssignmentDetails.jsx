@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import {X, Book, Download, Plus, ArrowLeft, Rewind, Edit3} from 'react-feather'
 import {getRandomUser} from './random'
 import { toast } from 'react-toastify'
+import Axios from 'axios';
 import Modal from 'react-modal';
 
 import './course.css'
@@ -9,6 +10,7 @@ import './course.css'
 let userType = 'teacher'
 let userImage = getRandomUser()
 let theme = JSON.parse(localStorage.getItem('theme'))
+
 const studentsList = [
 	{
 		fName: 'John',
@@ -72,9 +74,31 @@ const AssignmentDetails = ({courseName, history}) => {
 	})
 
 	const [modalIsOpen, setModal] = React.useState(false)
+	const [marks, setmarks] = React.useState('')
+	const onChangemarks = e => setmarks(e.target.value);
 
 	const openModal = () => setModal(true)
 	const closeModal = () => setModal(false)
+
+	const sendMarks = () => {
+		// How to get this sub_id ??
+		const sub_id = 1;
+		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${sub_id}`, {
+			"marks" : marks
+		})
+		.then(res => {
+			if(res.data.success){
+				toast.success('Successfully graded the submission!');
+			}else{
+				toast.error('Unable to grade the submission!');
+			}
+
+		})
+		.catch(err => {
+			console.log(err);
+			toast.error('Unable to grade the submission!');
+		})
+	}
 
 	const handleSubmission = event => {
 		if(event) {
@@ -241,11 +265,11 @@ const AssignmentDetails = ({courseName, history}) => {
 
 				
 				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Marks out of 25</p>
-				<input type="text" style={{height:40, width: '50%'}} autoFocus></input>
+				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks}></input>
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>
-						<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save marks</p>
+						<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={sendMarks}>Save marks</p>
 					</button>
 					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
 						<p style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
