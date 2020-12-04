@@ -7,19 +7,19 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-let width = window.innerWidth - 10
+let width = window.innerWidth 
 let height = window.innerHeight 
 
 function App() {
   return (
     <div className="App text-center">
         <Scrollbars 
-          style={{width, height}}
+          style={{width, height, backgroundColor: 'transparent'}}
           autoHide
           autoHideDuration={1000}
           autoHideTimeout={800}
           renderThumbVertical={({ style, ...props }) =>
-          <div {...props} style={{ ...style, backgroundColor: '#ddd',borderRadius: 10 , width: 8, paddingRight: 0}}/>
+          <div {...props} style={{ ...style, backgroundColor: '#ddd',borderRadius: 10 , width: 8, paddingRight: 10}}/>
           }
           
         >

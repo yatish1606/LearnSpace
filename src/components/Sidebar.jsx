@@ -15,6 +15,7 @@ let randomUser = getRandomUser()
 const Sidebar = (props) => {
 
 	localStorage.setItem('theme', JSON.stringify(document.documentElement.style.getPropertyValue('--theme')))
+	let theme = JSON.parse(localStorage.getItem('theme'))
 
 	const [sidebar,setSidebar] = useState(false);
 	const [window,setWindow] = useState(null)
@@ -49,6 +50,15 @@ const Sidebar = (props) => {
 		isLightTheme ? document.documentElement.style.setProperty('--theme', 'dark')
 					: document.documentElement.style.setProperty('--theme', 'light')
 		localStorage.setItem('theme', JSON.stringify(document.documentElement.style.getPropertyValue('--theme')))
+		let t = document.documentElement.style.getPropertyValue('--theme')
+		t === 'light' ? document.documentElement.style.setProperty('--textColor', '#232323') 
+					:	document.documentElement.style.setProperty('--textColor', '#d3d3d3') 
+		t === 'light' ? document.documentElement.style.setProperty('--background', '#fff') 
+					:	document.documentElement.style.setProperty('--background', '#1B1B1B')
+		t === 'light' ? document.documentElement.style.setProperty('--grey', '#efefef') 
+					:	document.documentElement.style.setProperty('--grey', '#2a2a2a') 
+		t === 'light' ? document.documentElement.style.setProperty('--sub', '#545454') 
+					:	document.documentElement.style.setProperty('--sub', '#d3d3d3') 
 	}
 
 	console.log(JSON.parse(localStorage.getItem('theme')))
@@ -56,17 +66,17 @@ const Sidebar = (props) => {
 	const menuOptions = [
 		{
 			title: 'Home',
-			icon: <Home size={22} color={GetCurrentPath() === '/' ? '#17B903' : "#232323"}/>,
+			icon: <Home size={22} color={GetCurrentPath() === '/' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
 			path: '/'
 		},
 		{
 			title: 'Resources',
-			icon: <Database size={22} color="#232323"/>,
+			icon: <Database size={22} color={GetCurrentPath() === '/resources' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
 			path: '/resources'
 		},
 		{
 			title: 'FAQ',
-			icon: <Info size={22} color="#232323"/>,
+			icon: <Info size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
 			path: '/faq'
 		},
 		
@@ -127,7 +137,7 @@ const Sidebar = (props) => {
 	return (
 		
 		<div>
-			<div className="sidebar" style={{backgroundColor: 'white', paddingBottom: 0}}>
+			<div className="sidebar" style={{backgroundColor: theme === 'dark' ? '#1B1B1B' : 'white' , paddingBottom: 0, borderBottomColor: theme === 'dark' ? '#434343' : '#eee'}}>
 
 				
 				{/* <ToggleButton size="medium" color="primary" className={useStyles}/> */}
@@ -143,19 +153,19 @@ const Sidebar = (props) => {
 				
 				
 				<div className="settings-icon">
-					<Settings size={21} color="#232323"/>
+					<Settings size={21} color={theme === 'dark' ? '#eee' : '#232323'} className="seticon"/>
 				</div>
 
 				<div className="my-profile-box">
-					<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-						<img src={randomUser} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
+					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+						<img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-						<h6 style={{fontSize: 15, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+						<h6 style={{fontSize: 15, color: theme === 'dark' ? '#eee' : '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
 						{user.fname} {user.lname}</h6>
 						{/*<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
 	{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>*/}
-						<Link to="/registerlogin"><p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 400, margin:0, padding: 0}}>
+						<Link to="/registerlogin"><p style={{fontSize: 14, color: '#09a407', fontFamily: 'Poppins', fontWeight: 400, margin:0, padding: 0}}>
 						Log out</p></Link>
 					</div>
 				</div>
@@ -165,13 +175,13 @@ const Sidebar = (props) => {
 				</div> */}
 				
 			</div>
-			<nav className={'nav-menu active'}>
+			<nav className={'nav-menu active'} style={{backgroundColor: theme === 'dark' ? '#212121' : '#f8f8f8'}}>
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80}}>
 							<Codesandbox size={30} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
 							</div>
 						</div>
 					
@@ -182,16 +192,16 @@ const Sidebar = (props) => {
 							return (
 								<div key={index} className="nav-text">
 									<Link to={item.path}>
-										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : "#232323"}}>{item.icon}   {item.title} </span>
+										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}}>{item.icon}   {item.title} </span>
 									</Link>
 								</div>
 							)
 						})}
 
-						<div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div>
+						<div style={{width: '90%', height:1.5, backgroundColor: theme === 'dark' ? '#434343' : '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div>
 
 						<div style={{display: "flex", flexDirection: "row", alignItems: "center", width: '100%' ,paddingLeft: 30,paddingRight: 20 , justifyContent: "space-between",}}>
-							<p style={{fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
+							<p style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
 							<CreateCourse/>
 						</div>
 						
@@ -200,7 +210,7 @@ const Sidebar = (props) => {
 							return (
 								<div key={index} className="nav-text">
 									<Link to={item.path}>
-										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : "#232323"}}> {item.title} </span>
+										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' :  theme === 'dark' ? '#eee' : "#232323"}}> {item.title} </span>
 									</Link>
 								</div>
 							)

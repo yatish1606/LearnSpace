@@ -38,7 +38,7 @@ content: {
 	left: '20%',
 	right: '20%',
 	bottom: '12%',
-	background: theme == 'light' ? '#232323' : '#fff',
+	background: theme == 'dark' ? '#1b1b1b' : '#fff',
 	overflow: 'auto',
 	WebkitOverflowScrolling: 'touch',
 	borderRadius: '10px',
@@ -55,7 +55,7 @@ content: {
 	left: 0,
 	right: 0,
 	bottom: 0,
-	backgroundColor: '#0000002a',
+	backgroundColor: '#000000aa',
 	zIndex: 9999
   },
 };
@@ -286,7 +286,7 @@ const CreateCourse = () => {
 					<button onClick={userType === 'teacher' ? createCourse : joinCourse}>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>{userType === 'student' ? 'Join' : 'Create'}</p>
 					</button>
-					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
 						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
 					</button>
 				</div>
