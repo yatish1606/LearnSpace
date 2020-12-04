@@ -206,13 +206,13 @@ const Post = ({postType, title, info}) => {
 				{
 					isAssignment ? 
 					<Link to="/assignments">
-						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 					</Link>
 					
 					: 
 					<React.Fragment>
-						<Download size={22} color="#232323"/>
-						<Info size={22} color="#232323"/>
+						<Download size={22} className="sub"/>
+						<Info size={22} className="sub"/>
 					</React.Fragment>
 				}
 				

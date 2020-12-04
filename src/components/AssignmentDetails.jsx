@@ -98,7 +98,7 @@ const AssignmentDetails = ({courseName, history}) => {
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
 
                    
-                    <ArrowLeft size={27} color='#ababab' style={{marginBottom: 25, cursor: "pointer"}} onClick={() => history.goBack()}/>
+                    <ArrowLeft size={27} className="sub" style={{marginBottom: 25, cursor: "pointer"}} onClick={() => history.goBack()}/>
                    
                     
 
@@ -184,7 +184,7 @@ const AssignmentDetails = ({courseName, history}) => {
 											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
 										</div>
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<Download size={20} color='#ababab' style={{cursor: "pointer"}}/>
+											<Download size={20} className="sub" style={{cursor: "pointer"}}/>
 											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={openModal}>
 												<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Grade</p>
 											</button>

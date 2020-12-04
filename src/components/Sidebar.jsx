@@ -66,17 +66,17 @@ const Sidebar = (props) => {
 	const menuOptions = [
 		{
 			title: 'Home',
-			icon: <Home size={22} color={GetCurrentPath() === '/' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
+			icon: <Home size={22} color={GetCurrentPath() === '/' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 			path: '/'
 		},
 		{
 			title: 'Resources',
-			icon: <Database size={22} color={GetCurrentPath() === '/resources' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
+			icon: <Database size={22} color={GetCurrentPath() === '/resources' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 			path: '/resources'
 		},
 		{
 			title: 'FAQ',
-			icon: <Info size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}/>,
+			icon: <Info size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 			path: '/faq'
 		},
 		
@@ -178,7 +178,7 @@ const Sidebar = (props) => {
 			<nav className={'nav-menu active'} style={{backgroundColor: theme === 'dark' ? '#212121' : '#f8f8f8'}}>
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
-						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80}}>
+						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80, paddingRight: 30}}>
 							<Codesandbox size={30} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 16, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
@@ -192,7 +192,7 @@ const Sidebar = (props) => {
 							return (
 								<div key={index} className="nav-text">
 									<Link to={item.path}>
-										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : theme === 'dark' ? '#eee' : "#232323"}}>{item.icon}   {item.title} </span>
+										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323", fontSize: 17, letterSpacing: 0.4, fontWeight: 500}}>{item.icon}   {item.title} </span>
 									</Link>
 								</div>
 							)
@@ -201,7 +201,7 @@ const Sidebar = (props) => {
 						<div style={{width: '90%', height:1.5, backgroundColor: theme === 'dark' ? '#434343' : '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div>
 
 						<div style={{display: "flex", flexDirection: "row", alignItems: "center", width: '100%' ,paddingLeft: 30,paddingRight: 20 , justifyContent: "space-between",}}>
-							<p style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
+							<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
 							<CreateCourse/>
 						</div>
 						
@@ -210,7 +210,7 @@ const Sidebar = (props) => {
 							return (
 								<div key={index} className="nav-text">
 									<Link to={item.path}>
-										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' :  theme === 'dark' ? '#eee' : "#232323"}}> {item.title} </span>
+										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' :  theme === 'dark' ? '#BABABA' : "#232323", fontWeight: 500, letterSpacing: 0.3}}> {item.title} </span>
 									</Link>
 								</div>
 							)
