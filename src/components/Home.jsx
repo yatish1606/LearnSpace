@@ -30,7 +30,7 @@ console.log(_id)
 let userType = JSON.parse(localStorage.getItem('userType'))
 let theme = JSON.parse(localStorage.getItem('theme'))
 
-const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
+const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, numberOfStudents,course_code}) => {
 
 	
 	let yearF = year.toUpperCase()
@@ -41,8 +41,35 @@ const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, num
 	}
 
 	return (
-		<Link to={`/course/${courseID}`}>
-		<div className="course-box">
+		//<Link to={`/course1`}>
+		<div className="course-box" onClick={() => {
+
+			Axios.get(`https://dbms-back.herokuapp.com/course/${course_code}`, {
+			header: {
+				"Content-Type": "application/json; charset=utf-8"
+			}
+		})
+		.then(res => {	
+			let a = res.data.data;
+			let course = a[0];
+			localStorage.setItem('course',JSON.stringify(course))
+
+			Axios.get(`https://dbms-back.herokuapp.com/teacher/${course.teacher_id}`)
+				.then(res => {
+					//console.log(res.data.data[0])
+					//console.log(res.data.data[0])
+					localStorage.setItem('courseTeacher',JSON.stringify(res.data.data[0]))
+					window.location.href="/course1"
+					//console.log(JSON.parse(localStorage.getItem('courseTeacher')))
+				})
+			
+			
+			//console.log(course)
+		})
+		.catch((err) => console.log(err))
+
+			localStorage.setItem('currentCourseCode',course_code)
+		}}>
 			<div className="course-box-top" style={{backgroundColor: color,}}>
 				<h3>{courseTitle}</h3>
 				<h6>{yearF} {deptF}</h6>
@@ -66,7 +93,7 @@ const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, num
 				</div>
 			</div>
 		</div>
-		</Link>
+//		</Link>
 	)
 }
 
@@ -144,6 +171,7 @@ const MyCourses = (props) => {
 	
 	
 	
+	
 	return (
 		
 		<div className="course-container">
@@ -180,7 +208,7 @@ const MyCourses = (props) => {
 
 				{courses ? 
 					courses.map((course, index) => {
-						return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
+						return <CourseBox courseID={course._id} course_code={course.course_code} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
 					})
 				: null
 				}

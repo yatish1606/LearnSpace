@@ -233,6 +233,7 @@ const Post = ({postType, title, info}) => {
 
 
 
+
 const Course1 = () => {
 
 	const [index, setIndex] = React.useState(0)
@@ -256,11 +257,36 @@ const Course1 = () => {
 		size: null
 	})
 
+	const currentCourseCode = localStorage.getItem('currentCourseCode')
+	const course = JSON.parse(localStorage.getItem('course'))
+	console.log(course)
+	
+	let courseTeacher = JSON.parse(localStorage.getItem('courseTeacher'))
+	console.log(courseTeacher)
+
 	const {studentDetails} = useContext(StudentDetailsContext);
 
 	useEffect(() => {
-		console.log(studentDetails);
+		//console.log(studentDetails);
+		
 	},[])
+
+// 	useEffect(() => {
+// 		Axios.get(`https://dbms-back.herokuapp.com/course/${currentCourseCode}`, {
+// 			header: {
+// 				"Content-Type": "application/json; charset=utf-8"
+// 			}
+// 		})
+// 		.then(res => {	
+// 			let a = res.data.data;
+// 			let course = a[0];
+// 			localStorage.setItem('course',JSON.stringify(course))
+// 			console.log(course)
+// 		})
+// 		.catch((err) => console.log(err))
+// }, [])
+
+	
 
 	const handleFileUpload = event => {
 		if(event) {
@@ -292,7 +318,7 @@ const Course1 = () => {
 		setIsOpenAutograde(false);
 	}
 
-	
+
 	return (
 		<div className="course-container">
 			
@@ -325,20 +351,23 @@ const Course1 = () => {
 				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
 				}
 
-				<h2 className="course-title">Operating Systems</h2>
-				<p style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">TE Information Technology</p>
+				<h2 className="course-title">{course.name}</h2>
+				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">
+				{course.year} {course.department}</h4>
 				<div className="instructor-box">
 					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
 						<img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
 						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>INSTRUCTOR</p>
-						<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}} className="heading">Satish Kamble</h6>
+						<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}} className="heading">
+						{courseTeacher.fname} {courseTeacher.lname}</h6>
 					</div>
 				</div>
 				
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 20}} className="heading">Description</p>
-				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">This class has been created for Operating Systems subject for third year students studying Information Technology at PVGCOET</p>
+				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">
+				{course.description}</p>
 			</div>
 
 
