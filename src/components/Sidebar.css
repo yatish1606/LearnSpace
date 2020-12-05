@@ -168,6 +168,9 @@
 .toggle.react-toggle--focus .react-toggle-thumb {
 	box-shadow: none;
 }
+.chartToggle.react-toggle--focus .react-toggle-thumb {
+	box-shadow: none;
+}
 
 .toggle * {
 	box-shadow: none;
@@ -175,6 +178,9 @@
 
 .toggle.react-toggle--checked .react-toggle-track {
 	background-color: #d3d3d3;
+}
+.chartToggle.react-toggle--checked .react-toggle-track {
+	background-color: #09a407;
 }
 .toggle.react-toggle--checked .react-toggle-track:hover{
 	background-color: #d3d3d3;
@@ -189,6 +195,10 @@
 }
 
 .toggle.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+	box-shadow: none;
+}
+
+.chartToggle.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
 	box-shadow: none;
 }
 
