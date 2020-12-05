@@ -49,6 +49,7 @@ input {
   font-size: 18px;
   font-family: 'Poppins';
   font-weight: 400;
+  color: var(--textColor);
 }
 
 input::placeholder {

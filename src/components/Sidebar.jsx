@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
-import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, RotateCcw } from 'react-feather'
+import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, Edit3 } from 'react-feather'
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
 import { getRandomUser } from './random';
 import Toggle from 'react-toggle'
 import "react-toggle/style.css"
+import Modal from 'react-modal';
 
 let randomUser = getRandomUser()
 
@@ -17,13 +18,20 @@ const Sidebar = (props) => {
 	localStorage.setItem('theme', JSON.stringify(document.documentElement.style.getPropertyValue('--theme')))
 	let theme = JSON.parse(localStorage.getItem('theme'))
 
+	const a = localStorage.getItem('userDetails');
+
 	const [sidebar,setSidebar] = useState(false);
 	const [window,setWindow] = useState(null)
 	const [isLightTheme, setIsLightTheme] = useState(true)
+	const [modalIsOpen, setModal] = useState(false)
+	const [newFName, setNewFName] = useState(JSON.parse(a).fname)
+	const [newLName, setNewLName] = useState(JSON.parse(a).lname)
 
 	const showSidebar = () => setSidebar(!sidebar);
+	const openModal = () => setModal(true)
+	const closeModal = () => setModal(false) 
 
-	const a = localStorage.getItem('userDetails');
+	
 	const user = a ? JSON.parse(a) : {
 		department: "",
 		year: "",
@@ -153,7 +161,7 @@ const Sidebar = (props) => {
 				
 				
 				<div className="settings-icon">
-					<Settings size={21} color={theme === 'dark' ? '#eee' : '#232323'} className="seticon"/>
+					<Settings size={21} color={theme === 'dark' ? '#eee' : '#232323'} className="seticon" onClick={openModal}/>
 				</div>
 
 				<div className="my-profile-box">
@@ -233,8 +241,89 @@ const Sidebar = (props) => {
 						
 					</div>
 				</nav>
+
+				<Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				contentLabel="Modal"
+				closeTimeoutMS={200}
+				className="background"
+			>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
+
+
+				
+				<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 25, padding:0, marginBottom:0}}>Settings</h2>
+				
+				<div style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginTop: 25}}>
+					<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding: 0}}>Color theme : {isLightTheme ? 'Light' : 'Dark'}</p>
+					<Toggle
+					defaultChecked={isLightTheme}
+					icons={{
+					checked: <Moon size={17} color="#232323" style={{position: "absolute", top: -3}}/>,
+					unchecked: <Sun size={14} color="#fff" style={{position: "absolute", top: -2,}}/>,
+					}}
+					className="toggle"
+					onChange={handleThemeChange} 
+					/>
+				</div>
+
+				<p style={{fontFamily: 'Poppins', fontSize: 15, color: '#ababab', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change First Name</p>
+				<input type="text" style={{height:40}} value={newFName} onChange={t => setNewFName(t.target.value)}></input>
+				
+				<p style={{fontFamily: 'Poppins', fontSize: 15, color: '#ababab', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change Last Name</p>
+				<input type="text" style={{height:40}} value={newLName} onChange={t => setNewLName(t.target.value)}></input>
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
+					</button>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+
+
+			</Modal>
+
 		</div>
 	)
 }
 
 export default Sidebar
+
+
+export const customStyles = {
+	//   
+	content: {
+		position: 'absolute',
+		top: '25%',
+		left: '30%',
+		right: '30%',
+		bottom: '25%',
+		background: '#fff',
+		overflow: 'auto',
+		WebkitOverflowScrolling: 'touch',
+		borderRadius: '10px',
+		outline: 'none',
+		
+		padding: '25px',
+		alignSelf: 'center',
+		height: 'auto',
+		paddingTop: '30px'
+	  },
+	  overlay: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: '#000000ba',
+		zIndex: 9999
+	  },
+	};
+	
+	
+
