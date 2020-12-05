@@ -129,8 +129,8 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [viewPassword, setViewPassword] = React.useState(true)
-    const [studentClass, setStudentClass] = React.useState(yearOptions[0].label);
-    const [studentDepartment, setStudentDepartment] = React.useState(departmentOptions[0].label);
+    const [studentClass, setStudentClass] = React.useState(yearOptions[0].value);
+    const [studentDepartment, setStudentDepartment] = React.useState(departmentOptions[0].value);
     const [isStudent, setIsStudent] = React.useState(userType === 'student')
 
 

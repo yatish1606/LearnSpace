@@ -24,12 +24,15 @@ const Sidebar = (props) => {
 	const [window,setWindow] = useState(null)
 	const [isLightTheme, setIsLightTheme] = useState(true)
 	const [modalIsOpen, setModal] = useState(false)
+	const [modalIsOpenProfile, setModalProfile] = useState(false)
 	const [newFName, setNewFName] = useState(JSON.parse(a).fname)
 	const [newLName, setNewLName] = useState(JSON.parse(a).lname)
 
 	const showSidebar = () => setSidebar(!sidebar);
 	const openModal = () => setModal(true)
 	const closeModal = () => setModal(false) 
+	const openModalProfile = () => setModalProfile(true)
+	const closeModalProfile = () => setModalProfile(false)
 
 	
 	const user = a ? JSON.parse(a) : {
@@ -165,7 +168,7 @@ const Sidebar = (props) => {
 				</div>
 
 				<div className="my-profile-box">
-					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", cursor: "pointer"}} onClick={openModalProfile}>
 						<img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginLeft: 0, marginTop: 5}}/>
 					</div>
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
@@ -249,7 +252,7 @@ const Sidebar = (props) => {
 				contentLabel="Modal"
 				closeTimeoutMS={200}
 				className="background"
-			>
+				>
 
 				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
 
@@ -284,6 +287,52 @@ const Sidebar = (props) => {
 						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
 					</button>
 				</div>
+
+
+			</Modal>
+
+			<Modal
+				isOpen={modalIsOpenProfile}
+				onRequestClose={closeModalProfile}
+				style={customStyles2}
+				contentLabel="Modal"
+				closeTimeoutMS={200}
+				className="background"
+				>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModalProfile}/>		
+
+
+				
+				{/* <h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 25, padding:0, marginBottom:0}}>Settings</h2> */}
+				
+				<div className="changeColorBG" style={{width: 120, height: 120, overflow: "hidden", borderRadius: 60, margin: '0 auto', display: "flex", alignItems: "center", justifyContent: "center"}}>
+					<img className="changeColorBG"  src={randomUser} style={{width: 100, height: 100, marginTop: 20}}/>
+				</div>
+
+				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 28, color: '#ababab', fontWeight: 500, margin:'0 auto', padding:0, textAlign: "center",marginTop: 20,}}>{user.fname.concat(' ').concat(user.lname)}</p>
+				<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#ababab', fontWeight: 500, margin:'0 auto', padding:0, textAlign: "center",marginTop: 5, letterSpacing: 0.6}}>{userType.toUpperCase()}</p>
+				
+				<div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30, justifyContent: "center"}}>
+					<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>EMAIL</p>
+					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{user.email} </p>
+				</div>
+
+				{userType==='student' ? 
+					<React.Fragment>
+						<div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 12,justifyContent: "center"}}>
+							<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>YEAR</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{user.year} </p>
+						</div>
+
+						<div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 12,justifyContent: "center"}}>
+							<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>DEPARTMENT</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{user.department} </p>
+						</div>
+					</React.Fragment>
+				
+				: null
+				}
 
 
 			</Modal>
@@ -327,3 +376,40 @@ export const customStyles = {
 	
 	
 
+	export const customStyles2 = {
+		//   
+		content: {
+			position: 'absolute',
+			// top: '22%',
+			// left: '30%',
+			// right: '30%',
+			// bottom: '22%',
+			left: '50%',
+			transform: 'translate(-50%, 0)',
+			top: '20%',
+			width: '30%',
+			background: '#fff',
+			overflow: 'auto',
+			WebkitOverflowScrolling: 'touch',
+			borderRadius: '10px',
+			outline: 'none',
+			
+			padding: '25px',
+			alignSelf: 'center',
+			height: 'auto',
+			paddingTop: '30px'
+		  },
+		  overlay: {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: '#000000ba',
+			zIndex: 9999
+		  },
+		};
+		
+		
+	
+	
