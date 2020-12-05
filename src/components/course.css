@@ -474,6 +474,7 @@ html img{
     padding: 10px;
     background-color: var(--background);
     border-width: 3px;
+    border-color: var(--grey);
     border-style: solid;
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
@@ -521,7 +522,7 @@ html img{
     border-radius: 25px;
     top: 10px;
     background-color: #eee;
-    border: 2px solid white;
+    border: 2px solid var(--grey);
     display: flex;
     flex-direction: column;
     align-items: center;
