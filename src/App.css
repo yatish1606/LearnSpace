@@ -22,7 +22,7 @@ button {
   flex-direction: row;
   align-items: center;
   margin-top: 10px;
-  box-shadow: 2px 2px 20px var(--grey);
+  /* box-shadow: 2px 2px 20px var(--grey); */
   border: 2px #09A407;
 }
 

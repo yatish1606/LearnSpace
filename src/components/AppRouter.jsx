@@ -10,6 +10,7 @@ import AssignmentDetails from './AssignmentDetails'
 import Autograde from './Autograde'
 import UserTypeContextProvider from './contexts/UserTypeContext';
 import StudentDetailsContextProvider from './contexts/StudentDetailsContext';
+import AssessmentReport from './AssessmentReport'
 import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
 
 const AppRouter = () => {
@@ -33,6 +34,7 @@ const AppRouter = () => {
 						<Route path="/course1" component={Course1} exact/>
 						<Route path="/course2" component={Course2} exact/> 
 						<Route path="/assignments" component={AssignmentDetails} exact/> 
+						<Route path="/assessmentreport/*" component={AssessmentReport}/>
 						<Route path="*" component={Sidebar} exact/> 
 						
 					</div>
