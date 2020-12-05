@@ -201,15 +201,16 @@ const CreateCourse = () => {
           style={customStyles}
 		  contentLabel="Modal"
 		  closeTimeoutMS={200}
+		  className="background"
         >
 				
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
-					<div style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+					<div className="changeColorBG" style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
 						<Book size={25} color="#09a407"/>
 					</div>
 					<div style={{marginLeft: '1rem'}}>
-						<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>{userType === 'student' ? 'Join a new course' : 'Create New Course'}</h2>
-						<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>{userType === 'student' ? 'Enter course code to join' : 'Enter course details to get started'}</p>
+						<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>{userType === 'student' ? 'Join a new course' : 'Create New Course'}</h2>
+						<p className="grey" style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>{userType === 'student' ? 'Enter course code to join' : 'Enter course details to get started'}</p>
 					</div>
             	</div>
 
@@ -220,21 +221,21 @@ const CreateCourse = () => {
 						<div style={{width: '100%', display: "flex", flexDirection: "row-reverse", alignItems: "center", marginTop: 15}}>
 							
 							<div style={{display: "flex", flexDirection: "column",}}>
-							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Department</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Department</p>
 								<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-									<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value="" placeholder="Select an option" className="dropdown" />
+									<Dropdown options={departmentOptions} onChange={option => setDepartment(option.value)} value="" placeholder="Select an option" className={"dropdown sub"} />
 								</div>
 							</div>
 							
 							<div style={{display: "flex", flexDirection: "column", marginRight: 15}}>
-							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Year</p>
+							<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, textAlign: "left", marginBottom: '0.5rem'}}>Year</p>
 								<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-									<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value="" placeholder="Select an option" className="dropdown" />
+									<Dropdown options={yearOptions} onChange={option => setYear(option.value)} value="" placeholder="Select an option" className={"dropdown sub"} />
 								</div>
 							</div>
 
 							<div style={{flexGrow: 1, marginRight: 15}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
+								<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
 								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)}></input>
 							</div>
 							
@@ -244,20 +245,20 @@ const CreateCourse = () => {
 
 
 
-						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Course Description</p>
+						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Course Description</p>
 						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)}></input>
 
 
-						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Course Code</p>
+						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Course Code</p>
 
-						<div style={{width: '30%', height: 40, backgroundColor: '#f6f6f6', borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between"}}>
+						<div className="changeColorBG" style={{width: '30%', height: 40, borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between"}}>
 							<div style={{width: 40, borderRadius: 0, height: 40, backgroundColor: '#ddd', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}}>
 								<Copy size={22} color="#434343" onClick={() =>  {
 									navigator.clipboard.writeText(randomString)
 									toast.info("Course code copied to clipboard")
 								}}/>
 							</div>
-							<p style={{fontFamily:'Poppins', fontSize: 17, color: '#434343', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, letterSpacing: 0.3}}>
+							<p className="sub" style={{fontFamily:'Poppins', fontSize: 17, color: '#434343', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, letterSpacing: 0.3}}>
 								{randomString}
 							</p>
 						</div>
@@ -268,15 +269,15 @@ const CreateCourse = () => {
 				: 
 					<React.Fragment>
 						<div style={{flexGrow: 1, marginRight: 15}}>
-							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Code</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Code</p>
 							<input type="text" style={{height:40,}} onChange={t => setCode(t.target.value)}></input>
 
-							<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>When you join a course,</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>When you join a course,</p>
 							<ul style={{margin:0, padding: 0, marginLeft: 20}}>
-								<li><p style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You gain access to study material posted by teachers</p></li>
-								<li><p style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Teachers can post assignments which have due dates and some marks alloted for them</p></li>
-								<li><p style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You can attach files and submit these assignments</p></li>
-								<li><p style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You can leave the course at anytime, but must re-enter the code again to join</p></li>
+								<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You gain access to study material posted by teachers</p></li>
+								<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Teachers can post assignments which have due dates and some marks alloted for them</p></li>
+								<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You can attach files and submit these assignments</p></li>
+								<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You can leave the course at anytime, but must re-enter the code again to join</p></li>
 							</ul>
 						</div>
 					</React.Fragment> 
