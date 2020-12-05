@@ -35,6 +35,10 @@ html img{
     color: var(--sub) !important;
 }
 
+.subBG {
+    background-color: var(--sub) !important;
+}
+
 .heading {
     color: var(--textColor) !important;
 }

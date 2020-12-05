@@ -94,7 +94,6 @@ const styles = {
 		'Poppins'
 	  ].join(','),
 	  '&:hover': {
-		color: theme === 'dark' ? "#eee" : '#232323',
 		opacity: 1,
 		fontWeight: 500,
 		fontSize:17,
