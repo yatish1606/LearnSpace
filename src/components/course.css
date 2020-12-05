@@ -59,6 +59,7 @@ html img{
     margin-top: 0px;
     align-items: flex-start;
     margin-top: 80px;
+    overflow: hidden;
 }
 
 .course-heading-block {
@@ -176,10 +177,10 @@ html img{
     position: relative;
     overflow: hidden;
     background-color: var(--background);
-    border: 3px solid #eee;
+    border: 3px solid var(--grey);
     border-radius: 7px;
     box-sizing: border-box;
-    color: #333;
+    color: var(--textColor);
     cursor: default;
     outline: none;
     padding: 8px 52px 8px 10px;
@@ -188,6 +189,20 @@ html img{
     font-family: 'Poppins';
     font-weight: 500;
   }
+
+.Dropdown-menu {
+    background-color: var(--background);
+    border-color: var(--background);
+    color: var(--sub);
+}
+
+.Dropdown-option {
+    color: var(--sub);
+}
+.Dropdown-option:hover {
+    background-color: var(--grey);
+    color: var(--sub);
+}
 
 
   .post-container {
@@ -548,4 +563,73 @@ html img{
 .remove-user-icon:hover {
     color: #545454;
     transition: 0.1s ease-in;
+}
+
+.stats-box {
+    width: calc(100% - 20px);
+    margin: 5px 10px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.stats-box-box {
+    margin: 0 5px;
+    background-color: var(--grey);
+    width: calc(50% - 5px);
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px 15px;
+}
+
+.stats-box-2 {
+    width:  calc(100% - 10px);
+    margin: 5px 5px 10px 5px;
+    background-color: var(--grey);
+    padding: 10px 15px;
+    height: 115px;
+    border-radius: 10px;
+}
+
+.stats-box-2-stats {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-right: 15px;
+    padding-left: 5px;
+}
+
+
+.stats-box-2-stats h2 {
+    color: #09a407;
+    font-size: 30px;
+    font-weight: 600;
+    font-family: 'Poppins';
+    margin: 0;
+    padding: 0;
+}
+
+.stats-box-2-stats p {
+    color: var(--textColor);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Poppins';
+    margin: 0;
+    padding: 0;
+    margin-top: 2px;
+}
+
+.stats-box-2 h3 {
+    color: var(--sub);
+    font-size: 17px;
+    letter-spacing: 0.3px;
+    font-weight: 500;
+    font-family: 'Poppins';
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
 }
