@@ -234,6 +234,7 @@ const Post = ({postType, title, info}) => {
 
 
 
+
 const Course1 = () => {
 
 	const [index, setIndex] = React.useState(0)
@@ -257,36 +258,52 @@ const Course1 = () => {
 		size: null
 	})
 
-	const currentCourseCode = localStorage.getItem('currentCourseCode')
-	const course = JSON.parse(localStorage.getItem('course'))
-	console.log(course)
-	
-	let courseTeacher = JSON.parse(localStorage.getItem('courseTeacher'))
-	console.log(courseTeacher)
+	const [courseInfo,setCourseInfo] = useState({})
+	const [courseTeacher,setCourseTeacher] = useState({})
 
-	const {studentDetails} = useContext(StudentDetailsContext);
+	const [ignore, setIgnored] = React.useState(0)
+    
+	const forceUpdate = React.useCallback(() => setIgnored(v => v + 1), [])
 
 	useEffect(() => {
 		//console.log(studentDetails);
 		
 	},[])
 
-// 	useEffect(() => {
-// 		Axios.get(`https://dbms-back.herokuapp.com/course/${currentCourseCode}`, {
-// 			header: {
-// 				"Content-Type": "application/json; charset=utf-8"
-// 			}
-// 		})
-// 		.then(res => {	
-// 			let a = res.data.data;
-// 			let course = a[0];
-// 			localStorage.setItem('course',JSON.stringify(course))
-// 			console.log(course)
-// 		})
-// 		.catch((err) => console.log(err))
-// }, [])
+	React.useEffect(() => {
+		let arr = window.location.href.split('/');
+		let courseID = arr[arr.length -1];
+		Axios.get( `https://dbms-back.herokuapp.com/courseinfo/${courseID}`)
+		.then(res => {
+			
+				if(res.data.success) {
+					let courseInfo = res.data.data[0]
+					setCourseInfo(courseInfo)
+				} else {
+						console.log('error')
+				}
+		})
+		.catch(() => console.log('error'))
+	},[ignore])
 
-	
+
+	React.useEffect(() => {
+		let teacher_id = courseInfo.teacher_id;
+		console.log(teacher_id)
+		Axios.get( `https://dbms-back.herokuapp.com/teacher/${teacher_id}`)
+		.then(res => {
+			
+				if(res.data.success) {
+					let teacher = res.data.data[0]
+					setCourseTeacher(teacher)
+				} else {
+						
+				}
+		})
+		.catch(() => {})
+	},[courseInfo])
+	console.log(courseTeacher)
+
 
 	const handleFileUpload = event => {
 		if(event) {
@@ -351,9 +368,9 @@ const Course1 = () => {
 				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
 				}
 
-				<h2 className="course-title">{course.name}</h2>
+				<h2 className="course-title">{courseInfo.name}</h2>
 				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">
-				{course.year} {course.department}</h4>
+				{courseInfo.year} {courseInfo.department}</h4>
 				<div className="instructor-box">
 					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
 						<img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
@@ -367,7 +384,7 @@ const Course1 = () => {
 				
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 20}} className="heading">Description</p>
 				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">
-				{course.description}</p>
+				{courseInfo.description}</p>
 			</div>
 
 
