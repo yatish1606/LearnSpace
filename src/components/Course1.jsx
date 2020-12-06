@@ -260,6 +260,7 @@ const Course1 = () => {
 
 	const [courseInfo,setCourseInfo] = useState({})
 	const [courseTeacher,setCourseTeacher] = useState({})
+	const [courseStudents,setCourseStudents] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
     
@@ -302,7 +303,23 @@ const Course1 = () => {
 		})
 		.catch(() => {})
 	},[courseInfo])
-	console.log(courseTeacher)
+	//console.log(courseTeacher)
+
+	React.useEffect(() => {
+		let arr = window.location.href.split('/');
+		let courseID = arr[arr.length -1];
+		Axios.get( `https://dbms-back.herokuapp.com/records/${courseID}`)
+		.then(res => {
+			
+				if(res.data.success) {
+					let courseStudents = res.data.data
+					setCourseStudents(courseStudents);
+				} else {
+						
+				}
+		})
+		.catch(() => {})
+	},[courseInfo])
 
 
 	const handleFileUpload = event => {
@@ -426,8 +443,8 @@ const Course1 = () => {
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
 
-					{studentsList.map((item, index) => {
-						let name = item.fName.concat(" ").concat(item.lName)
+					{courseStudents.map((item, index) => {
+						let name = item.fname + " "+item.lname
 						return (
 						<div className="student-box" key={index}>
 							<div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
