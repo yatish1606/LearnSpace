@@ -108,7 +108,7 @@ const Sidebar = (props) => {
 	// console.log(GetCurrentPath())
 	React.useEffect(() => {
 		if(userType === 'teacher') return 
-		toast.info('Fetching courses...')
+		
 		Axios.get(`https://dbms-back.herokuapp.com/coursesenrolled/${user._id}`, {
 			header: {
 				"Content-Type": "application/json; charset=utf-8"
@@ -117,7 +117,7 @@ const Sidebar = (props) => {
 		.then(res => {	
 			if(res.data.success) {
 				setCourses(res.data.data)
-				toast.success('Fetched courses')
+				
 			} else {
 				return toast.error('Error fetching courses')
 			}			
@@ -128,7 +128,7 @@ const Sidebar = (props) => {
 
 	React.useEffect(() => {
 		if(userType === 'student') return 
-		toast.info('Fetching courses...')
+		
 		Axios.get(`https://dbms-back.herokuapp.com/coursebyteacher/${user._id}`, {
 			header: {
 				"Content-Type": "application/json; charset=utf-8"
@@ -137,7 +137,7 @@ const Sidebar = (props) => {
 		.then(res => {	
 			if(res.data.success) {
 				setCourses(res.data.data)
-				toast.success('Fetched courses')
+				
 			} else {
 				return toast.error('Error fetching courses')
 			}			
