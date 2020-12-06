@@ -153,6 +153,8 @@ const AssignmentDetails = ({courseName, history}) => {
                         <Download size={22} color="#232323" style={{width: 50}}/>
                     </div> */}
 
+					{userType === 'teacher' ? 
+					<reactFragment>
 					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
 					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by 10 students. Click on the assessment report to get a detailed analysis of the performance by students</p>
 
@@ -161,6 +163,8 @@ const AssignmentDetails = ({courseName, history}) => {
 							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Assessment Report</p>
 					</button>
 					</Link>
+					</reactFragment>
+					:null}
 					
                 
                 
