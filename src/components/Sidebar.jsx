@@ -9,6 +9,8 @@ import { getRandomUser } from './random';
 import Toggle from 'react-toggle'
 import "react-toggle/style.css"
 import Modal from 'react-modal';
+import {toast} from 'react-toastify'
+import Axios from 'axios'
 
 let randomUser = getRandomUser()
 
@@ -27,6 +29,8 @@ const Sidebar = (props) => {
 	const [modalIsOpenProfile, setModalProfile] = useState(false)
 	const [newFName, setNewFName] = useState(JSON.parse(a).fname)
 	const [newLName, setNewLName] = useState(JSON.parse(a).lname)
+
+	const [courses, setCourses] = React.useState([])
 
 	const showSidebar = () => setSidebar(!sidebar);
 	const openModal = () => setModal(true)
@@ -101,56 +105,56 @@ const Sidebar = (props) => {
 		},
 		
 	]
-
-	const sidebarData = [
-		
-		{
-			title: "Operating Systems",
-			titleFull: "Operating System",
-			teacher: "Satish Kamble",
-			class: "TE IT",
-			year: "2021",
-			path: "/course1",
-			cName: "nav-text",
-			posts: [
-				"posted a new Resource: Scheduling Algorithms",
-				"posted a new Resource: Processes and Threads",
-				"posted a new Resource: Deadlock Prevention",
-			]
-
-		},
-		{
-			title: "Database Management",
-			path: "/course2",
-			cName: "nav-text"
-		},
-		{
-			title: "Theory of Computation",
-			path: "/course3",
-			cName: "nav-text"
-		},
-		{
-			title: "Software Engg",
-			path: "/course4",
-			cName: "nav-text"
-		},
-		{
-			title: "Human Computer Interaction",
-			path: "/course5",
-			cName: "nav-text"
-		},
-		
-	]
-
-
 	// console.log(GetCurrentPath())
+	React.useEffect(() => {
+		if(userType === 'teacher') return 
+		toast.info('Fetching courses...')
+		Axios.get(`https://dbms-back.herokuapp.com/coursesenrolled/${user._id}`, {
+			header: {
+				"Content-Type": "application/json; charset=utf-8"
+			}
+		})
+		.then(res => {	
+			if(res.data.success) {
+				setCourses(res.data.data)
+				toast.success('Fetched courses')
+			} else {
+				return toast.error('Error fetching courses')
+			}			
+		})
+		.catch(() => toast.error('Could not fetch your courses. Please try again'))
+		
+	}, [])
+
+	React.useEffect(() => {
+		if(userType === 'student') return 
+		toast.info('Fetching courses...')
+		Axios.get(`https://dbms-back.herokuapp.com/coursebyteacher/${user._id}`, {
+			header: {
+				"Content-Type": "application/json; charset=utf-8"
+			}
+		})
+		.then(res => {	
+			if(res.data.success) {
+				setCourses(res.data.data)
+				toast.success('Fetched courses')
+			} else {
+				return toast.error('Error fetching courses')
+			}			
+		})
+		.catch(() => toast.error('Could not fetch your courses. Please try again'))
+		console.log(courses)
+	}, [])
+
+	const sidebarData = courses.length ? courses : []
+
 
 	return (
 		
 		<div>
 			<div className="sidebar" style={{backgroundColor: theme === 'dark' ? '#1B1B1B' : 'white' , paddingBottom: 0, borderBottomColor: theme === 'dark' ? '#434343' : '#eee'}}>
 
-				
+				{console.log(courses)}
 				{/* <ToggleButton size="medium" color="primary" className={useStyles}/> */}
 				<Toggle
 					defaultChecked={isLightTheme}
@@ -220,8 +224,8 @@ const Sidebar = (props) => {
 						{sidebarData.map((item,index) => {
 							return (
 								<div key={index} className="nav-text">
-									<Link to={item.path}>
-										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' :  theme === 'dark' ? '#BABABA' : "#232323", fontWeight: 500, letterSpacing: 0.3}}> {item.title} </span>
+									<Link to={`/course/${item._id}`}>
+										<span className="row" style={{color: GetCurrentPath() === `/course/${item._id}` ? '#17B903' :  theme === 'dark' ? '#BABABA' : "#232323", fontWeight: 500, letterSpacing: 0.3}}> {item.name} </span>
 									</Link>
 								</div>
 							)
