@@ -6,6 +6,7 @@ import 'react-dropdown/style.css';
 import {yearOptions, departmentOptions} from './Register'
 import {Book, Copy, X, Plus, FileText, Trash2} from 'react-feather'
 import './course.css'
+import { toast } from 'react-toastify';
 var randomstring = require("randomstring");
 
 
@@ -67,7 +68,7 @@ const NoteBox = ({day, date, time, content, id, deleteNote}) => {
                 <div style={{display: "flex", flexDirection: 'row', alignItems: "center"}}>
                     <p>{day} {date} {time}</p>
                 </div>
-                <Trash2 size={18} className={"sub trashcan"} onClick={deleteNote(id)}/>
+                <Trash2 size={18} className={"sub trashcan"} onClick={() => deleteNote(id)}/>
             </div>
             <h6 className="changeColor">{content}</h6>
         </div>
@@ -84,6 +85,10 @@ const Notes = ({}) => {
     const [id, setID] = React.useState(3)
 
     const addNewNote = () => {
+        if(!note.length) {
+            toast.error("Please write something")
+            return 
+        }
         const noteObject = {
             id:id,
             day:'Mon',
@@ -93,11 +98,12 @@ const Notes = ({}) => {
         }
         setNotes(old => [...old, noteObject])
         setID(id => id+1)
+        setNote('')
     }
 
     const deleteNote = (id) => {
         console.log(id)
-        // setNotes()
+        setNotes(old => old.filter(note => note.id !== id))
     }
 	
 	console.log(questions)
@@ -108,11 +114,11 @@ const Notes = ({}) => {
                    
             <h2 className="course-title" style={{fontSize: 40, marginTop: 20}}>My Notes</h2>
                   
-                <p className="sub"  style={{fontFamily: 'Poppins', fontSize: 20, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 30, marginBottom:0}}>Add a new note</p>
+                <p className="sub"  style={{fontFamily: 'Poppins', fontSize: 18, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 30, marginBottom:0}}>Add a new note</p>
 				<div style={{display: "flex", flexDirection: 'row', alignItems: "center", }}>
                     <input type="text" style={{height:60, fontSize: 25}} value={note} onChange={t => {setNote(t.target.value)}} autoFocus></input>
                     <button  style={{borderRadius: 100, height: 70, width: 70}} onClick={addNewNote}>
-                        <Plus size={30} color="#fff"/>
+                        <Plus size={40} color="#fff"/>
                     </button>
                 </div>
 
@@ -121,7 +127,7 @@ const Notes = ({}) => {
                         
                         notes.map((note, index) => {
                             return (
-                                <NoteBox day={note.day} date={note.date} time={note.time} content={note.content} id={note.id} key={index} deleteNote={deleteNote}/>
+                                <NoteBox day={note.day} date={note.date} time={note.time} content={note.content} id={note.id} key={index} deleteNote={(id) => deleteNote(id)}/>
                                 // <h2 className="course-title" style={{fontSize: 40, marginTop: 20}}>My Notes</h2>
                             )
                         })
