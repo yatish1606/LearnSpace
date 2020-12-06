@@ -263,6 +263,9 @@ const Course1 = () => {
 	const [courseStudents,setCourseStudents] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
+
+	let arr = window.location.href.split('/');
+	let courseID = arr[arr.length -1];
     
 	const forceUpdate = React.useCallback(() => setIgnored(v => v + 1), [])
 
@@ -306,8 +309,7 @@ const Course1 = () => {
 	//console.log(courseTeacher)
 
 	React.useEffect(() => {
-		let arr = window.location.href.split('/');
-		let courseID = arr[arr.length -1];
+	
 		Axios.get( `https://dbms-back.herokuapp.com/records/${courseID}`)
 		.then(res => {
 			
@@ -320,6 +322,25 @@ const Course1 = () => {
 		})
 		.catch(() => {})
 	},[courseInfo])
+
+
+	const removeStudent = (student_id,course_id) => {
+		console.log("Hi")
+		Axios.post('https://dbms-back.herokuapp.com/remove_from_course',{
+			student_id: student_id,
+			course_id: course_id
+		})
+		.then(res => {
+			
+			if(res.data.success) {
+				toast.success("Removed student successfully")
+			} else {
+				toast.error("Error removing student")
+
+			}
+		})
+		.catch(() => toast.error("Error removing student"))
+	}
 
 
 	const handleFileUpload = event => {
@@ -443,15 +464,22 @@ const Course1 = () => {
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
 
-					{courseStudents.map((item, index) => {
-						let name = item.fname + " "+item.lname
+					{courseStudents.map((student, index) => {
+						let name = student.fname + " "+student.lname
 						return (
 						<div className="student-box" key={index}>
 							<div style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
 								<div className={"student-box-photo changeColorBG"}><img src={getRandomUser()} style={{width: 35, height: 35, marginTop: 4}}/></div>
 								<h5 className="changeColor">{name}</h5>
 							</div>
-							<UserX size={22} style={{cursor: "pointer"}} className="remove-user-icon"/>
+							{userType === 'teacher' ? 
+							<React.Fragment>
+							<UserX onClick={() => removeStudent(student._id,courseID)}
+							size={22} style={{cursor: "pointer"}} className="remove-user-icon"
+							/>
+							</React.Fragment>
+							: null }
+							
 						</div>
 						)
 					})}
