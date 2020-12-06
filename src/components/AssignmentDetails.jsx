@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {X, Book, Download, Plus, ArrowLeft, Rewind, Edit3} from 'react-feather'
+import {X, Book, Download, Plus, ArrowLeft, Upload, Edit3} from 'react-feather'
 import {getRandomUser} from './random'
 import { toast } from 'react-toastify'
 import Axios from 'axios';
@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 import {Link} from 'react-router-dom'
 import './course.css'
 
-let userType = 'teacher'
+let userType = JSON.parse(localStorage.getItem('userType'))
 let userImage = getRandomUser()
 let theme = JSON.parse(localStorage.getItem('theme'))
 
@@ -176,14 +176,15 @@ const AssignmentDetails = ({courseName, history}) => {
 					
 
 					{
+						
 						userType === 'student' ?
 							<React.Fragment>
 								
 								
-								<button style={{backgroundColor: "transparent", border: '2px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden"}}>
+								<button className="changeColorBG" style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
 									<input type="file" onChange={handleSubmission}/>
-									<Plus size={18} color="#09a407" style={{marginRight: 10}}/>
-									<p style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
+									<Upload size={18} className="changeColor" style={{marginRight: 10}}/>
+									<p className="changeColor" style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
 								</button>
 								
 
