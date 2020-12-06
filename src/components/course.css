@@ -633,3 +633,53 @@ html img{
     padding: 0;
     margin-top: 5px;
 }
+
+.notes-box {
+    display: inline-flex;
+    width: 350px;
+    height: 150px;
+    border-radius: 10px;
+    background-color: var(--grey);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.notes-box-up {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+    width: 100%;
+}
+
+.notes-box-up p {
+    font-size: 13px;
+    color: var(--sub);
+    font-family: 'Poppins';
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+}
+
+.notes-box h6 {
+    font-size: 15px;
+    line-height: 20px;
+    color: var(--textColor);
+    font-family: 'Poppins';
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.trashcan {
+    color: var(--sub);
+    cursor: pointer;
+}
+.trashcan:hover {
+    color: #09a407;
+}
