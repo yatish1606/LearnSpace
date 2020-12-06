@@ -12,6 +12,7 @@ import UserTypeContextProvider from './contexts/UserTypeContext';
 import StudentDetailsContextProvider from './contexts/StudentDetailsContext';
 import AssessmentReport from './AssessmentReport'
 import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
+import Notes from './Notes'
 
 const AppRouter = () => {
 
@@ -35,6 +36,7 @@ const AppRouter = () => {
 						<Route path="/course2" component={Course2} exact/> 
 						<Route path="/assignments" component={AssignmentDetails} exact/> 
 						<Route path="/assessmentreport/*" component={AssessmentReport}/>
+						<Route path="/notes" component={Notes} exact/>
 						<Route path="*" component={Sidebar} exact/> 
 						
 					</div>
