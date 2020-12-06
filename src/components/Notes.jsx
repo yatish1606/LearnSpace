@@ -4,14 +4,39 @@ import Modal from 'react-modal';
 import Dropdown from 'react-dropdown';
 import 'react-dropdown/style.css';
 import {yearOptions, departmentOptions} from './Register'
-import {Book, Copy, X, Plus, FileText, Trash2} from 'react-feather'
+import {Book, Copy, X, Plus, RotateCcw, Trash2} from 'react-feather'
 import './course.css'
 import { toast } from 'react-toastify';
+import Axios from 'axios';
 var randomstring = require("randomstring");
 
 
-let userType = 'teacher'
+let localdata = JSON.parse(localStorage.getItem('userDetails'))
+let user = localdata ? localdata : {
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: "404"
+}
+let {_id, fname, lname, email, year, department} = user;
+console.log(_id)
 
+let userType = JSON.parse(localStorage.getItem('userType'))
+let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+  
 
 export const customStyles = {
 //   
@@ -44,23 +69,6 @@ content: {
 };
 
 
-const myNotes = [
-    {
-        id:1,
-        day:'Mon',
-        date: '27th Sept 20',
-        time: '5:30 pm',
-        content: 'This is a sample notes content. You can write anthing here as long as its not too long or too stupid, you may treat this as a to do workspace'
-    },
-    {
-        id:2,
-        day:'Mon',
-        date: '27th Sept 20',
-        time: '5:30 pm',
-        content: 'This is a sample notes content. You can write anthing here as long as its not too long or too stupid, you may treat this as a to do workspace'
-    },
-]
-
 const NoteBox = ({day, date, time, content, id, deleteNote}) => {
     return (
         <div className="notes-box">
@@ -79,45 +87,87 @@ const NoteBox = ({day, date, time, content, id, deleteNote}) => {
 
 const Notes = ({}) => {
 
-    const [questions, setQuestions] = React.useState([])
-    const [notes, setNotes] = React.useState(myNotes)
+    const [notes, setNotes] = React.useState([])
     const [note, setNote] = React.useState('')
-    const [id, setID] = React.useState(3)
+    const [ignore, setIgnored] = React.useState(0)
+    
+    const forceUpdate = React.useCallback(() => setIgnored(v => v + 1), [])
 
     const addNewNote = () => {
         if(!note.length) {
             toast.error("Please write something")
             return 
         }
-        const noteObject = {
-            id:id,
-            day:'Mon',
-            date: '27th Sept 20',
-            time: '5:30 pm',
-            content: note
-        }
-        setNotes(old => [...old, noteObject])
-        setID(id => id+1)
+        
+        let date = new Date()
+        .getDate().toString().concat(' ')
+        .concat(months[new Date().getMonth()]).concat(' ')
+        .concat(new Date().getFullYear())
+       
+        Axios.post('https://dbms-back.herokuapp.com/notes', {
+            'user_id' : _id,
+            'day': days[new Date().getDay()],
+            'date': date,
+            'time': formatAMPM(new Date),
+            'content': note
+        })
+        .then(res => {
+            if(res.data.success) {
+                
+                toast.success('Added a new note')
+            } else {
+                toast.error('Could not add a note')
+            }
+        })
+        .catch(() => toast.error('Could not add note'))
         setNote('')
     }
 
     const deleteNote = (id) => {
-        console.log(id)
-        setNotes(old => old.filter(note => note.id !== id))
+        Axios.post('https://dbms-back.herokuapp.com/remove_from_notes', {
+            '_id' : id,
+        })
+        .then(res => {
+            if(res.data.success) {
+                toast.success('Note deleted')
+            } else {
+                toast.error('Could not delete note')
+            }
+        })
+        .catch(() => toast.error('Could not delete note'))
+        setNote('')
     }
+
+    React.useEffect(() => {
+        Axios.get( `https://dbms-back.herokuapp.com/notes/${_id}`)
+        .then(res => {
+           
+            if(res.data.success) {
+                console.log(res.data.data)
+                setNotes(res.data.data)
+            } else {
+                toast.error('Could not fetch notes')
+            }
+        })
+        .catch(() => toast.error('Could not fetch notes'))
+    },[ignore])
 	
-	console.log(questions)
+	
 	return (
 		
 		<div className={"background course-container"} style={{height: window.innerHeight + 60}}>
+            <div className="settings-icon" style={{position: "absolute", top: 100, right: 15}} onClick={forceUpdate}>
+					<RotateCcw size={21} color="#09a407" className="changeColor"/>
+			</div>
+
             <div style={{height: window.innerHeight + 60, width: '100%'}}>
                    
             <h2 className="course-title" style={{fontSize: 40, marginTop: 20}}>My Notes</h2>
                   
                 <p className="sub"  style={{fontFamily: 'Poppins', fontSize: 18, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 30, marginBottom:0}}>Add a new note</p>
 				<div style={{display: "flex", flexDirection: 'row', alignItems: "center", }}>
-                    <input type="text" style={{height:60, fontSize: 25}} value={note} onChange={t => {setNote(t.target.value)}} autoFocus></input>
-                    <button  style={{borderRadius: 100, height: 70, width: 70}} onClick={addNewNote}>
+                    <input type="text" style={{height:60, fontSize: 25}} value={note} onChange={t => {setNote(t.target.value)}} autoFocus maxLength={200}></input>
+                    <button  style={{borderRadius: 100, height: 70, width: 70, marginTop: 0, marginBottom: 10}} onClick={addNewNote}>
                         <Plus size={40} color="#fff"/>
                     </button>
                 </div>
@@ -127,7 +177,7 @@ const Notes = ({}) => {
                         
                         notes.map((note, index) => {
                             return (
-                                <NoteBox day={note.day} date={note.date} time={note.time} content={note.content} id={note.id} key={index} deleteNote={(id) => deleteNote(id)}/>
+                                <NoteBox day={note.day} date={note.date} time={note.time} content={note.content} id={note._id} key={index} deleteNote={(id) => deleteNote(id)}/>
                                 // <h2 className="course-title" style={{fontSize: 40, marginTop: 20}}>My Notes</h2>
                             )
                         })
