@@ -51,7 +51,7 @@ const AssessmentReport = ({history}) => {
     
 	return (
 		<div className="course-container">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 			<div className="course-heading-block" style={{flexDirection: "row", paddingRight: 0}}>
 
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
@@ -149,6 +149,7 @@ const LineChart = () => {
         <Line
                                     width='100%'
                                     height="50%"
+                                    
                                     data={{
                                         labels:['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
                                         datasets: [{
@@ -165,6 +166,24 @@ const LineChart = () => {
                                         }]
                                     }}
                                     options={{
+                                        layout: {
+                                            padding: {
+                                              bottom: 30
+                                            }
+                                        },
+                                        plugins:[{
+                                            afterDraw: chart => {      
+                                              var ctx = chart.chart.ctx; 
+                                              var xAxis = chart.scales['x-axis-0'];
+                                              var yAxis = chart.scales['y-axis-0'];
+                                              xAxis.ticks.forEach((value, index) => {  
+                                                var x = xAxis.getPixelForTick(index);      
+                                                var image = new Image().src = userImage
+                                                // image.src = userImage,
+                                                ctx.drawImage(image, x - 12, yAxis.bottom + 10);
+                                              });      
+                                            }
+                                        }],
                                         showLines: true,
                                         legend: {
                                             display:false,
@@ -178,7 +197,8 @@ const LineChart = () => {
                                                 ticks: {
                                                     stepSize: 20,
                                                     beginAtZero: false,
-                                                },
+                                                    display: false
+                                                }
                                             }],
                                             yAxes: [{
                                                 gridLines: {
