@@ -148,8 +148,8 @@ const MyCourses = (props) => {
 	}, [ignoredVar])
 
 	const getTeachers = () => {
-		 
-		courses.map(course => {
+		let courseArray = [...courseTeachers]
+		courses.map((course, index) => {
 			// replace 11 by ${course.teacher_id}
 			Axios.get(`https://dbms-back.herokuapp.com/teacher/${course.teacher_id}`, {
 				header: {
@@ -157,11 +157,14 @@ const MyCourses = (props) => {
 				}
 			})
 			.then (res => {
-				setCourseTeachers(old => [...old, res.data.data[0].fname.concat(' ').concat(res.data.data[0].lname)] )
+				
+				courseArray[index] = res.data.data[0].fname.concat(' ').concat(res.data.data[0].lname)
+				setCourseTeachers(courseArray)
+				console.log(courses)
+				console.log(courseArray)
 			})
 			.catch(() => toast.error('Error fetching courses'))
 		})
-		return courseTeachers
 	}
 
 	React.useEffect(() => {
