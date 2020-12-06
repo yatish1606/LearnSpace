@@ -673,7 +673,7 @@ html img{
     font-weight: 500;
     margin: 0;
     padding: 0;
-    margin-top: 5px;
+    margin-top: 10px;
     letter-spacing: 0.2px;
 }
 
@@ -683,4 +683,43 @@ html img{
 }
 .sub:hover.trashcan:hover {
     color: #09a407;
+}
+
+.faq-title {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 20px 0px;
+    letter-spacing: 0.2px;
+}
+.collapse-css-transition {
+    transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-title p{
+    font-family: 'Poppins';
+    font-size: 20px;
+    margin: 0;
+    color: var(--textColor);
+    padding-top: 20px;
+    font-weight: 600;
+    padding: 0rem;
+    letter-spacing: 0.3px;
+}
+
+.faq-content {
+    background-color: var(--grey);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.faq-content p{
+    font-family: 'Poppins';
+    font-size: 15px;
+    margin: 0;
+    color: var(--sub);
+    font-weight: 500;
+    padding: 0rem;
 }

@@ -76,7 +76,7 @@ const NoteBox = ({day, date, time, content, id, deleteNote}) => {
                 <div style={{display: "flex", flexDirection: 'row', alignItems: "center"}}>
                     <p>{day} {date} {time}</p>
                 </div>
-                <Trash2 size={18} className={"sub trashcan"} onClick={() => deleteNote(id)}/>
+                <X size={18} className={"sub trashcan"} onClick={() => deleteNote(id)}/>
             </div>
             <h6 className="changeColor">{content}</h6>
         </div>
@@ -103,9 +103,11 @@ const Notes = ({}) => {
         .getDate().toString().concat(' ')
         .concat(months[new Date().getMonth()]).concat(' ')
         .concat(new Date().getFullYear())
+
        
         Axios.post('https://dbms-back.herokuapp.com/notes', {
             'user_id' : _id,
+            'user_type': userType,
             'day': days[new Date().getDay()],
             'date': date,
             'time': formatAMPM(new Date),
@@ -121,12 +123,11 @@ const Notes = ({}) => {
         })
         .catch(() => toast.error('Could not add note'))
         setNote('')
+        forceUpdate()
     }
 
     const deleteNote = (id) => {
-        Axios.post('https://dbms-back.herokuapp.com/remove_from_notes', {
-            '_id' : id,
-        })
+        Axios.delete(`https://dbms-back.herokuapp.com/notes/${id}`)
         .then(res => {
             if(res.data.success) {
                 toast.success('Note deleted')
@@ -136,10 +137,11 @@ const Notes = ({}) => {
         })
         .catch(() => toast.error('Could not delete note'))
         setNote('')
+        forceUpdate()
     }
 
     React.useEffect(() => {
-        Axios.get( `https://dbms-back.herokuapp.com/notes/${_id}`)
+        Axios.get( `https://dbms-back.herokuapp.com/notes/${userType}/${_id}`)
         .then(res => {
            
             if(res.data.success) {
