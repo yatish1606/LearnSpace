@@ -674,12 +674,13 @@ html img{
     margin: 0;
     padding: 0;
     margin-top: 5px;
+    letter-spacing: 0.3px;
 }
 
 .trashcan {
     color: var(--sub);
     cursor: pointer;
 }
-.trashcan:hover {
+.sub:hover.trashcan:hover {
     color: #09a407;
 }
