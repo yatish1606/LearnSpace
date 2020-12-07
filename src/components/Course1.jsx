@@ -449,14 +449,14 @@ const Course1 = (props) => {
 					<Plus size={40} color="white" onClick={openModal}/>
 				</div>
 
-				<div className={"new-post background"} style={{bottom: 120, backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff', boxShadow: 'none'}}>
+				{/* <div className={"new-post background"} style={{bottom: 120, backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff', boxShadow: 'none'}}>
 					<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
-				</div>
+				</div> */}
 			</React.Fragment>
 			: null }
 
 			
-			{modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null}
+			{/* {modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null} */}
 
 
 

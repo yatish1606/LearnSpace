@@ -178,6 +178,11 @@ const Sidebar = (props) => {
 	const [newLName, setNewLName] = useState(user.lname)
 	
 	const changeName = () => {
+
+		if(!newFName.length || !newLName) {
+			return toast.error('Name fields cannot be empty')
+		}
+
 		if(user.fname == newFName && user.lname == newLName) {
 			toast.error('Please change name')
 			return

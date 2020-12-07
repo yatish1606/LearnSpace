@@ -73,6 +73,9 @@ const AssignmentDetails = ({courseName, history}) => {
 		size: null
 	})
 
+	const maxMarks = 25
+	// replce max marks later
+
 	const [modalIsOpen, setModal] = React.useState(false)
 	const [marks, setmarks] = React.useState('')
 	const onChangemarks = e => setmarks(e.target.value);
@@ -80,8 +83,16 @@ const AssignmentDetails = ({courseName, history}) => {
 	const openModal = () => setModal(true)
 	const closeModal = () => setModal(false)
 
+	const validateMarks = () => marks.length ? (marks > maxMarks ? false : true) : false
+		
+
 	const sendMarks = () => {
 		// How to get this sub_id ??
+		if(!validateMarks()) {
+			toast.error('Cannot grade due to invalid marks')
+			return 
+		}
+		
 		const sub_id = 1;
 		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${sub_id}`, {
 			"marks" : marks
@@ -240,46 +251,47 @@ const AssignmentDetails = ({courseName, history}) => {
 				style={customStyles}
 				contentLabel="Modal"
 				closeTimeoutMS={200}
+				className="background"
 			>
 
 				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
 
 
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
-					<div style={{width: '2rem', height: '2rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+					<div className="changeColorBG" style={{width: '2rem', height: '2rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
 						<Edit3 size={18} color="#09a407"/>
 					</div>
 					<div style={{marginLeft: '10px'}}>
-						<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 20, padding:0, marginBottom:0}}>Grade Assignment</h2>
+						<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 500, fontSize: 20, padding:0, marginBottom:0}}>Grade Assignment</h2>
 					</div>
             	</div>
 
 				<div className="file-box" style={{height: 'auto', alignItems: "center", borderWidth: 0, padding: '10px 0'}}>
                         <div className="file-box-info">
 						
-                            <h5 style={{fontSize: 16}}>Assignment 1 : Multithreading in C++</h5>
+                            <h5 className="changeColor" style={{fontSize: 16}}>Assignment 1 : Multithreading in C++</h5>
                         </div>
 
 						<div className="instructor-box" style={{marginTop: 0, flexDirection: 'row-reverse'}}>
-							<div style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
-								<img src={getRandomUser()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+							<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+								<img className="changeColorBG" src={getRandomUser()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
 							</div>
 							<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-								<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>SUBMITTED BY</p>
-								<h6 style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>John Doe</h6>
+								<p className="sub" style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>SUBMITTED BY</p>
+								<h6 className="changeColor" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>John Doe</h6>
 							</div>
 						</div>       
                 </div>
 
 				
-				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Marks out of 25</p>
-				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks}></input>
+				<p  className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Marks out of 25</p>
+				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks} onBlur={() => validateMarks() ? null : toast.error('Invalid marks')}></input>
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>
 						<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={sendMarks}>Save marks</p>
 					</button>
-					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
 						<p style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
 					</button>
 				</div>
