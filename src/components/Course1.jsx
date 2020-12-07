@@ -235,7 +235,7 @@ const Post = ({postType, title, info}) => {
 
 
 
-const Course1 = () => {
+const Course1 = (props) => {
 
 	const [index, setIndex] = React.useState(0)
 
@@ -271,8 +271,20 @@ const Course1 = () => {
 
 	useEffect(() => {
 		//console.log(studentDetails);
-		
-	},[])
+// 		Another example that uses url params:
+
+// If you were changing profile routes from /profile/20 to /profile/32
+
+// And your route was defined as /profile/:userId
+
+// componentDidUpdate(prevProps) {
+//     if (this.props.match.params.userId !== prevProps.match.params.userId) {
+//         console.log('Route change!');
+//     }
+// }
+		console.log(props.match.params[0])
+		forceUpdate()
+	},[props.match.params[0]])
 
 	React.useEffect(() => {
 		let arr = window.location.href.split('/');
