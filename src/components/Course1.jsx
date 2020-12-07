@@ -390,21 +390,17 @@ const Course1 = (props) => {
 	}
 
 	const removeStudent = (student_id,course_id) => {
-		console.log("Hi")
 		Axios.post('https://dbms-back.herokuapp.com/remove_from_course',{
 			student_id: student_id,
 			course_id: course_id
 		})
 		.then(res => {
-			
 			if(res.data.success) {
-				toast.success("Removed student successfully")
 			} else {
-				toast.error("Error removing student")
-
+				toast.error("Error")
 			}
 		})
-		.catch(() => toast.error("Error removing student"))
+		.catch(() => toast.error("Error"))
 	}
 
 
@@ -465,11 +461,19 @@ const Course1 = (props) => {
 			<div className="course-heading-block">
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
-				{userType === 'student' ? 
-					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
-				:
-				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
-				}
+				<Link to={`/`}>
+					{userType === 'student' ? 
+						<p onClick={() => {
+								removeStudent(user._id,courseID);
+								toast.success('Left course successfully')
+							}
+						}
+						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+						Leave Course</p>
+					:
+					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+					}
+				</Link>
 
 				<h2 className="course-title">{courseInfo.name}</h2>
 				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">
@@ -539,7 +543,11 @@ const Course1 = (props) => {
 							</div>
 							{userType === 'teacher' ? 
 							<React.Fragment>
-							<UserX onClick={() => removeStudent(student._id,courseID)}
+							<UserX onClick={() => {
+								removeStudent(student._id,courseID)
+								toast.success('Removed student successfully')
+
+							} }
 							size={22} style={{cursor: "pointer"}} className="remove-user-icon"
 							/>
 							</React.Fragment>
