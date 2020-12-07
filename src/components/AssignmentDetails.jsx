@@ -117,7 +117,7 @@ const AssignmentDetails = ({courseName, history}) => {
 			<div className="course-heading-block" style={{flexDirection: "row", paddingRight: 0}}>
 
 				
-                <p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Mulish', fontWeight: 700, margin:0, padding: 0, marginTop: 5}}>Due 5th December</p>
+                <p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Due 5th December</p>
 
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
 
@@ -188,7 +188,7 @@ const AssignmentDetails = ({courseName, history}) => {
 								<button className="changeColorBG" style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
 									<input type="file" onChange={handleSubmission}/>
 									<Upload size={18} className="changeColor" style={{marginRight: 10}}/>
-									<p className="changeColor" style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
+									<p className="changeColor" style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins'}}>Upload file</p>
 								</button>
 								
 
@@ -201,7 +201,7 @@ const AssignmentDetails = ({courseName, history}) => {
 								}
 
 								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={() => toast.success("Assignment submitted successfully")}>
-									<p style={{fontSize: 17, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish'}}>Submit</p>
+									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}}>Submit</p>
 								</button>
 							</React.Fragment>
 						: 	<React.Fragment>

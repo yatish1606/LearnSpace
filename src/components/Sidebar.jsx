@@ -22,13 +22,22 @@ const Sidebar = (props) => {
 
 	const a = localStorage.getItem('userDetails');
 
+	const [user, setUser] = useState(a ? JSON.parse(a) : {
+		department: '',
+		year:'',
+		fname: '',
+		lname: '',
+		email:'',
+		password: '',
+		_id: ''
+	})
 	const [sidebar,setSidebar] = useState(false);
 	const [window,setWindow] = useState(null)
 	const [isLightTheme, setIsLightTheme] = useState(true)
 	const [modalIsOpen, setModal] = useState(false)
 	const [modalIsOpenProfile, setModalProfile] = useState(false)
-	const [newFName, setNewFName] = useState(JSON.parse(a).fname)
-	const [newLName, setNewLName] = useState(JSON.parse(a).lname)
+	
+	
 
 	const [courses, setCourses] = React.useState([])
 
@@ -38,21 +47,39 @@ const Sidebar = (props) => {
 	const openModalProfile = () => setModalProfile(true)
 	const closeModalProfile = () => setModalProfile(false)
 
-	
-	const user = a ? JSON.parse(a) : {
-		department: "",
-		year: "",
-		fname: "",
-		lname: "",
-		email: "",
-		password: "",
-		_id: ""
-	};
 	console.log(user)
 
 	const b = localStorage.getItem('userType');
 	const userType = b ? JSON.parse(b) : "student";
 	console.log(userType)
+
+	
+
+	React.useEffect(() => {
+		Axios.get(`https://dbms-back.herokuapp.com/${userType}/${user._id}`, {
+			header: {
+				"Content-Type": "application/json; charset=utf-8"
+			}
+		})
+		.then(res => {	
+			if(res.data.success) {
+				// let {fname, lname, email, year, department, password} = res.data.data[0]
+				// user.fname = fname
+				// user.lname = lname
+				// user.email = email
+				// user.year = year
+				// user.department = department
+				// user.password = password
+				// console.log(res.data.data[0])
+				//user = res.data.data[0]
+				setUser(res.data.data[0])
+				console.log(user)
+			} else {
+				return toast.error('Error getting info')
+			}			
+		})
+		.catch(() => toast.error('Could not fetch your info. Please try again'))
+	}, [])
 
 	function GetCurrentPath () {
 		return useLocation().pathname
@@ -108,7 +135,7 @@ const Sidebar = (props) => {
 	// console.log(GetCurrentPath())
 	React.useEffect(() => {
 		if(userType === 'teacher') return 
-		toast.info('Fetching courses...')
+		
 		Axios.get(`https://dbms-back.herokuapp.com/coursesenrolled/${user._id}`, {
 			header: {
 				"Content-Type": "application/json; charset=utf-8"
@@ -117,7 +144,7 @@ const Sidebar = (props) => {
 		.then(res => {	
 			if(res.data.success) {
 				setCourses(res.data.data)
-				toast.success('Fetched courses')
+				
 			} else {
 				return toast.error('Error fetching courses')
 			}			
@@ -128,7 +155,7 @@ const Sidebar = (props) => {
 
 	React.useEffect(() => {
 		if(userType === 'student') return 
-		toast.info('Fetching courses...')
+		
 		Axios.get(`https://dbms-back.herokuapp.com/coursebyteacher/${user._id}`, {
 			header: {
 				"Content-Type": "application/json; charset=utf-8"
@@ -137,7 +164,7 @@ const Sidebar = (props) => {
 		.then(res => {	
 			if(res.data.success) {
 				setCourses(res.data.data)
-				toast.success('Fetched courses')
+				
 			} else {
 				return toast.error('Error fetching courses')
 			}			
@@ -146,8 +173,33 @@ const Sidebar = (props) => {
 		console.log(courses)
 	}, [])
 
-	const sidebarData = courses.length ? courses : []
+	
+	const [newFName, setNewFName] = useState(user.fname)
+	const [newLName, setNewLName] = useState(user.lname)
+	
+	const changeName = () => {
+		if(user.fname == newFName && user.lname == newLName) {
+			toast.error('Please change name')
+			return
+		}
+		const url = `https://dbms-back.herokuapp.com/update${userType}name`
+		Axios.post(url , {
+			'fname': newFName,
+			'lname': newLName,
+			'email': user.email
+		})
+		.then(res => {	
+			if(res.data.success) {
+				toast.success('Name updated')
+			} else {
+				return toast.error('Error updating name')
+			}			
+		})
+		.catch(() => toast.error('Could not update your name. Please try again'))
+		closeModal()
+	}
 
+	const sidebarData = courses.length ? courses : []
 
 	return (
 		
@@ -284,7 +336,7 @@ const Sidebar = (props) => {
 				<input type="text" style={{height:40}} value={newLName} onChange={t => setNewLName(t.target.value)}></input>
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-					<button>
+					<button onClick={changeName}>
 						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
 					</button>
 					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
