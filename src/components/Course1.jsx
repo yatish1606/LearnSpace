@@ -354,7 +354,7 @@ const Course1 = (props) => {
 		"description": description,
 		"due_date": dueDate,
 		"max_marks": maxMarks,
-		"is_study_material": isAssignment
+		"is_assignment": isAssignment
 	}
 
 	const postMaterial = () => {
@@ -373,7 +373,6 @@ const Course1 = (props) => {
 			}
 		}
 
-
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
 			if(isAssignment===true){
@@ -381,7 +380,7 @@ const Course1 = (props) => {
 			} else if(isAssignment===false){
 				toast.success("New study material successfully created")
 			}
-			else toast.error("error")
+			else toast.error("error creating new material")
 		})
 		.catch(err => {
 			console.log(err)
@@ -396,12 +395,10 @@ const Course1 = (props) => {
 			course_id: course_id
 		})
 		.then(res => {
-			
 			if(res.data.success) {
 				toast.success("Removed student successfully")
 			} else {
 				toast.error("Error removing student")
-
 			}
 		})
 		.catch(() => toast.error("Error removing student"))
