@@ -146,7 +146,6 @@ const MyCourses = (props) => {
 	}, [courses])
 	
 	
-	
 	return (
 		
 		<div className="course-container">
@@ -181,11 +180,15 @@ const MyCourses = (props) => {
 				<CourseBox courseTitle="Theory of Computation" year="te" dept="IT" teacher="Shubhangi Deshpande" numberOfStudents={54}/>
 				<CourseBox courseTitle="Software Engineering and Project Management" year="te" dept="IT" teacher="Surendra Mahajan" numberOfStudents={69}/> */}
 
-				{courses ? 
+
+				{
+					courses ? 
 					courses.map((course, index) => {
 						return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
 					})
 				: null
+				
+				
 				}
 			
 			
