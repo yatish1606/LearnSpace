@@ -31,6 +31,8 @@ let user = localdata ? localdata : {
 }
 let {_id, fname, lname, email} = user
 
+let currentCourseId = window.location.pathname.replace('/course/','');
+
 let userType = JSON.parse(localStorage.getItem('userType'))
 
 const styles = {
@@ -251,6 +253,7 @@ const Course1 = (props) => {
 	const [dueDate, setDueDate] = useState(null)
 	const [maxMarks, setMaxMarks] = useState(null)
 	const [title, setTitle] = useState(null)
+	const [description, setDescription] = useState(null)
 
 	const [attachment, setAttachment] = React.useState(null)
 	const [attachmentObject, setAttachmentObject] = React.useState({
@@ -305,7 +308,7 @@ const Course1 = (props) => {
 
 	React.useEffect(() => {
 		let teacher_id = courseInfo.teacher_id;
-		console.log(teacher_id)
+		// console.log(teacher_id)
 		Axios.get( `https://dbms-back.herokuapp.com/teacher/${teacher_id}`)
 		.then(res => {
 			
@@ -335,6 +338,30 @@ const Course1 = (props) => {
 		.catch(() => {})
 	},[courseInfo])
 
+	let materialData = {
+		"course_id": parseInt(currentCourseId),
+		"title": title,
+		"description": description,
+		"due_date": dueDate,
+		"max_marks": maxMarks,
+		"is_study_material": isAssignment
+	}
+
+	const postMaterial = () => {
+		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
+		.then(res => {
+			if(isAssignment===true){
+				toast.success("New assignment successfully created")
+			} else if(isAssignment===false){
+				toast.success("New study material successfully created")
+			}
+			else toast.error("error")
+		})
+		.catch(err => {
+			console.log(err)
+			toast.error("error")
+		})
+	}
 
 	const removeStudent = (student_id,course_id) => {
 		console.log("Hi")
@@ -544,7 +571,7 @@ const Course1 = (props) => {
 
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
 						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
-						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t)}></input>
+						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)}></input>
 					</div>
 
 					{isAssignment ?
@@ -560,7 +587,7 @@ const Course1 = (props) => {
 
 							<div style={{display: "flex", flexDirection: "column", width: '15%'}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
-								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t)}></input>
+								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t.target.value)}></input>
 							</div>
 						</React.Fragment>
 					: null 
@@ -571,7 +598,7 @@ const Course1 = (props) => {
 				</div>
 
 				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
-				<input type="text" style={{height:40}}></input>
+				<input type="text" style={{height:40}} onChange={t => setDescription(t.target.value)}></input>
 
 
 				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
@@ -596,7 +623,7 @@ const Course1 = (props) => {
 				
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>
-						<p style={{fontSize: 16, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8,}}>Create</p>
+						<p style={{fontSize: 16, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
 					</button>
 					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
 						<p style={{fontSize: 16, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8}}>Cancel</p>
