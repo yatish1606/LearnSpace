@@ -272,19 +272,29 @@ const Course1 = (props) => {
     
 	const forceUpdate = React.useCallback(() => setIgnored(v => v + 1), [])
 
+	const handleDueDateChange = day => {
+		
+		setDueDate(day)
+		var q = new Date();
+		var m = q.getMonth()
+		var d = q.getDate()
+		var y = q.getFullYear()
+
+		var today = new Date(y,m,d)
+		let ourDate = new Date(day)
+		
+		if(ourDate < today) {
+			toast.error('Invalid date')
+			setDueDate(null)
+		}
+	}
+
+	const validateTitle = () => title ? (title.length ? true : false) : false
+	const validateDescription = () => description ? (description.length ? true : false) : false
+	const validateMarks = () => maxMarks ? (maxMarks.length ? true : false) : false
+	
+
 	useEffect(() => {
-		//console.log(studentDetails);
-// 		Another example that uses url params:
-
-// If you were changing profile routes from /profile/20 to /profile/32
-
-// And your route was defined as /profile/:userId
-
-// componentDidUpdate(prevProps) {
-//     if (this.props.match.params.userId !== prevProps.match.params.userId) {
-//         console.log('Route change!');
-//     }
-// }
 		console.log(props.match.params[0])
 		forceUpdate()
 	},[props.match.params[0]])
@@ -348,6 +358,22 @@ const Course1 = (props) => {
 	}
 
 	const postMaterial = () => {
+		console.log(validateTitle())
+
+		if(isAssignment) {
+			if (!(validateDescription() && validateMarks() && validateTitle() && dueDate!==null)) {
+				toast.error('Form is invalid')
+				return
+			}
+		}
+		else {
+			if (!(validateTitle() && validateDescription())) {
+				toast.error('Form is invalid')
+				return
+			}
+		}
+
+
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
 			if(isAssignment===true){
@@ -536,29 +562,30 @@ const Course1 = (props) => {
 			style={customStyles}
 			contentLabel="Modal"
 			closeTimeoutMS={200}
+			className="background"
 			>
 				
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
-					<div style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
+					<div className="changeColorBG" style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
 						<FileText size={25} color="#09a407"/>
 					</div>
 					<div style={{marginLeft: '1rem'}}>
-						<h2 style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>Post New Material</h2>
-						<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>Send new study material or assignments to students</p>
+						<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>Post New Material</h2>
+						<p className="grey" style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>Send new study material or assignments to students</p>
 					</div>
             	</div>
 
 			
 				<div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30}}>
 					<div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
-						<label class="checkbox-container" style={{borderColor: !isAssignment ? '#09a407' : '#eee'}}>
-							<Book size={22} style={{marginRight: 15}} color="#545454"/>
+						<label class={"checkbox-container sub"} style={{borderColor: !isAssignment ? '#09a407' : ''}}>
+							<Book size={22} style={{marginRight: 15}} className="sub"/>
 							Study Material
 							<input type="checkbox" onClick={() => setIsAssignment(false)} checked={!isAssignment}/>
 							<span class="checkmark" style={{right: 0, left: 180}}></span>
 						</label>
-						<label class="checkbox-container" style={{borderColor: isAssignment ? '#09a407' : '#eee'}}>
-							<FileText size={22} style={{marginRight: 15}} color="#545454"/>
+						<label class={"checkbox-container sub"} style={{borderColor: isAssignment ? '#09a407' : ''}}>
+							<FileText size={22} style={{marginRight: 15}} className="sub"/>
 							Assignment
 							<input type="checkbox" onClick={() => setIsAssignment(true)} checked={isAssignment}/>
 							<span class="checkmark" style={{right: 0, left: 160}}></span>
@@ -570,24 +597,29 @@ const Course1 = (props) => {
 				<div style={{display: "flex", flexDirection: "row"}}>
 
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
-						<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
-						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)}></input>
+						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
+						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)} 
+						onBlur={() => validateTitle() ? null : toast.error('Title cannot be empty')}
+						></input>
 					</div>
 
 					{isAssignment ?
 						<React.Fragment>
 							<div style={{display: "flex", flexDirection: "column", width: '25%', marginRight: 25}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
+								<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
 								<DayPickerInput 
-									onDayChange={day => setDueDate(day)}
+									onDayChange={handleDueDateChange}
 									style={{fontFamily: 'Poppins', fontSize: 14}} 
 									navbarElement={<ArrowLeft size={15}/>}
+									//onBlur={() => validateDate() ? console.log('date is valid') : toast.error('Invalid date')}
 								/>
 							</div>
 
 							<div style={{display: "flex", flexDirection: "column", width: '15%'}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
-								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t.target.value)}></input>
+								<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
+								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t.target.value)}
+								onBlur={() => validateMarks() ? null : toast.error('Marks cannot be empty')}
+								></input>
 							</div>
 						</React.Fragment>
 					: null 
@@ -597,17 +629,19 @@ const Course1 = (props) => {
 
 				</div>
 
-				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
-				<input type="text" style={{height:40}} onChange={t => setDescription(t.target.value)}></input>
+				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
+				<input type="text" style={{height:40}} onChange={t => setDescription(t.target.value)}
+				onBlur={() => validateDescription() ? null : toast.error('Description cannot be empty')}
+				></input>
 
 
-				<p style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
+				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
 
 				{attachment ? null : 
-				<button style={{backgroundColor: "transparent", border: '2px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden"}}>
+				<button className='changeColorBG' style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
 					<input type="file" onChange={handleFileUpload} className="file-upload"/>
-					<Plus size={18} color="#09a407" style={{marginRight: 10}}/>
-					<p style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
+					<Plus size={18} className="changeColor" style={{marginRight: 10}}/>
+					<p className="changeColor" style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
 				</button>
 				}
 								
@@ -623,10 +657,10 @@ const Course1 = (props) => {
 				
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>
-						<p style={{fontSize: 16, fontWeight: 700, color: 'white', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
+						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
 					</button>
-					<button style={{backgroundColor: 'white', boxShadow: 'none'}} onClick={closeModal}>
-						<p style={{fontSize: 16, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish', letterSpacing: 0.8}}>Cancel</p>
+					<button style={{boxShadow: 'none', backgroundColor: 'transparent'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
 					</button>
 				</div>
 
