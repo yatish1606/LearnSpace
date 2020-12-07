@@ -9,7 +9,7 @@ export const ToastContainerCustom = () => {
     return (
         <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={2500}
         hideProgressBar
         newestOnTop={false}
         closeOnClick
