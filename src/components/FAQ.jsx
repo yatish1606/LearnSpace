@@ -6,33 +6,18 @@ import Collapse from "@kunukn/react-collapse";
 
 const FAQList = [
     {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
+        title: 'How do I join a course?',
+        content: 'You will need the course code of the course you wish to join. This course code is available with your course instructor. At the My Courses section, click on the + icon and enter the course code and voila, you will be enrolled into the course!'
     },
     {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
+        title: 'Where do I view my courses?',
+        content: 'All the courses that you have enrolled for will appear on the Home Page. They are also listed in the Sidebar.'
     },
     {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
+        title: 'How do I view the feed of a course?',
+        content: 'On simply clicking on an enrolled course, you will be able to view all the happenings of the course!'
     },
-    {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
-    },
-    {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
-    },
-    {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
-    },
-    {
-        title: 'Example title for accordion',
-        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus facilisis leo vel diam accumsan, et sodales sapien facilisis. Maecenas feugiat posuere velit. Nulla vel felis est. Maecenas semper viverra consectetur. Nam vulputate cursus ex, eget finibus arcu euismod ullamcorper. In elementum velit urna, quis ornare arcu vulputate ac. Fusce euismod porttitor elit, id blandit lectus sodales ut. Donec suscipit, ipsum sed scelerisque bibendum, orci justo sagittis quam, sit amet ultricies velit quam sed nisi. Sed facilisis posuere orci vitae mollis. Pellentesque viverra felis vitae mauris condimentum, ut efficitur purus egestas. Sed felis turpis, facilisis vel ante ac, condimentum scelerisque lectus. Sed accumsan congue lectus, id rutrum ipsum condimentum vitae.'
-    },
+    
 ]
 
 
