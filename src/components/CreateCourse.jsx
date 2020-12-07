@@ -67,8 +67,8 @@ const CreateCourse = () => {
 	const [modalIsOpen,setIsOpen] = React.useState(false);
 	
 	
-	const [year, setYear] = React.useState('');
-	const [department, setDepartment] = React.useState('');
+	const [year, setYear] = React.useState(null);
+	const [department, setDepartment] = React.useState(null);
 	const [courseName, setCourseName] = React.useState('')
 	const [description, setDescription] = React.useState('')
 	const [code, setCode] = React.useState('')
@@ -92,7 +92,16 @@ const CreateCourse = () => {
 		setIsOpen(false);
 	}
 
+	const validateTitle = () => courseName.length ? true : false
+	const validateDescription = () => description.length ? true : false
+	const validateYear = () => year ? true : false
+	const validateDepartment = () => department ? true : false
+
 	const createCourse = () => {
+
+		if(!validateTitle() || !validateDepartment() || !validateDescription() || !validateYear()) {
+			return toast.error('Invalid form')
+		}
 		
 		let courseObject = {teacher_id : _id, name : courseName, description, year, department, course_code : randomString}
 	
@@ -236,7 +245,7 @@ const CreateCourse = () => {
 
 							<div style={{flexGrow: 1, marginRight: 15}}>
 								<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
-								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)}></input>
+								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)} onBlur={() => validateTitle() ? null : toast.error('Course name cannot be empty')}></input>
 							</div>
 							
 							
@@ -246,7 +255,7 @@ const CreateCourse = () => {
 
 
 						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Course Description</p>
-						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)}></input>
+						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)} onBlur={() => validateDescription() ? null : toast.error('Course description cannot be empty')}></input>
 
 
 						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Course Code</p>

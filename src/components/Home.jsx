@@ -6,6 +6,7 @@ import userImage3 from '../assets/user3.png'
 import userImage4 from '../assets/user4.png'
 import { getRandomColor, getRandomUser } from './random'
 import { StudentDetailsContext } from './contexts/StudentDetailsContext'
+import emptyImage from '../assets/empty2.png'
 
 import Axios from 'axios'
 import { toast } from 'react-toastify'
@@ -91,7 +92,7 @@ const MyCourses = (props) => {
 			.then(res => {	
 				if(res.data.success) {
 					setCourses(res.data.data)
-					toast.success('Fetched courses')
+					
 				} else {
 					return toast.error('Error fetching courses')
 				}			
@@ -111,7 +112,7 @@ const MyCourses = (props) => {
 		.then(res => {	
 			if(res.data.success) {
 				setCourses(res.data.data)
-				toast.success('Fetched courses')
+				
 			} else {
 				return toast.error('Error fetching courses')
 			}			
@@ -170,25 +171,22 @@ const MyCourses = (props) => {
             </div>
 
 
-			<p className="sub" style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20}}>My Courses</p>
+			<p className="sub" style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20, display: courses.length ? 'block' : 'none'}}>My Courses</p>
 			<div className="my-courses-box">
-				{/* <CourseBox courseTitle="Operating Systems" year="te" dept="IT" teacher="Satish Kamble" numberOfStudents={60}/>
-				<CourseBox courseTitle="Database Management Systems" year="te" dept="IT" teacher="Nilesh Sonawane" numberOfStudents={56}/>
-				<CourseBox courseTitle="Theory of Computation" year="te" dept="IT" teacher="Shubhangi Deshpande" numberOfStudents={54}/>
-				<CourseBox courseTitle="Software Engineering and Project Management" year="te" dept="IT" teacher="Surendra Mahajan" numberOfStudents={69}/>
-				<CourseBox courseTitle="Database Management Systems" year="te" dept="IT" teacher="Nilesh Sonawane" numberOfStudents={56}/>
-				<CourseBox courseTitle="Theory of Computation" year="te" dept="IT" teacher="Shubhangi Deshpande" numberOfStudents={54}/>
-				<CourseBox courseTitle="Software Engineering and Project Management" year="te" dept="IT" teacher="Surendra Mahajan" numberOfStudents={69}/> */}
+				
 
-
-				{
+				 {
 					courses ? 
 					courses.map((course, index) => {
 						return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
 					})
-				: null
+				:  null
 				
 				
+				} 
+				
+				{
+					courses.length ? null : <EmptyState/>
 				}
 			
 			
@@ -199,3 +197,16 @@ const MyCourses = (props) => {
 }
 
 export default MyCourses
+
+const EmptyState = () => {
+	return (
+		<div style={{width: '50%' ,alignSelf: "center", margin: '10px auto', display: "flex", alignItems: "center", flexDirection: "column", marginTop: 60}}>
+			<div className="changeColorBG" style={{width: 230, height: 230, borderRadius: 200, display: "flex", justifyContent: "center", alignItems: "center"}}>
+				<img src={emptyImage} style={{width: 110, height: 110}}/>
+			</div>
+			<h5 className="changeColor" style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 600, margin: '10px auto', padding: 0, marginTop: 30}}>No courses</h5>
+			<p  className="sub" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin: '10px auto', padding: 0, marginTop: 20}}>You have not enrolled in any courses yet!</p>
+			<p className="sub" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin: '10px auto', padding: 0,}}>Click on the green plus button to create or join a course</p>
+		</div>
+	)
+}
