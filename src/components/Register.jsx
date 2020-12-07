@@ -139,8 +139,55 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     const onChangeEmail = e => setEmail(e.target.value)
     const onChangePassword = e => setPassword(e.target.value)
 
+    const validateFName = () => {
+        let isValid = true
+        if(!fName.length) {
+            isValid = false
+        }
+
+        return isValid
+    }
+
+    const validateLName = () => {
+        let isValid = true
+        if(!lName.length) {
+            isValid = false
+        }
+
+        return isValid
+    }
+
+    const validatePassword = () => {
+        let isValid = true
+        if(!password.length) {
+            isValid = false
+        }
+
+        return isValid
+    }
+
+
+    const validateEmail = () => {
+        let isValid = true
+        if(!email.length) {
+            isValid = false
+        }
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(email)) {
+            isValid = false
+        }
+        return isValid
+    }
+
+
+
 
     const registerStudent = () => {
+
+        if(!validateEmail() || !validateLName() || !validateFName() || !validatePassword()) {
+            return toast.error('Form is invalid')
+        }
+
         Axios.post("https://dbms-back.herokuapp.com/student", {
             "fname":fName,
             "lname":lName,
@@ -204,6 +251,12 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
     }
 
     const registerTeacher = () => {
+
+        if(!validateEmail() || !validateLName() || !validateFName() || !validatePassword()) {
+            return toast.error('Form is invalid')
+        }
+
+
         Axios.post("https://dbms-back.herokuapp.com/teacher",{
             "fname":fName,
             "lname":lName,
@@ -305,12 +358,15 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                     <input
                         placeholder="First Name"
                         onChange={onChangefName}
+                        onBlur={() => validateFName() ? null : toast.error('First name cannot be empty')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
                     <input
                         placeholder="Last Name"
                         onChange={onChangelName}
+                        onBlur={() => validateLName() ? null : toast.error('Last name cannot be empty')}
+                        
                     />
                 </div>
             </div>
@@ -351,7 +407,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                         type="email"
                         placeholder="Email ID"
                         onChange={onChangeEmail}
-                        
+                        onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
@@ -361,6 +417,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                             placeholder="Password"
                             onChange={onChangePassword}
                             style={{marginRight: 0}}
+                            onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
                         />
                         {
                             viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
@@ -402,7 +459,35 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
     
     // let localdata = localStorage.getItem('fsociety');
     // let details = localdata ? JSON.parse(localdata) : {};
+
+    const validatePassword = () => {
+        let isValid = true
+        if(!password.length) {
+            isValid = false
+        }
+
+        return isValid
+    }
+
+
+    const validateEmail = () => {
+        let isValid = true
+        if(!email.length) {
+            isValid = false
+        }
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!re.test(email)) {
+            isValid = false
+        }
+        return isValid
+    }
+
+
     const loginStudent = () => {
+
+        if(!validateEmail() ||  !validatePassword()) {
+            return toast.error('Form is invalid')
+        }
 
 
         
@@ -426,6 +511,12 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
 		}
 		
 		const loginTeacher = () => {
+
+            if(!validateEmail() ||  !validatePassword()) {
+                return toast.error('Form is invalid')
+            }
+
+            
 			Axios.post("https://dbms-back.herokuapp.com/teacher_login", {
                 "email":email,
                 "password":encrypt(password)
@@ -502,7 +593,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                         type="email"
                         placeholder="Email ID"
                         onChange={onChangeEmail}
-                        
+                        onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
@@ -512,6 +603,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                             placeholder="Password"
                             onChange={onChangePassword}
                             style={{marginRight: 0}}
+                            onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
                         />
                         {
                             viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
