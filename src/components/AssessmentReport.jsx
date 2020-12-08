@@ -11,6 +11,7 @@ import "react-toggle/style.css"
 import './Sidebar.css'
 import { Chart as ChartJS } from 'react-chartjs-2';
 import './course.css'
+import Axios from 'axios'
 
 let userType = 'teacher'
 
@@ -48,6 +49,36 @@ const AssessmentReport = ({history}) => {
             setChart('line')
         }
     }
+
+	const [ignored, setIgnored] = React.useState(0)
+    const [assignment,setAssignment] = useState({})
+
+    let arr = window.location.href.split('/');
+    let assignmentID = arr[arr.length -1];
+    const [studentCount,setStudentCount] = useState(0)
+
+    React.useEffect(() => {
+		
+		Axios.get( `https://dbms-back.herokuapp.com/assignmentbyid/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data[0])
+			let a = res.data.data[0];
+			setAssignment(a);
+		})
+		.catch(() => console.log('error'))
+    },[ignored])
+    
+    React.useEffect(() => {
+		let arr = window.location.href.split('/');
+		let assignmentID = arr[arr.length -1];
+		Axios.get( `https://dbms-back.herokuapp.com/getstudentcount/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data[0])
+			let a = res.data.data[0].count;
+			setStudentCount(a);
+		})
+		.catch(() => console.log('error'))
+	},[ignored])
     
 	return (
 		<div className="course-container">
@@ -61,9 +92,11 @@ const AssessmentReport = ({history}) => {
                    
                     
 
-                    <h2 className="course-title">Assignment 1 : Threading in C++</h2>
+                    <h2 className="course-title">{assignment.title}</h2>
+
+                    <h5 className="">Assessment Report</h5>
                    
-                    
+                 {/*}   
                     <div className="instructor-box" style={{marginTop: 5}}>
                         <div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
                             <img className="changeColorBG" src={userImage} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
@@ -73,6 +106,7 @@ const AssessmentReport = ({history}) => {
                             <h6 className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
                         </div>
                     </div>
+                */}
 
                     
                     
@@ -130,7 +164,8 @@ const AssessmentReport = ({history}) => {
                             <div className="students-box-circle" style={{marginLeft: 0, background: '#09a407'}}><img src={userImage}/></div>
                             <div className="students-box-circle" style={{marginLeft: 17,  background: '#0F98D9', transform: 'scale(1.02)'}}><img src={userImage3}/></div>
                             <div className="students-box-circle" style={{marginLeft: 34,  background: '#545454', transform: 'scale(1.05)'}}><img src={userImage4}/></div>
-                            <p className="sub" style={{marginLeft: 70, fontFamily:'Poppins', fontSize: 13, color: '#434343', fontWeight: 500, marginTop: 30}}>54 students' assignments were submitted and graded</p>
+                            <p className="sub" style={{marginLeft: 70, fontFamily:'Poppins', fontSize: 13, color: '#434343', fontWeight: 500, marginTop: 30}}>
+                            {studentCount} students' assignments were submitted and graded</p>
                         </div>
                     </div>
                 </div>
