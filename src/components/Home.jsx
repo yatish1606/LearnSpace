@@ -178,7 +178,7 @@ const MyCourses = (props) => {
 					courses ? 
 						 courses.map((course, index) => {
 
-							 return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count}/>
+							 return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count ? 0 : course.student_count}/>
 					})
 				:  null
 				
