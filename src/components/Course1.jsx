@@ -388,11 +388,27 @@ const Course1 = (props) => {
 				toast.error('Form is invalid')
 				return
 			}
-		}
-		console.log(materialData)
+		}		
+
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
-			
+						var formData = new FormData();
+						formData.append("train", attachment);
+					// console.log(attachment.files[0])
+
+					Axios.post(`https://dbms-back.herokuapp.com/attachments/${res.data.data.insertId}`, formData, {
+					headers: {
+						"Content-Type": "multipart/form-data;"
+					}
+				})
+					.then(res1 => {
+						console.log(attachment)
+					})
+					.catch(err => {
+						console.log(err)
+						toast.error("error")
+					})
+			console.log(res.data.data.insertId)
 			if(isAssignment===true){
 				toast.success("New assignment successfully created")
 			} else if(isAssignment===false){
@@ -405,22 +421,7 @@ const Course1 = (props) => {
 			toast.error("error")
 		})
 
-		var formData = new FormData();
-		formData.append("train", attachment);
-		// console.log(attachment.files[0])
-
-		Axios.post('https://dbms-back.herokuapp.com/attachments/:attachment_id', formData, {
-		headers: {
-			"Content-Type": "multipart/form-data;"
-		}
-	})
-		.then(res => {
-			console.log(attachment)
-		})
-		.catch(err => {
-			console.log(err)
-			toast.error("error")
-		})
+		
 	}
 
 	const removeStudent = (student_id,course_id) => {
