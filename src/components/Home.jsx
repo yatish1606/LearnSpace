@@ -92,7 +92,6 @@ const MyCourses = (props) => {
 			.then(res => {	
 				if(res.data.success) {
 					setCourses(res.data.data)
-					
 				} else {
 					return toast.error('Error fetching courses')
 				}			
@@ -177,8 +176,9 @@ const MyCourses = (props) => {
 
 				 {
 					courses ? 
-					courses.map((course, index) => {
-						return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
+						 courses.map((course, index) => {
+
+							 return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count ? course.student_count : 0}/>
 					})
 				:  null
 				

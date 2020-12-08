@@ -34,7 +34,7 @@ const AppRouter = () => {
 					
 						<Route path="/" exact component={Home} exact/>	
 						<Route path="/course/*" component={Course1} exact/>
-						<Route path="/assignments" component={AssignmentDetails} exact/> 
+						<Route path="/assignments/*" component={AssignmentDetails} exact/> 
 						<Route path="/assessmentreport/*" component={AssessmentReport}/>
 						<Route path="/notes" component={Notes} exact/>
 						<Route path="/faq" component={FAQ} exact/>

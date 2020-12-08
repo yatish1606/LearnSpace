@@ -112,38 +112,38 @@ const styles = {
   }))((props) => <Tab disableRipple {...props} />);
 
 
-const postInfo = [
-	{
-		type: 'studyMaterial',
-		title: 'Introduction to Operating Systems',
-		info: ''
-	},
-	{
-		type: 'assignment',
-		title: 'OS Programming Assignment 1 : Threads',
-		info: ''
-	},
-	{
-		type: 'studyMaterial',
-		title: 'Operating Systems : Basic Principles',
-		info: ''
-	},
-	{
-		type: 'assignment',
-		title: 'OS Programming Assignment 2 : Multithreading Matrix Multiplication',
-		info: ''
-	},
-	{
-		type: 'studyMaterial',
-		title: 'Processess',
-		info: ''
-	},
-	{
-		type: 'assignment',
-		title: 'OS Programming Assignment 3 : File Management',
-		info: ''
-	},
-]
+// const postInfo = [
+// 	{
+// 		type: 'studyMaterial',
+// 		title: 'Introduction to Operating Systems',
+// 		info: ''
+// 	},
+// 	{
+// 		type: 'assignment',
+// 		title: 'OS Programming Assignment 1 : Threads',
+// 		info: ''
+// 	},
+// 	{
+// 		type: 'studyMaterial',
+// 		title: 'Operating Systems : Basic Principles',
+// 		info: ''
+// 	},
+// 	{
+// 		type: 'assignment',
+// 		title: 'OS Programming Assignment 2 : Multithreading Matrix Multiplication',
+// 		info: ''
+// 	},
+// 	{
+// 		type: 'studyMaterial',
+// 		title: 'Processess',
+// 		info: ''
+// 	},
+// 	{
+// 		type: 'assignment',
+// 		title: 'OS Programming Assignment 3 : File Management',
+// 		info: ''
+// 	},
+// ]
 
 const studentsList = [
 	{
@@ -187,13 +187,15 @@ const studentsList = [
 
 
 
-const Post = ({postType, title, info}) => {
+const Post = ({postType, title, info, assID}) => {
 	
 	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
 	// const type = postType.split(" ").forEach(s => s.charAt(0).toUpperCase().concat(s.slice(1, s.length)))
 	let typeArr = postType.split(/(?=[A-Z])/)
 	typeArr.map(s => s.charAt(0).toUpperCase())
 	const type = typeArr.join(' ')
+	if(!title.length) title = ''
+	if(!info.length) info = ''
 
 	const isAssignment = postType === 'assignment'
 	
@@ -212,7 +214,7 @@ const Post = ({postType, title, info}) => {
 			<div className="post-options">
 				{
 					isAssignment ? 
-					<Link to="/assignments">
+					<Link to={`/assignments/${assID}`}>
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 					</Link>
 					
@@ -263,6 +265,8 @@ const Course1 = (props) => {
 	const [courseInfo,setCourseInfo] = useState({})
 	const [courseTeacher,setCourseTeacher] = useState({})
 	const [courseStudents,setCourseStudents] = useState([])
+
+	const [posts, setPosts] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
 
@@ -347,6 +351,19 @@ const Course1 = (props) => {
 		.catch(() => {})
 	},[courseInfo])
 
+	React.useEffect(() => {
+		Axios.get(`https://dbms-back.herokuapp.com/assignment/${courseID}`)
+		.then(res => {
+			if(res.data.success) {
+				setPosts(res.data.data)
+			} else {
+				// toast.error("Error removing student")
+				console.log('error')
+			}
+		})
+		.catch(() => console.log('error'))
+	},[props.match.params[0]])
+
 	let materialData = {
 		"course_id": parseInt(currentCourseId),
 		"title": title,
@@ -372,7 +389,7 @@ const Course1 = (props) => {
 				return
 			}
 		}
-
+		console.log(materialData)
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
 			if(isAssignment===true){
@@ -413,12 +430,13 @@ const Course1 = (props) => {
 		})
 		.then(res => {
 			if(res.data.success) {
-				toast.success("Removed student successfully")
+				
 			} else {
-				toast.error("Error removing student")
+				//toast.error("Error removing student")
 			}
 		})
-		.catch(() => toast.error("Error removing student"))
+		.catch(() => {}//toast.error("Error removing student")
+		)
 	}
 
 
@@ -479,11 +497,19 @@ const Course1 = (props) => {
 			<div className="course-heading-block">
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
-				{userType === 'student' ? 
-					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Leave Course</p>
-				:
-				<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
-				}
+				<Link to={`/`}>
+					{userType === 'student' ? 
+						<p onClick={() => {
+								removeStudent(user._id,courseID);
+								toast.success('Left course successfully')
+							}
+						}
+						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+						Leave Course</p>
+					:
+					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+					}
+				</Link>
 
 				<h2 className="course-title">{courseInfo.name}</h2>
 				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">
@@ -516,9 +542,9 @@ const Course1 = (props) => {
 				
 				{/* Stream */}
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
-						
-					{postInfo.map((item, index) => {
-						return <Post postType={item.type} title={item.title} info={item.info}/>
+					{console.log(posts)}	
+					{posts.map((item, index) => {
+						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 					})}
 					
 				</div>
@@ -526,18 +552,17 @@ const Course1 = (props) => {
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
 
-					{postInfo.filter(p => p.type === 'assignment').map((item, index) => {
-						return <Post postType={item.type} title={item.title} info={item.info}/>
+					{posts.filter(p => p.is_assignment === 1).map((item, index) => {
+						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 					})}
 
 				</div>
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
 
-					{postInfo.filter(p => p.type === 'studyMaterial').map((item, index) => {
-						return <Post postType={item.type} title={item.title} info={item.info}/>
-					})}
-
+					{posts.filter(p => p.is_assignment === 0).map((item, index) => {
+							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
+						})}
 				</div>
 
 
@@ -553,7 +578,10 @@ const Course1 = (props) => {
 							</div>
 							{userType === 'teacher' ? 
 							<React.Fragment>
-							<UserX onClick={() => removeStudent(student._id,courseID)}
+							<UserX onClick={() => {
+								removeStudent(student._id,courseID);
+								toast.success('Student removed successfully')
+							}}
 							size={22} style={{cursor: "pointer"}} className="remove-user-icon"
 							/>
 							</React.Fragment>
