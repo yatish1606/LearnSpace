@@ -181,6 +181,7 @@ const AssignmentDetails = ({courseName, history}) => {
 			}})
 			.then(res => {
 				console.log(submission)
+				toast.success('File submitted successfully')
 			})
 			.catch(err => {
 				console.log(err)
@@ -199,6 +200,14 @@ const AssignmentDetails = ({courseName, history}) => {
 		// 	}
 			
 		// })
+	}
+
+	const getStudentSubmissions = () => {
+		Axios.get(`https://dbms-back.herokuapp.com/submissions/${assignmentID}`)
+		.then(res=> {
+			console.log(res.data)
+		})
+
 	}
 
 	console.log(submissionObject)
@@ -258,7 +267,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					</Link>
 					</reactFragment>
 					:null}
-					
+										
 					{userType === 'student' ? 
 					<reactFragment>
 						<br/>
@@ -275,7 +284,8 @@ const AssignmentDetails = ({courseName, history}) => {
                 <div className="assignment-upload">
 
 					
-					<h5 className="heading">{userType === 'student' ? 'My Submission' : 'Student Submissions'}</h5>
+					<h5 className="heading">{userType === 'student' ? 'My Submission' : 
+					<span>Student Submissions</span>}</h5>
 					
 					
 					
@@ -301,8 +311,8 @@ const AssignmentDetails = ({courseName, history}) => {
 								: null
 								}
 
-								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={() => toast.success("Assignment submitted successfully")}>
-									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} onClick={ submitAssignment }>Submit</p>
+								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={ submitAssignment }>
+									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} >Submit</p>
 								</button>
 							</React.Fragment>
 						: 	<React.Fragment>
