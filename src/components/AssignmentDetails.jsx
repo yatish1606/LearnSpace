@@ -103,9 +103,11 @@ const AssignmentDetails = ({courseName, history}) => {
 
 	console.log(assignment)
 
-	React.useEffect(() => {
-		let arr = window.location.href.split('/');
+	let arr = window.location.href.split('/');
 		let assignmentID = arr[arr.length -1];
+
+	React.useEffect(() => {
+		
 		Axios.get( `https://dbms-back.herokuapp.com/assignmentbyid/${assignmentID}`)
 		.then(res => {
 			console.log(res.data.data[0])
@@ -222,7 +224,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
 					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by {studentCount} students. Click on the assessment report to get a detailed analysis of the performance by students</p>
 
-					<Link to="/assessmentreport/1">
+					<Link to={`/assessmentreport/${assignmentID}`} >
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
 							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Assessment Report</p>
 					</button>
