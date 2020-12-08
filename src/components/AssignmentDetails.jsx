@@ -85,6 +85,35 @@ const AssignmentDetails = ({courseName, history}) => {
 
 	const validateMarks = () => marks.length ? (marks > maxMarks ? false : true) : false
 		
+	const [ignored, setIgnored] = React.useState(0)
+	const [assignment,setAssignment] = useState({})
+	const [studentCount,setStudentCount] = useState(0)
+
+	React.useEffect(() => {
+		let arr = window.location.href.split('/');
+		let assignmentID = arr[arr.length -1];
+		Axios.get( `https://dbms-back.herokuapp.com/getstudentcount/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data[0])
+			let a = res.data.data[0].count;
+			setStudentCount(a);
+		})
+		.catch(() => console.log('error'))
+	},[ignored])
+
+	console.log(assignment)
+
+	React.useEffect(() => {
+		let arr = window.location.href.split('/');
+		let assignmentID = arr[arr.length -1];
+		Axios.get( `https://dbms-back.herokuapp.com/assignmentbyid/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data[0])
+			let a = res.data.data[0];
+			setAssignment(a);
+		})
+		.catch(() => console.log('error'))
+	},[ignored])
 
 	const sendMarks = () => {
 		// How to get this sub_id ??
@@ -137,10 +166,10 @@ const AssignmentDetails = ({courseName, history}) => {
                    
                     
 
-                    <h2 className="course-title">Assignment 1 : Threading in C++</h2>
+                    <h2 className="course-title">{assignment.title}</h2>
                     
 
-                    <p className="sub" style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Operating Systems</p>
+                   {/*} <p className="sub" style={{fontSize: 17, color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Operating Systems</p>
                     <p style={{fontSize: 15, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 15}}>Posted 9th November 2020</p>
                     
                     <div className="instructor-box">
@@ -152,9 +181,10 @@ const AssignmentDetails = ({courseName, history}) => {
                             <h6 className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>Satish Kamble</h6>
                         </div>
                     </div>
-                    
+                    */}
                     <p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Description</p>
-                    <p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>Implement multithreading using pthread class in C++. Attach output of program with 3 valid test cases</p>
+										<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>
+										{assignment.description}</p>
                 
                     {/* <div className="file-box">
                         <div className="file-box-info">
@@ -167,7 +197,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					{userType === 'teacher' ? 
 					<reactFragment>
 					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
-					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by 10 students. Click on the assessment report to get a detailed analysis of the performance by students</p>
+					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by {studentCount} students. Click on the assessment report to get a detailed analysis of the performance by students</p>
 
 					<Link to="/assessmentreport/1">
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
