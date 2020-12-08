@@ -76,7 +76,6 @@ const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, num
 const MyCourses = (props) => {
 
 	const [courses, setCourses] = React.useState([])
-	const [coursecount, setCoursecount] = React.useState(0)
 	const [courseTeachers, setCourseTeachers] = React.useState([])
 	const [ignoredVar , update] = React.useState(0)
 
