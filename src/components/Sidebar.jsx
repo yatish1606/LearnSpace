@@ -107,7 +107,7 @@ const Sidebar = (props) => {
 
 	const menuOptions = [
 		{
-			title: 'Home',
+			title: 'Dashboard',
 			icon: <Layout size={22} color={GetCurrentPath() === '/' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 			path: '/'
 		},
