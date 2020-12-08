@@ -98,6 +98,7 @@ const AssignmentDetails = ({courseName, history}) => {
 	const [ignored, setIgnored] = React.useState(0)
 	const [assignment,setAssignment] = useState({})
 	const [studentCount,setStudentCount] = useState(0)
+	const [studentSubmissions,setStudentSubmissions] = useState([])
 
 	let arr = window.location.href.split('/');
 	let assignmentID = arr[arr.length -1];
@@ -202,13 +203,19 @@ const AssignmentDetails = ({courseName, history}) => {
 		// })
 	}
 
-	const getStudentSubmissions = () => {
-		Axios.get(`https://dbms-back.herokuapp.com/submissions/${assignmentID}`)
-		.then(res=> {
-			console.log(res.data)
+	
+	React.useEffect(() => {
+		
+		Axios.get(`https://dbms-back.herokuapp.com/marks/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data)
+			let a = res.data.data;
+			setStudentSubmissions(a);
 		})
-
-	}
+		.catch(() => console.log('error'))
+	},[ignored])
+	
+	console.log(studentSubmissions)
 
 	console.log(submissionObject)
 	return (
@@ -318,12 +325,12 @@ const AssignmentDetails = ({courseName, history}) => {
 						: 	<React.Fragment>
 								<br/>
 								
-								{studentsList.map((item, index) => {
-									let name = item.fName.concat(" ").concat(item.lName)
+								{studentSubmissions.map((item, index) => {
+									let name = item.fname.concat(" ").concat(item.lname)
 									return (
 									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
 										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={item.imag} style={{width: 30, height: 30, marginTop: 3}}/></div>
+											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={getRandomUser()} style={{width: 30, height: 30, marginTop: 3}}/></div>
 											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
 										</div>
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
