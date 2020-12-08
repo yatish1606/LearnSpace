@@ -392,6 +392,7 @@ const Course1 = (props) => {
 		console.log(materialData)
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
+			
 			if(isAssignment===true){
 				toast.success("New assignment successfully created")
 			} else if(isAssignment===false){
@@ -408,7 +409,7 @@ const Course1 = (props) => {
 		formData.append("train", attachment);
 		// console.log(attachment.files[0])
 
-		Axios.post('https://dbms-back.herokuapp.com/attachments/171', formData, {
+		Axios.post('https://dbms-back.herokuapp.com/attachments/:attachment_id', formData, {
 		headers: {
 			"Content-Type": "multipart/form-data;"
 		}
