@@ -18,7 +18,6 @@ import {toast} from 'react-toastify'
 import Axios from 'axios'
 
 
-
 let randomUser = getRandomUser()
 let theme = JSON.parse(localStorage.getItem('theme'))
 let localdata = JSON.parse(localStorage.getItem('userDetails'))
@@ -358,6 +357,7 @@ const Course1 = (props) => {
 	}
 
 	const postMaterial = () => {
+		console.log(attachment)
 		console.log(validateTitle())
 
 		if(isAssignment) {
@@ -381,6 +381,23 @@ const Course1 = (props) => {
 				toast.success("New study material successfully created")
 			}
 			else toast.error("error creating new material")
+		})
+		.catch(err => {
+			console.log(err)
+			toast.error("error")
+		})
+
+		var formData = new FormData();
+		formData.append("train", attachment);
+		// console.log(attachment.files[0])
+
+		Axios.post('https://dbms-back.herokuapp.com/attachments/171', formData, {
+		headers: {
+			"Content-Type": "multipart/form-data;"
+		}
+	})
+		.then(res => {
+			console.log(attachment)
 		})
 		.catch(err => {
 			console.log(err)
