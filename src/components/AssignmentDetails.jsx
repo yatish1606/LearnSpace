@@ -159,6 +159,21 @@ const AssignmentDetails = ({courseName, history}) => {
 		}
 	}
 
+	let currAssId = window.location.pathname.replace('/assignment/','');
+
+	const downloadAttachment = () => {
+		// Axios.get("https://dbms-back.herokuapp.com/attachmentsfile/:assignment_id", currAssId)
+		// .then(res => {
+		// 	if(res === null){
+		// 		toast.succes("no file for this assignment")
+		// 	} else {
+		// 		console.log(currAssId)
+		// 		toast.success("downloading")
+		// 	}
+			
+		// })
+	}
+
 	console.log(submissionObject)
 	return (
 		<div className="course-container">
@@ -217,6 +232,14 @@ const AssignmentDetails = ({courseName, history}) => {
 					</reactFragment>
 					:null}
 					
+					{userType === 'student' ? 
+					<reactFragment>
+						<br/>
+					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
+							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}} onClick = { downloadAttachment }>Download Attachment</p>
+					</button>
+					</reactFragment>
+					:null}
                 
                 
                 
