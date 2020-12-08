@@ -76,6 +76,7 @@ const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, num
 const MyCourses = (props) => {
 
 	const [courses, setCourses] = React.useState([])
+	const [coursecount, setCoursecount] = React.useState(0)
 	const [courseTeachers, setCourseTeachers] = React.useState([])
 	const [ignoredVar , update] = React.useState(0)
 
@@ -92,7 +93,6 @@ const MyCourses = (props) => {
 			.then(res => {	
 				if(res.data.success) {
 					setCourses(res.data.data)
-					
 				} else {
 					return toast.error('Error fetching courses')
 				}			
@@ -177,8 +177,9 @@ const MyCourses = (props) => {
 
 				 {
 					courses ? 
-					courses.map((course, index) => {
-						return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={56}/>
+						 courses.map((course, index) => {
+
+							 return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count}/>
 					})
 				:  null
 				
