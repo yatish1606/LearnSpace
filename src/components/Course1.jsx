@@ -543,7 +543,7 @@ const Course1 = (props) => {
 				
 				{/* Stream */}
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
-					{console.log(posts)}	
+					{/*console.log(posts)*/}	
 					{posts.map((item, index) => {
 						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 					})}
