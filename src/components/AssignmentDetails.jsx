@@ -7,6 +7,16 @@ import Modal from 'react-modal';
 import {Link} from 'react-router-dom'
 import './course.css'
 
+let localdata = JSON.parse(localStorage.getItem('userDetails'))
+let user = localdata ? localdata : {
+		fname: "",
+		lname: "",
+		email: "",
+		password: "",
+		_id: "404"
+}
+let {_id, fname, lname, email} = user
+
 let userType = JSON.parse(localStorage.getItem('userType'))
 let userImage = getRandomUser()
 let theme = JSON.parse(localStorage.getItem('theme'))
@@ -89,9 +99,10 @@ const AssignmentDetails = ({courseName, history}) => {
 	const [assignment,setAssignment] = useState({})
 	const [studentCount,setStudentCount] = useState(0)
 
+	let arr = window.location.href.split('/');
+	let assignmentID = arr[arr.length -1];
+
 	React.useEffect(() => {
-		let arr = window.location.href.split('/');
-		let assignmentID = arr[arr.length -1];
 		Axios.get( `https://dbms-back.herokuapp.com/getstudentcount/${assignmentID}`)
 		.then(res => {
 			console.log(res.data.data[0])
@@ -103,8 +114,7 @@ const AssignmentDetails = ({courseName, history}) => {
 
 	console.log(assignment)
 
-	let arr = window.location.href.split('/');
-		let assignmentID = arr[arr.length -1];
+
 
 	React.useEffect(() => {
 		
@@ -160,6 +170,23 @@ const AssignmentDetails = ({courseName, history}) => {
 	}
 
 	let currAssId = window.location.pathname.replace('/assignment/','');
+
+	const submitAssignment = () => {
+		var formData = new FormData();
+		formData.append("train", submission);
+
+		Axios.post(`https://dbms-back.herokuapp.com/submissions/${assignmentID}/${user._id}`, formData, {
+		headers: {
+			"Content-Type": "multipart/form-data;"
+			}})
+			.then(res => {
+				console.log(submission)
+			})
+			.catch(err => {
+				console.log(err)
+				toast.error("error")
+			})
+	}
 
 	const downloadAttachment = () => {
 		// Axios.get("https://dbms-back.herokuapp.com/attachmentsfile/:assignment_id", currAssId)
@@ -275,7 +302,7 @@ const AssignmentDetails = ({courseName, history}) => {
 								}
 
 								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={() => toast.success("Assignment submitted successfully")}>
-									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}}>Submit</p>
+									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} onClick={ submitAssignment }>Submit</p>
 								</button>
 							</React.Fragment>
 						: 	<React.Fragment>
