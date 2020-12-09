@@ -83,6 +83,9 @@ const AssignmentDetails = ({courseName, history}) => {
 		size: null
 	})
 
+	const [hasAttachment, setHasAttachment] = useState(false)
+
+
 	const maxMarks = 25
 	// replce max marks later
 
@@ -170,8 +173,6 @@ const AssignmentDetails = ({courseName, history}) => {
 		}
 	}
 
-	let currAssId = window.location.pathname.replace('/assignment/','');
-
 	const submitAssignment = () => {
 		var formData = new FormData();
 		formData.append("train", submission);
@@ -190,18 +191,21 @@ const AssignmentDetails = ({courseName, history}) => {
 			})
 	}
 
-	const downloadAttachment = () => {
-		// Axios.get("https://dbms-back.herokuapp.com/attachmentsfile/:assignment_id", currAssId)
-		// .then(res => {
-		// 	if(res === null){
-		// 		toast.succes("no file for this assignment")
-		// 	} else {
-		// 		console.log(currAssId)
-		// 		toast.success("downloading")
-		// 	}
-			
-		// })
+
+
+	const checkAttachment = () => {
+		Axios.get(`https://dbms-back.herokuapp.com/hasattachedfile/${assignmentID}`)
+		.then(res => {
+			console.log(res)
+			if(res.data.success){
+			setHasAttachment(res.data.file_exists)
+			}
+		})
+		.catch(err => {
+			console.log(err)
+		})
 	}
+	checkAttachment()
 
 	
 	React.useEffect(() => {
@@ -277,14 +281,17 @@ const AssignmentDetails = ({courseName, history}) => {
 										
 					{userType === 'student' ? 
 					<reactFragment>
-						<br/>
+					<br/>
+					{hasAttachment === true ? 
+					<a href={`https://dbms-back.herokuapp.com/attachmentsfile/${assignmentID}`}>
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
-							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}} onClick = { downloadAttachment }>Download Attachment</p>
+							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Download Attachment</p>
 					</button>
+					</a>
+					:null}
 					</reactFragment>
 					:null}
-                
-                
+					
                 
                 </div>
 
