@@ -350,7 +350,10 @@ const AssignmentDetails = ({courseName, history}) => {
 										</div>
 										
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+										<a href={`https://dbms-back.herokuapp.com/getsubmittedfile/${assignmentID}/${item.student_id}`}>
 										<Download size={20} className="sub" style={{cursor: "pointer"}}/>
+										</a>
+										
 										{
 											item.marks_obtained ? 
 											<div style={{fontSize: 18, fontWeight: "bold", color: "#09A407"}}>{item.marks_obtained}</div> 
