@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Info, Plus, X, UserX, ArrowLeft, Database} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -484,7 +484,7 @@ const Course1 = (props) => {
 		setIsOpenAutograde(false);
 	}
 
-
+	console.log(courseInfo.course_code)
 	return (
 		<div className="course-container">
 			
@@ -581,6 +581,26 @@ const Course1 = (props) => {
 
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
+
+					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
+						
+						<div className="changeColorBG" style={{width: 200, height: 40, borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between", marginBottom: 0}}>
+							<div style={{width: 40, borderRadius: 0, height: 40, backgroundColor: '#ddd', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}}>
+								<Copy size={22} color="#434343" onClick={() =>  {
+									navigator.clipboard.writeText(courseInfo.course_code)
+									toast.info("Course code copied to clipboard")
+								}}/>
+							</div>
+							<p className="sub" style={{fontFamily:'Poppins', fontSize: 17, color: '#434343', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, letterSpacing: 0.3}}>
+								{courseInfo.course_code ? courseInfo.course_code : '' }
+							</p>
+						</div>
+						
+						<p style={{fontFamily:'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, marginTop: 10, marginBottom: 20}}>
+								Copy this code and share with the students. They will use this code to join this course
+						</p>
+
+					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:15}}>Students enrolled in Course</p>
 
 					{courseStudents.map((student, index) => {
 						let name = student.fname + " "+student.lname
