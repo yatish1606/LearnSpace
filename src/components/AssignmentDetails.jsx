@@ -357,35 +357,14 @@ const AssignmentDetails = ({courseName, history}) => {
 							</React.Fragment> 
 					}
 
-<br/>
-<h5 className="heading">{userType === 'student' ? 'My Submission' : 
+{userType === 'student' ? null : <br/>}
+<h5 className="heading" style={{marginBottom: userType === 'student' ? 0: 10}}>{userType === 'student' ? null : 
 					<span>Students not submitted</span>}</h5>
 
 					{
 						
 						userType === 'student' ?
-							<React.Fragment>
-								
-								
-								<button className="changeColorBG" style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
-									<input type="file" onChange={handleSubmission}/>
-									<Upload size={18} className="changeColor" style={{marginRight: 10}}/>
-									<p className="changeColor" style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins'}}>Upload file</p>
-								</button>
-								
-
-								{submission ? 
-								<div className="uploaded-file">
-									<h6>{submission.name}</h6>
-									<X size={22} color="#878787" style={{width: '10%'}} onClick={() => handleSubmission(null)} style={{cursor: "pointer"}}/>
-								</div>
-								: null
-								}
-
-								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={ submitAssignment }>
-									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} >Submit</p>
-								</button>
-							</React.Fragment>
+							null
 						: 	<React.Fragment>
 								<br/>
 								
