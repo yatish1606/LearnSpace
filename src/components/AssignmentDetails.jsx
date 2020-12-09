@@ -101,6 +101,7 @@ const AssignmentDetails = ({courseName, history}) => {
 	const [ignored, setIgnored] = React.useState(0)
 	const [assignment,setAssignment] = useState({})
 	const [studentCount,setStudentCount] = useState(0)
+	const [studentSubmissions,setStudentSubmissions] = useState([])
 
 	let arr = window.location.href.split('/');
 	let assignmentID = arr[arr.length -1];
@@ -182,6 +183,7 @@ const AssignmentDetails = ({courseName, history}) => {
 			}})
 			.then(res => {
 				console.log(submission)
+				toast.success('File submitted successfully')
 			})
 			.catch(err => {
 				console.log(err)
@@ -194,6 +196,7 @@ const AssignmentDetails = ({courseName, history}) => {
 	const checkAttachment = () => {
 		Axios.get(`https://dbms-back.herokuapp.com/hasattachedfile/${assignmentID}`)
 		.then(res => {
+			console.log(res)
 			if(res.data.success){
 			setHasAttachment(res.data.file_exists)
 			}
@@ -203,6 +206,20 @@ const AssignmentDetails = ({courseName, history}) => {
 		})
 	}
 	checkAttachment()
+
+	
+	React.useEffect(() => {
+		
+		Axios.get(`https://dbms-back.herokuapp.com/marks/${assignmentID}`)
+		.then(res => {
+			console.log(res.data.data)
+			let a = res.data.data;
+			setStudentSubmissions(a);
+		})
+		.catch(() => console.log('error'))
+	},[ignored])
+	
+	console.log(studentSubmissions)
 
 	console.log(submissionObject)
 	return (
@@ -261,8 +278,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					</Link>
 					</reactFragment>
 					:null}
-					
-					
+										
 					{userType === 'student' ? 
 					<reactFragment>
 					<br/>
@@ -277,14 +293,13 @@ const AssignmentDetails = ({courseName, history}) => {
 					:null}
 					
                 
-                
-                
                 </div>
 
                 <div className="assignment-upload">
 
 					
-					<h5 className="heading">{userType === 'student' ? 'My Submission' : 'Student Submissions'}</h5>
+					<h5 className="heading">{userType === 'student' ? 'My Submission' : 
+					<span>Student Submissions</span>}</h5>
 					
 					
 					
@@ -310,19 +325,19 @@ const AssignmentDetails = ({courseName, history}) => {
 								: null
 								}
 
-								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={() => toast.success("Assignment submitted successfully")}>
-									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} onClick={ submitAssignment }>Submit</p>
+								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={ submitAssignment }>
+									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} >Submit</p>
 								</button>
 							</React.Fragment>
 						: 	<React.Fragment>
 								<br/>
 								
-								{studentsList.map((item, index) => {
-									let name = item.fName.concat(" ").concat(item.lName)
+								{studentSubmissions.map((item, index) => {
+									let name = item.fname.concat(" ").concat(item.lname)
 									return (
 									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
 										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={item.imag} style={{width: 30, height: 30, marginTop: 3}}/></div>
+											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={getRandomUser()} style={{width: 30, height: 30, marginTop: 3}}/></div>
 											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
 										</div>
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
