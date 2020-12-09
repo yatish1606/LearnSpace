@@ -279,20 +279,18 @@ const AssignmentDetails = ({courseName, history}) => {
 					</Link>
 					</reactFragment>
 					:null}
-										
-					{userType === 'student' ? 
+
+					<br></br>
+					{hasAttachment === true ? 					
 					<reactFragment>
 					<br/>
-					{hasAttachment === true ? 
 					<a href={`https://dbms-back.herokuapp.com/attachmentsfile/${assignmentID}`}>
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
 							<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Download Attachment</p>
 					</button>
 					</a>
-					:null}
 					</reactFragment>
 					:null}
-					
                 
                 </div>
 
