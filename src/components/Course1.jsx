@@ -198,6 +198,18 @@ const Post = ({postType, title, info, assID}) => {
 	if(!info.length) info = ''
 
 	const isAssignment = postType === 'assignment'
+
+	const download = () => {
+		Axios.get(`https://dbms-back.herokuapp.com/getattachedfile/${assID}`)
+		.then(res => {
+			if(res.data.success) {
+				
+			} else {
+				console.log('error1')
+			}
+		})
+		.catch(() => console.log('error'))
+	}
 	
 	return (
 		<React.Fragment>
@@ -220,8 +232,8 @@ const Post = ({postType, title, info, assID}) => {
 					
 					: 
 					<React.Fragment>
-						<Download size={22} className="sub"/>
-						<Info size={22} className="sub"/>
+						<Download size={22} className="sub" onClick={download}/>
+						{/* <Info size={22} className="sub"/> */}
 					</React.Fragment>
 				}
 				
