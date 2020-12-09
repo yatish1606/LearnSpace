@@ -325,7 +325,7 @@ const AssignmentDetails = ({courseName, history}) => {
 						: 	<React.Fragment>
 								<br/>
 								
-								{studentSubmissions.map((item, index) => {
+								{studentSubmissions ? studentSubmissions.map((item, index) => {
 									let name = item.fname.concat(" ").concat(item.lname)
 									return (
 									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
@@ -342,7 +342,7 @@ const AssignmentDetails = ({courseName, history}) => {
 										
 									</div>
 									)
-								})}
+								}): null}
 							</React.Fragment> 
 					}
                 </div>
