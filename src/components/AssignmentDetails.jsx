@@ -102,6 +102,8 @@ const AssignmentDetails = ({courseName, history}) => {
 	const [assignment,setAssignment] = useState({})
 	const [studentCount,setStudentCount] = useState(0)
 	const [studentSubmissions,setStudentSubmissions] = useState([])
+	const [notSubmitted,setNotSubmitted] = useState([])
+
 
 	let arr = window.location.href.split('/');
 	let assignmentID = arr[arr.length -1];
@@ -139,7 +141,7 @@ const AssignmentDetails = ({courseName, history}) => {
 		}
 		
 		const sub_id = 1;
-		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${sub_id}`, {
+		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${assignmentID}/${user._id}`, {
 			"marks" : marks
 		})
 		.then(res => {
@@ -212,16 +214,15 @@ const AssignmentDetails = ({courseName, history}) => {
 		
 		Axios.get(`https://dbms-back.herokuapp.com/marks/${assignmentID}`)
 		.then(res => {
-			console.log(res.data.data)
-			let a = res.data.data;
-			setStudentSubmissions(a);
+			console.log(res.data)
+			let a = res.data;
+			setStudentSubmissions(a.submitted);
+			setNotSubmitted(a.not_submitted)
 		})
 		.catch(() => console.log('error'))
 	},[ignored])
 	
-	console.log(studentSubmissions)
 
-	console.log(submissionObject)
 	return (
 		<div className="course-container">
 
@@ -331,7 +332,8 @@ const AssignmentDetails = ({courseName, history}) => {
 							</React.Fragment>
 						: 	<React.Fragment>
 								<br/>
-								
+								{studentCount != null ?
+								<React.Fragment>
 								{studentSubmissions.map((item, index) => {
 									let name = item.fname.concat(" ").concat(item.lname)
 									return (
@@ -350,6 +352,58 @@ const AssignmentDetails = ({courseName, history}) => {
 									</div>
 									)
 								})}
+								</React.Fragment>
+								: null}
+							</React.Fragment> 
+					}
+
+<br/>
+<h5 className="heading">{userType === 'student' ? 'My Submission' : 
+					<span>Students not submitted</span>}</h5>
+
+					{
+						
+						userType === 'student' ?
+							<React.Fragment>
+								
+								
+								<button className="changeColorBG" style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
+									<input type="file" onChange={handleSubmission}/>
+									<Upload size={18} className="changeColor" style={{marginRight: 10}}/>
+									<p className="changeColor" style={{fontSize: 16, fontWeight: 500, color: '#09a407', margin:0, fontFamily: 'Poppins'}}>Upload file</p>
+								</button>
+								
+
+								{submission ? 
+								<div className="uploaded-file">
+									<h6>{submission.name}</h6>
+									<X size={22} color="#878787" style={{width: '10%'}} onClick={() => handleSubmission(null)} style={{cursor: "pointer"}}/>
+								</div>
+								: null
+								}
+
+								<button style={{padding: '9px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", marginTop: 20}} onClick={ submitAssignment }>
+									<p style={{fontSize: 16, fontWeight: 500, color: 'white', margin:0, fontFamily: 'Poppins'}} >Submit</p>
+								</button>
+							</React.Fragment>
+						: 	<React.Fragment>
+								<br/>
+								
+								{ studentCount != null ?
+								<React.Fragment>
+								{ notSubmitted.map((item, index) => {
+									let name = item.fname.concat(" ").concat(item.lname)
+									return (
+									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
+										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={getRandomUser()} style={{width: 30, height: 30, marginTop: 3}}/></div>
+											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
+										</div>
+									</div>
+									)
+								})}
+								</React.Fragment>
+								: null}
 							</React.Fragment> 
 					}
                 </div>
