@@ -108,6 +108,8 @@ const AssignmentDetails = ({courseName, history}) => {
 	let arr = window.location.href.split('/');
 	let assignmentID = arr[arr.length -1];
 
+	const [currentStudent,setCurrentStudent] = useState({})
+
 	React.useEffect(() => {
 		Axios.get( `https://dbms-back.herokuapp.com/getstudentcount/${assignmentID}`)
 		.then(res => {
@@ -140,15 +142,15 @@ const AssignmentDetails = ({courseName, history}) => {
 			return 
 		}
 		
-		const sub_id = 1;
-		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${assignmentID}/${user._id}`, {
+		Axios.post(`https://dbms-back.herokuapp.com/gradesubmission/${assignmentID}/${currentStudent.student_id}`, {
 			"marks" : marks
 		})
 		.then(res => {
-			if(res.data.success){
-				toast.success('Successfully graded the submission!');
+			if(res.data){
+				console.log(res)
+				//toast.success('Successfully graded the submission!');
 			}else{
-				toast.error('Unable to grade the submission!');
+				//toast.error('Unable to grade the submission!');
 			}
 
 		})
@@ -198,20 +200,21 @@ const AssignmentDetails = ({courseName, history}) => {
 	const checkAttachment = () => {
 		Axios.get(`https://dbms-back.herokuapp.com/hasattachedfile/${assignmentID}`)
 		.then(res => {
-			console.log(res)
+		//	console.log(res)
 			if(res.data.success){
 			setHasAttachment(res.data.file_exists)
+			console.log(hasAttachment)
 			}
 		})
 		.catch(err => {
 			console.log(err)
 		})
 	}
-	checkAttachment()
+	
 
 	
 	React.useEffect(() => {
-		
+		checkAttachment()
 		Axios.get(`https://dbms-back.herokuapp.com/marks/${assignmentID}`)
 		.then(res => {
 			console.log(res.data)
@@ -220,7 +223,11 @@ const AssignmentDetails = ({courseName, history}) => {
 			setNotSubmitted(a.not_submitted)
 		})
 		.catch(() => console.log('error'))
-	},[ignored])
+
+		
+	},[ignored,hasAttachment])
+
+	
 	
 
 	return (
@@ -283,6 +290,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					{userType === 'student' ? 
 					<reactFragment>
 					<br/>
+					{console.log(hasAttachment	)}
 					{hasAttachment === true ? 
 					<a href={`https://dbms-back.herokuapp.com/attachmentsfile/${assignmentID}`}>
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
@@ -335,19 +343,34 @@ const AssignmentDetails = ({courseName, history}) => {
 								{studentCount != null ?
 								<React.Fragment>
 								{studentSubmissions.map((item, index) => {
+									 
 									let name = item.fname.concat(" ").concat(item.lname)
 									return (
-									<div className="student-box" key={index} style={{justifyContent: "space-between"}}>
+									<div  className="student-box" key={index} style={{justifyContent: "space-between"}}>
 										<div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
 											<div className={"student-box-photo changeColorBG"} style={{width: 35, height: 35}}><img className="changeColorBG" src={getRandomUser()} style={{width: 30, height: 30, marginTop: 3}}/></div>
 											<h5 style={{fontSize: 15}} className="heading">{name}</h5>
 										</div>
+										
 										<div  style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-											<Download size={20} className="sub" style={{cursor: "pointer"}}/>
-											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={openModal}>
-												<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>Grade</p>
+										<Download size={20} className="sub" style={{cursor: "pointer"}}/>
+										{
+											item.marks_obtained ? 
+											<div style={{fontSize: 18, fontWeight: "bold", color: "#09A407"}}>{item.marks_obtained}</div> 
+											: 
+											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={() => {
+												openModal();
+												setCurrentStudent(item);
+											}}>
+												<p style={{fontFamily: 'Poppins', fontSize: 15, color: 'white', margin: 0, padding: 0, letterSpacing: 0.4}}>
+												Grade</p>
 											</button>
+										}
 										</div>
+											
+										
+										
+										
 										
 									</div>
 									)
@@ -412,7 +435,7 @@ const AssignmentDetails = ({courseName, history}) => {
 
             </div>
 
-
+			
 			<Modal
 				isOpen={modalIsOpen}
 				onRequestClose={closeModal}
@@ -420,10 +443,9 @@ const AssignmentDetails = ({courseName, history}) => {
 				contentLabel="Modal"
 				closeTimeoutMS={200}
 				className="background"
-			>
+			>(
 
 				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
-
 
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
 					<div className="changeColorBG" style={{width: '2rem', height: '2rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
@@ -437,7 +459,7 @@ const AssignmentDetails = ({courseName, history}) => {
 				<div className="file-box" style={{height: 'auto', alignItems: "center", borderWidth: 0, padding: '10px 0'}}>
                         <div className="file-box-info">
 						
-                            <h5 className="changeColor" style={{fontSize: 16}}>Assignment 1 : Multithreading in C++</h5>
+                            <h5 className="changeColor" style={{fontSize: 16}}>{assignment.title}</h5>
                         </div>
 
 						<div className="instructor-box" style={{marginTop: 0, flexDirection: 'row-reverse'}}>
@@ -446,13 +468,16 @@ const AssignmentDetails = ({courseName, history}) => {
 							</div>
 							<div style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
 								<p className="sub" style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>SUBMITTED BY</p>
-								<h6 className="changeColor" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>John Doe</h6>
+								<h6 className="changeColor" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0,}}>
+								{currentStudent.fname} {currentStudent.lname}</h6>
+								
 							</div>
 						</div>       
                 </div>
 
 				
-				<p  className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Marks out of 25</p>
+				<p  className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>
+				Marks out of {assignment.max_marks}</p>
 				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks} onBlur={() => validateMarks() ? null : toast.error('Invalid marks')}></input>
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
