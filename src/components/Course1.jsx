@@ -193,7 +193,7 @@ const Post = ({postType, title, info, assID}) => {
 	// const type = postType.split(" ").forEach(s => s.charAt(0).toUpperCase().concat(s.slice(1, s.length)))
 	let typeArr = postType.split(/(?=[A-Z])/)
 	typeArr.map(s => s.charAt(0).toUpperCase())
-	typeArr.map(s => s.concat(' '))
+	
 	const type = typeArr.join(' ')
 	if(!title.length) title = ''
 	if(!info.length) info = ''
