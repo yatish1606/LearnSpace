@@ -86,12 +86,13 @@ const AssignmentDetails = ({courseName, history}) => {
 	const [hasAttachment, setHasAttachment] = useState(false)
 
 
-	const maxMarks = 25
+	
 	// replce max marks later
 
 	const [modalIsOpen, setModal] = React.useState(false)
 	const [marks, setmarks] = React.useState('')
 	const onChangemarks = e => setmarks(e.target.value);
+	const [maxMarks, setMaxMarks] = React.useState(null)
 
 	const openModal = () => setModal(true)
 	const closeModal = () => setModal(false)
@@ -121,7 +122,7 @@ const AssignmentDetails = ({courseName, history}) => {
 	},[ignored])
 
 	console.log(assignment)
-
+	
 
 
 	React.useEffect(() => {
@@ -133,6 +134,7 @@ const AssignmentDetails = ({courseName, history}) => {
 			setAssignment(a);
 		})
 		.catch(() => console.log('error'))
+		setMaxMarks(assignment.max_marks)
 	},[ignored])
 
 	const sendMarks = () => {
@@ -356,7 +358,7 @@ const AssignmentDetails = ({courseName, history}) => {
 										
 										{
 											item.marks_obtained ? 
-											<div style={{fontSize: 18, fontWeight: "bold", color: "#09A407"}}>{item.marks_obtained}</div> 
+											<div style={{fontSize: 18, fontWeight: "bold", color: "#09A407", marginLeft: 20, marginRight: 5}}>{item.marks_obtained}</div> 
 											: 
 											<button style={{padding: '8px 15px', marginLeft: 20, marginTop: 0}} onClick={() => {
 												openModal();
