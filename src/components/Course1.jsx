@@ -704,7 +704,7 @@ const Course1 = (props) => {
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
 						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)} 
-						onBlur={() => validateTitle() ? null : toast.error('Title cannot be empty')}
+						// onBlur={() => validateTitle() ? null : toast.error('Title cannot be empty')}
 						></input>
 					</div>
 
@@ -723,7 +723,7 @@ const Course1 = (props) => {
 							<div style={{display: "flex", flexDirection: "column", width: '15%'}}>
 								<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Max marks</p>
 								<input type="text" style={{height:40, width: '100%'}} onChange={t => setMaxMarks(t.target.value)}
-								onBlur={() => validateMarks() ? null : toast.error('Marks cannot be empty')}
+								// onBlur={() => validateMarks() ? null : toast.error('Marks cannot be empty')}
 								></input>
 							</div>
 						</React.Fragment>
@@ -736,7 +736,7 @@ const Course1 = (props) => {
 
 				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
 				<input type="text" style={{height:40}} onChange={t => setDescription(t.target.value)}
-				onBlur={() => validateDescription() ? null : toast.error('Description cannot be empty')}
+				// onBlur={() => validateDescription() ? null : toast.error('Description cannot be empty')}
 				></input>
 
 
