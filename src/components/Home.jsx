@@ -155,7 +155,7 @@ const MyCourses = (props) => {
 					<RotateCcw size={21} color="#09a407" className="changeColor"/>
 			</div>
 			
-			<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20, marginLeft: 15}}>
+			{/* <div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20, marginLeft: 15}}>
                 <div className="changeColorBG" style={{width: '5rem', height: '5rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
                     <img src={userImage} style={{width: '4.5rem', marginTop: 10}} className="changeColorBG"/>
                 </div>
@@ -167,7 +167,7 @@ const MyCourses = (props) => {
 								<p className="sub" style={{fontFamily: 'Poppins', fontSize: 16, color: '#545454', fontWeight: 500, margin:0, textAlign: "left"}}>
 								{year} {department}</p>
                 </div>
-            </div>
+            </div> */}
 
 
 			<p className="sub" style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20, display: courses.length ? 'block' : 'none'}}>My Courses</p>
