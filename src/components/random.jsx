@@ -4,7 +4,7 @@ import userImage3 from '../assets/user3.png'
 import userImage4 from '../assets/user4.png'
 
 export const getRandomUser = () => {
-    let users = [userImage, userImage2, userImage3, userImage4]
+    let users = [userImage]
     return users[Math.floor(Math.random() * users.length)]
 }
 
