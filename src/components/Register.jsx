@@ -358,14 +358,14 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                     <input
                         placeholder="First Name"
                         onChange={onChangefName}
-                        onBlur={() => validateFName() ? null : toast.error('First name cannot be empty')}
+                        // onBlur={() => validateFName() ? null : toast.error('First name cannot be empty')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
                     <input
                         placeholder="Last Name"
                         onChange={onChangelName}
-                        onBlur={() => validateLName() ? null : toast.error('Last name cannot be empty')}
+                        // onBlur={() => validateLName() ? null : toast.error('Last name cannot be empty')}
                         
                     />
                 </div>
@@ -407,7 +407,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                         type="email"
                         placeholder="Email ID"
                         onChange={onChangeEmail}
-                        onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
+                        // onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
@@ -417,7 +417,7 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
                             placeholder="Password"
                             onChange={onChangePassword}
                             style={{marginRight: 0}}
-                            onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
+                            // onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
                         />
                         {
                             viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
@@ -593,7 +593,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                         type="email"
                         placeholder="Email ID"
                         onChange={onChangeEmail}
-                        onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
+                        // onBlur={() => validateEmail() ? null : toast.error('Invalid Email ID')}
                     />
                 </div>
                 <div style={{width: '50%'}}>
@@ -603,7 +603,7 @@ const Login = ({goBack, setLogin,userType,setUserType,studentDetails,setStudentD
                             placeholder="Password"
                             onChange={onChangePassword}
                             style={{marginRight: 0}}
-                            onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
+                            // onBlur={() => validatePassword() ? null : toast.error('Password cannot be empty!')}
                         />
                         {
                             viewPassword ? <Eye size={22} color="#ababab" style={{position: "absolute", left: '85%', zIndex: 12, marginTop: 10, cursor: "pointer"}} onClick={()=> setViewPassword(!viewPassword)}/>
