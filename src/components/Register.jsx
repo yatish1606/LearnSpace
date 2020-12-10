@@ -648,7 +648,7 @@ const Register = () => {
                 <div style={{display: "flex", flexDirection: "row", marginBottom: '1rem', alignItems: "center", alignSelf: "center", marginTop: '15%', justifyContent: "center"}}>
                         <Codesandbox size={30} color="#09A407"/>
                         <div style={{alignItems: "flex-start", display: "flex"}}>
-                            <p style={{fontFamily: 'Poppins', fontSize: 19, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
+                            <p style={{fontFamily: 'Poppins', fontSize: 19, color: '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>LearnSpace</p>
                         </div>
                 </div>
 
