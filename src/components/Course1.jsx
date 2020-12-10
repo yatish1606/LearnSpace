@@ -201,7 +201,8 @@ const Post = ({postType, title, info, assID}) => {
 	const isAssignment = postType === 'assignment'
 
 	const download = () => {
-		Axios.get(`https://dbms-back.herokuapp.com/getattachedfile/${assID}`)
+		console.log(assID)
+		Axios.get(`https://dbms-back.herokuapp.com/attachmentsfile/${assID}`)
 		.then(res => {
 			if(res.data.success) {
 				

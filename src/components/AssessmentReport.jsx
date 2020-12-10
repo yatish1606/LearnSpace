@@ -143,6 +143,8 @@ const AssessmentReport = ({history}) => {
                     studentMarksInfo.push(marksObj)
                 }
         })}
+        let labelArr = []
+        studentMarksInfo.map(data => labelArr.push(' '))
 
         return (
             <Line
@@ -150,7 +152,7 @@ const AssessmentReport = ({history}) => {
                                         height="50%"
                                         
                                         data={{
-                                            labels:[],
+                                            labels:labelArr,
                                             datasets: [{
                                                 label:'Stock Price',
                                                 backgroundColor: ['#0AA0131a'],
@@ -266,13 +268,15 @@ const AssessmentReport = ({history}) => {
                 }
         })}
         console.log(studentMarksInfo.map(data => data.marks))
+        let labelArr = []
+        studentMarksInfo.map(data => labelArr.push(' '))
         
         return (
             <Bar
                                         width='100%'
                                         height="50%"
                                         data={{
-                                            labels:['',''],
+                                            labels:labelArr,
                                             datasets: [{
                                                 label:'Stock Price',
                                                 backgroundColor: '#0AA0132a',
