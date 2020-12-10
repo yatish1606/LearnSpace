@@ -200,18 +200,18 @@ const Post = ({postType, title, info, assID}) => {
 
 	const isAssignment = postType === 'assignment'
 
-	const download = () => {
-		console.log(assID)
-		Axios.get(`https://dbms-back.herokuapp.com/attachmentsfile/${assID}`)
-		.then(res => {
-			if(res.data.success) {
+	// const download = () => {
+	// 	console.log(assID)
+	// 	Axios.get(`http://dbms-back.herokuapp.com/getattachedfile/${assID}`)
+	// 	.then(res => {
+	// 		if(res.data.success) {
 				
-			} else {
-				console.log('error1')
-			}
-		})
-		.catch(() => console.log('error'))
-	}
+	// 		} else {
+	// 			console.log('error1')
+	// 		}
+	// 	})
+	// 	.catch(() => console.log('error'))
+	// }
 	
 	return (
 		<React.Fragment>
@@ -234,7 +234,10 @@ const Post = ({postType, title, info, assID}) => {
 					
 					: 
 					<React.Fragment>
-						<Download size={22} className="sub" onClick={download}/>
+						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
+						<Download size={22} className="sub"/>
+						</a>
+						
 						{/* <Info size={22} className="sub"/> */}
 					</React.Fragment>
 				}
@@ -455,6 +458,24 @@ const Course1 = (props) => {
 		)
 	}
 
+	const deleteCourse = (course_code, course_id) => {
+		console.log(courseInfo.course_code, courseID)
+		console.log('deleting course')
+		Axios.post('https://dbms-back.herokuapp.com/deletecourse',{
+			course_code: course_code,
+			course_id: course_id
+		})
+		.then(res => {
+			if(res.data.success) {
+				toast.success('Deleted course')
+			} else {
+				//toast.error("Error removing student")
+			}
+		})
+		.catch(() => {}//toast.error("Error removing student")
+		)
+	}
+
 
 	const handleFileUpload = event => {
 		if(event) {
@@ -523,7 +544,13 @@ const Course1 = (props) => {
 						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
 						Leave Course</p>
 					:
-					<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>Delete Course</p>
+						<p onClick={() => {
+							deleteCourse(courseInfo.course_code, courseID);
+							
+						}
+					}
+						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+						Delete Course</p>
 					}
 				</Link>
 
