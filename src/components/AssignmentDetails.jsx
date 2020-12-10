@@ -459,7 +459,7 @@ const AssignmentDetails = ({courseName, history}) => {
 				
 				<p  className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>
 				Marks out of {assignment.max_marks}</p>
-				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks} onBlur={() => validateMarks() ? null : toast.error('Invalid marks')}></input>
+				<input type="text" style={{height:40, width: '50%'}} autoFocus onChange={onChangemarks} ></input>
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>

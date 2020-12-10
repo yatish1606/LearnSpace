@@ -245,7 +245,7 @@ const CreateCourse = () => {
 
 							<div style={{flexGrow: 1, marginRight: 15}}>
 								<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:0}}>Course Name</p>
-								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)} onBlur={() => validateTitle() ? null : toast.error('Course name cannot be empty')}></input>
+								<input type="text" style={{height:40,}} value={courseName} onChange={t => setCourseName(t.target.value)} ></input>
 							</div>
 							
 							
@@ -255,7 +255,7 @@ const CreateCourse = () => {
 
 
 						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Course Description</p>
-						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)} onBlur={() => validateDescription() ? null : toast.error('Course description cannot be empty')}></input>
+						<input type="text" style={{height:40}} value={description} onChange={t => setDescription(t.target.value)} ></input>
 
 
 						<p className="changeColor"  style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Course Code</p>
