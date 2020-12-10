@@ -424,7 +424,7 @@ const AssignmentDetails = ({courseName, history}) => {
 				contentLabel="Modal"
 				closeTimeoutMS={200}
 				className="background"
-			>(
+			>
 
 				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
 

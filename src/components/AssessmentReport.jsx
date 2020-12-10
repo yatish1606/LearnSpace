@@ -126,7 +126,7 @@ const AssessmentReport = ({history}) => {
         setTopper(topper)
 
         let avg = studentMarksInfo ? studentMarksInfo.filter(s => s.marks).reduce((r, c) => r + c.marks, 0) / studentMarksInfo.length: null;
-        setAvg(avg)
+        setAvg(avg.toFixed(2))
         
     }, [studentMarks])
 
