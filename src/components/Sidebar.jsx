@@ -253,7 +253,7 @@ const Sidebar = (props) => {
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80, paddingRight: 30}}>
 							<Codesandbox size={30} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>Team FSociety</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 16, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>LearnSpace</p>
 							</div>
 						</div>
 					
