@@ -197,10 +197,10 @@ const CreateCourse = () => {
 	
 
 	return (
-		<div>
+		<div style={{position: 'absolute', bottom: 110, right: 110}}>
 		<div className="create-course-div">
         
-		<Plus onClick={openModal} size={23} color="white"/>
+		<Plus onClick={openModal} size={40} color="white"/>
         
 		
 		<Modal
