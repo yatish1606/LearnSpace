@@ -555,7 +555,7 @@ const Course1 = (props) => {
 				</Link>
 
 				<h2 className="course-title">{courseInfo.name}</h2>
-				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5}} className="heading">
+				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5, fontSize: 20}} className="heading">
 				{courseInfo.year} {courseInfo.department}</h4>
 				<div className="instructor-box">
 					<div className="changeColorBG" style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>

@@ -12,6 +12,7 @@ import Axios from 'axios'
 import { toast } from 'react-toastify'
 import { RefreshCcw, RefreshCw, RotateCcw } from 'react-feather'
 import { Link } from 'react-router-dom'
+import CreateCourse from './CreateCourse'
 
 
 
@@ -194,9 +195,9 @@ const MyCourses = (props) => {
                 </div>
             </div>
 
-
-			<p className="sub" style={{fontSize: 20, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20, display: courses.length ? 'block' : 'none'}}>My Courses</p>
-			<div className="my-courses-box">
+		
+			<p className="sub" style={{fontSize: 18, letterSpacing: 0.4, color: '#545454', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 35, marginBottom: 5, marginLeft: 20, display: courses.length ? 'block' : 'none'}}>MY COURSES</p>
+			<div className="my-courses-box" style={{paddingLeft: 5}}>
 				
 
 				 {
@@ -216,6 +217,7 @@ const MyCourses = (props) => {
 			
 			
 			</div>
+			<CreateCourse/>
 			
 		</div>
 	)

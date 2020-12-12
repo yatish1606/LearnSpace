@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import {Activity, ArrowLeft, BarChart2, Download, Users} from 'react-feather'
 import {getRandomUser2} from './random'
 import { Line, defaults, Bar} from 'react-chartjs-2'
@@ -22,7 +22,7 @@ defaults.global.defaultFontColor = '#ababab'
 defaults.global.defaultFontWeight = 500
 defaults.global.tooltips.backgroundColor = 'red'
 
-const generatePDF = tickets => {
+const generatePDF = (tickets, lineChart) => {
     
     const doc = new jsPDF();
     const tableColumn = ["ID", "Name", "Marks"];
@@ -39,31 +39,20 @@ const generatePDF = tickets => {
       tableRows.push(ticketData);
     });
   
-    doc.autoTable(tableColumn, tableRows, { startY: 20 });
     
+
+    // let img = new Image()
+    // img.src = lineChart
+    const yHeight = (tableRows.length * 30) 
+    doc.addImage(lineChart, 'png',10,yHeight)
+
+    // const yHeight2 = (tableRows.length * 30) 
+    // doc.addImage(barChart, 'png',0,yHeight + 150)
+    
+    doc.autoTable(tableColumn, tableRows, { startY: 20 });
     doc.save(`report.pdf`);
 }
 
-// const pdfTableComponent = () => {
-//     return (
-//         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50, marginBottom: 20, paddingBottom: 20, borderBottom: '1px solid', marginRight: 100}} className="borderr">
-//                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-//                     <p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 600, width: 80, textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0, }} className="changeColor">
-//                         #{studID}
-//                     </p>
-//                     {/* <div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 10, marginRight: 10}}>
-//                         <img className="changeColorBG" src={getRandomUser2()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
-//                     </div> */}
-//                     <p style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 20, flexGrow: 1 }} className="changeColor">
-//                         {studentName}
-//                     </p>
-//                 </div>
-//                 <p style={{fontFamily: 'Poppins', fontSize: 22, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingRight: 20 , color:'#09a407', width: 50}}>
-//                         {marks}
-//                 </p>
-//         </div>
-//     )
-// }
 
 const AssessmentReport = ({history}) => {
 
@@ -162,6 +151,9 @@ const AssessmentReport = ({history}) => {
         
     }, [studentMarks])
 
+    const chartRefLine = useRef(null)
+    const chartRefBar = useRef(null)
+    
     const LineChart = () => {
         
         let studentMarksInfo = []
@@ -182,7 +174,7 @@ const AssessmentReport = ({history}) => {
             <Line
                                         width='100%'
                                         height="45%"
-                                        
+                                        ref={chartRefLine}
                                         data={{
                                             labels:labelArr,
                                             datasets: [{
@@ -199,6 +191,7 @@ const AssessmentReport = ({history}) => {
                                             }]
                                         }}
                                         options={{
+                                            
                                             layout: {
                                                 padding: {
                                                   bottom: 30
@@ -309,6 +302,7 @@ const AssessmentReport = ({history}) => {
             <Bar
                                         width='100%'
                                         height="45%"
+                                        ref={chartRefBar}
                                         data={{
                                             labels:labelArr,
                                             datasets: [{
@@ -439,7 +433,7 @@ const AssessmentReport = ({history}) => {
             </div>
         )
     }
-    
+
     
     //const studentMarksList = studentMarksInfo.forEach((student, index) => <MarksRow studentName={student.name} marks={student.marks}/>) 
     
@@ -547,7 +541,7 @@ const AssessmentReport = ({history}) => {
                     : null
                 }
                 
-                <div className="new-post" onClick={() => generatePDF(studentMarksList)} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
+                <div className="new-post" onClick={() => generatePDF(studentMarksList, chartRefLine.current.chartInstance.toBase64Image())} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
 					<Download size={30} color="white"/>
 				</div>
 
