@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
-import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, Edit3, CheckSquare, CheckCircle, Clipboard, Layout } from 'react-feather'
+import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, Edit3, CheckSquare, CheckCircle, Clipboard, Layout, User } from 'react-feather'
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
@@ -113,12 +113,17 @@ const Sidebar = (props) => {
 		},
 		{
 			title: 'My Notes',
-			icon: <CheckCircle size={20} color={GetCurrentPath() === '/notes' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
+			icon: <Edit3 size={20} color={GetCurrentPath() === '/notes' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"} style={{marginRight: 22}}/>,
 			path: '/notes'
 		},
 		{
 			title: 'FAQ',
 			icon: <Info size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
+			path: '/faq'
+		},
+		{
+			title: 'My Profile',
+			icon: <User size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 			path: '/faq'
 		},
 		

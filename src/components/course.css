@@ -47,6 +47,11 @@ html img{
     background-color: var(--background) !important;
 }
 
+.borderr {
+    border-bottom-color: var(--grey) !important;
+    border-bottom-width: 1.5px !important;
+}
+
 .course-container {
     width: 80%;
     margin-left: 20%;
@@ -589,7 +594,7 @@ html img{
     margin: 5px 5px 10px 5px;
     background-color: var(--grey);
     padding: 10px 15px;
-    height: 115px;
+    height: 110px;
     border-radius: 10px;
 }
 

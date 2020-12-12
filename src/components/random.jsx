@@ -8,6 +8,11 @@ export const getRandomUser = () => {
     return users[Math.floor(Math.random() * users.length)]
 }
 
+export const getRandomUser2 = () => {
+    let users = [userImage, userImage2, userImage3, userImage4]
+    return users[Math.floor(Math.random() * users.length)]
+}
+
 export const getRandomColor = () => {
     // grey, blue, greenish, balckish, cyanish, blueish
     let colors = ['#888888', '#3F94BB', '#4EB753', '#6A6A6A', '#46B885','#4175C3']

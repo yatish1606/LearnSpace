@@ -279,7 +279,7 @@ const AssignmentDetails = ({courseName, history}) => {
 					{userType === 'teacher' ? 
 					<reactFragment>
 					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
-					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Assignment has been submitted by {studentCount} students. Click on the assessment report to get a detailed analysis of the performance by students</p>
+					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Click on the assessment report to get a detailed analysis of the performance by students</p>
 
 					<Link to={`/assessmentreport/${assignmentID}`} >
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
