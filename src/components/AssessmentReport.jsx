@@ -22,7 +22,7 @@ defaults.global.defaultFontColor = '#ababab'
 defaults.global.defaultFontWeight = 500
 defaults.global.tooltips.backgroundColor = 'red'
 
-const generatePDF = (tickets, lineChart) => {
+const generatePDF = (tickets) => {
     
     const doc = new jsPDF();
     const tableColumn = ["ID", "Name", "Marks"];
@@ -43,8 +43,8 @@ const generatePDF = (tickets, lineChart) => {
 
     // let img = new Image()
     // img.src = lineChart
-    const yHeight = (tableRows.length * 30) 
-    doc.addImage(lineChart, 'png',10,yHeight)
+    // const yHeight = (tableRows.length * 30) 
+    // doc.addImage(lineChart, 'png',10,yHeight)
 
     // const yHeight2 = (tableRows.length * 30) 
     // doc.addImage(barChart, 'png',0,yHeight + 150)
@@ -541,7 +541,7 @@ const AssessmentReport = ({history}) => {
                     : null
                 }
                 
-                <div className="new-post" onClick={() => generatePDF(studentMarksList, chartRefLine.current.chartInstance.toBase64Image())} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
+                <div className="new-post" onClick={() => generatePDF(studentMarksList)} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
 					<Download size={30} color="white"/>
 				</div>
 
