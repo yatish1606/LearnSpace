@@ -122,7 +122,7 @@ const Sidebar = (props) => {
 			path: '/faq'
 		},
 		// {
-		// 	title: 'My Profile',
+		// 	title: 'My',
 		// 	icon: <User size={22} color={GetCurrentPath() === '/faq' ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323"}/>,
 		// 	path: '/faq'
 		// },
@@ -279,7 +279,7 @@ const Sidebar = (props) => {
 
 						<div style={{display: "flex", flexDirection: "row", alignItems: "center", width: '100%' ,paddingLeft: 30,paddingRight: 20 , justifyContent: "space-between",}}>
 							<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
-							{/* <CreateCourse/> */}
+							<CreateCourse/>
 						</div>
 						
 						
