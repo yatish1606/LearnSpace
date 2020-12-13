@@ -38,6 +38,14 @@ const generatePDF = (tickets) => {
       
       tableRows.push(ticketData);
     });
+
+    const topper = tickets.length ? tickets.reduce(function(prev, current) {
+        return (prev.marks > current.marks) ? prev : current
+    }):null
+    
+    
+    let avg = tickets ? (tickets.filter(s => s.marks_obtained).reduce((r, c) => r + c.marks_obtained, 0) / tickets.length).toFixed(2): null
+    
   
     
 
@@ -48,15 +56,41 @@ const generatePDF = (tickets) => {
 
     // const yHeight2 = (tableRows.length * 30) 
     // doc.addImage(barChart, 'png',0,yHeight + 150)
+    console.log(doc.getFontList())
+    doc.autoTable(tableColumn, tableRows, { startY: 90 })
+
+    doc.addFont('Helvetica', 'Helvetica', '')
+    doc.setFontSize(22)
+    doc.setFont('Helvetica', 'bold')
+    doc.text("Assessment Report", 15, 20 )
+
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', '')
+    doc.text(`Assignment was submitted by ${tickets.length} students`, 15, 30 )
+
+    doc.setFontSize(18)
+    doc.setFont('Helvetica', 'bold')
+    doc.text("Assignment Topper", 15, 45 )
+
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', '')
+    doc.text(`${topper.fname.concat(' ').concat(topper.lname)} with ${topper.marks_obtained} marks`, 15, 55 )
+
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', '')
+    doc.text(`Average marks scored by students was ${avg} marks`, 15, 65 )
     
-    doc.autoTable(tableColumn, tableRows, { startY: 20 });
+    doc.setFontSize(18)
+    doc.setFont('Helvetica', 'bold')
+    doc.text("Table of student scores", 15, 80 )
+
     doc.save(`report.pdf`);
 }
 
 
 const AssessmentReport = ({history}) => {
 
-    const [chart, setChart] = React.useState('line')
+    const [chart, setChart] = React.useState('bar')
 
     const handleChartChange = () => {
         if(chart === 'line'){
@@ -168,7 +202,8 @@ const AssessmentReport = ({history}) => {
                 }
         })}
         let labelArr = []
-        studentMarksInfo.map(data => labelArr.push(' '))
+        
+        studentMarksInfo.map(data => labelArr.push(data.name))
 
         return (
             <Line
@@ -194,7 +229,8 @@ const AssessmentReport = ({history}) => {
                                             
                                             layout: {
                                                 padding: {
-                                                  bottom: 30
+                                                  bottom: 30,
+                                                  
                                                 }
                                             },
                                             plugins:[{
@@ -223,7 +259,6 @@ const AssessmentReport = ({history}) => {
                                                     ticks: {
                                                         stepSize: 20,
                                                         beginAtZero: true,
-                                                        display: false,
                                                         
                                                     }
                                                 }],
@@ -296,7 +331,7 @@ const AssessmentReport = ({history}) => {
         })}
         console.log(studentMarksInfo.map(data => data.marks))
         let labelArr = []
-        studentMarksInfo.map(data => labelArr.push(' '))
+        studentMarksInfo.map(data => labelArr.push(data.name))
         
         return (
             <Bar
@@ -528,7 +563,7 @@ const AssessmentReport = ({history}) => {
                 </div>
             </div>
 
-            <div style={{display: "flex", flexDirection: 'column', width: '100%', marginTop: 10,marginBottom: 50}}>
+            <div style={{display: "flex", flexDirection: 'column', width: '100%', marginTop: 10,marginBottom: 80}}>
             
                 <p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 20, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 5, marginBottom:40, marginLeft: 15}}>Detailed Assessment Report</p>
                 
