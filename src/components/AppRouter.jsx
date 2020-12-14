@@ -14,6 +14,7 @@ import AssessmentReport from './AssessmentReport'
 import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
 import Notes from './Notes'
 import FAQ from './FAQ'
+import Search from './Search'
 
 const AppRouter = () => {
 
@@ -38,6 +39,7 @@ const AppRouter = () => {
 						<Route path="/assessmentreport/*" component={AssessmentReport}/>
 						<Route path="/notes" component={Notes} exact/>
 						<Route path="/faq" component={FAQ} exact/>
+						<Route path="/search" component={Search} exact/>
 						<Route path="*" component={Sidebar} exact/> 
 						
 					</div>

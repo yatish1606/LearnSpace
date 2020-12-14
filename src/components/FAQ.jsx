@@ -58,7 +58,7 @@ const FAQ = ({}) => {
 
             <div style={{height: window.innerHeight + 60, width: '100%'}}>
                    
-            <h2 className="course-title" style={{fontSize: 40, marginTop: 20, marginBottom: 60}}>Frequently Asked Questions</h2>
+            <h2 className="course-title" style={{fontSize: 30, marginTop: 20, marginBottom: 60}}>Frequently Asked Questions</h2>
                   
                   {FAQList.map((faq, index) => {
                       return <FAQItem title={faq.title} content={faq.content} key={index}/>
