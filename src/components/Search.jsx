@@ -6,6 +6,7 @@ import Collapse from "@kunukn/react-collapse";
 import {getRandomUser2} from './random'
 import Axios from 'axios'
 import isEqual from 'date-fns/is_equal';
+import { toast } from 'react-toastify';
 
 
 
@@ -51,17 +52,20 @@ const SearchPage = ({}) => {
 
 	const search = () => {
 
-		
+		if(!fname.length || !lname.length) toast.error('Please specify name')
+
+		setCourseStudents([])
+		let arr = [...courseStudents]
 		course.map((course, index) => {
 			Axios.get( `https://dbms-back.herokuapp.com/search/${course._id}/${fname}/${lname}`)
 			.then(res => {
 				
 					if(res.data.success) {
-						console.log(res.data.data)
-						let arr = [...courseStudents]
+						
+						//let arr = [...courseStudents]
 						res.data.data.forEach(t => arr.push(t))
-						// sarr.push(res.data.data)
-						setCourseStudents(arr)
+						//arr.push(res.data.data)
+						
 					} else {
 							
 					}
@@ -69,7 +73,7 @@ const SearchPage = ({}) => {
 			.catch(() => {})
 			
 		})
-
+		setCourseStudents(arr)
 		setIsReady(true)
 
 	}
@@ -79,7 +83,7 @@ const SearchPage = ({}) => {
         return (
 		<div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50, marginBottom: 20, paddingBottom: 20, borderBottom: '1px solid', marginRight: 0}} className="borderr">
 			<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%'}}>
-				<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 600, width: 60, textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0, letterSpacing: 0.5 }} className="changeColor">
+				<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, width: 60, textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0, letterSpacing: 0.5 }} className="changeColor">
 					#{student._id}
 				</p>
 				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 10, marginRight: 10}}>
