@@ -17,6 +17,18 @@ const FAQList = [
         title: 'How do I view the feed of a course?',
         content: 'On simply clicking on an enrolled course, you will be able to view all the happenings of the course!'
     },
+    {
+        title: 'How do I create a course?',
+        content: 'To create a course, you must be a teacher. Click on the green + icon in the bottom right corner and fill in the required fields. Then, copy the course code to the clipboard and share the code with the students.'
+    },
+    {
+        title: 'How do I create a assignment?',
+        content: 'To create a course, you must be a teacher. Click on the green + icon in the bottom right corner and fill in the required fields. Then, upload a file if required and click on create. '
+    },
+    {
+        title: 'How to download assessment report?',
+        content: 'To download assessment report, click on the download icon in the bottom right corner. The report will be downloaded in pdf format.'
+    },
     
 ]
 

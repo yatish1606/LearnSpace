@@ -145,12 +145,20 @@ const RegistrationDetails = ({goBack, setLogin,userType,setUserType,setStudentDe
             isValid = false
         }
 
+        if(/[0-9]/.test(fName)){
+            isValid = false
+        }
+
         return isValid
     }
 
     const validateLName = () => {
         let isValid = true
         if(!lName.length) {
+            isValid = false
+        }
+        
+        if(/[0-9]/.test(lName)){
             isValid = false
         }
 
