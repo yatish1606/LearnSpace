@@ -68,13 +68,7 @@ const generatePDF = (tickets) => {
     doc.setFont('Helvetica', '')
     doc.text(`Assignment was submitted by ${tickets.length} students`, 15, 30 )
 
-    doc.setFontSize(18)
-    doc.setFont('Helvetica', 'bold')
-    doc.text("Assignment Topper", 15, 45 )
-
-    doc.setFontSize(16)
-    doc.setFont('Helvetica', '')
-    doc.text(`${topper.fname.concat(' ').concat(topper.lname)} with ${topper.marks_obtained} marks`, 15, 55 )
+    
 
     doc.setFontSize(16)
     doc.setFont('Helvetica', '')
