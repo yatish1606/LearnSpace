@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -519,9 +519,11 @@ const Course1 = (props) => {
 					<Plus size={40} color="white" onClick={openModal}/>
 				</div>
 
-				{/* <div className={"new-post background"} style={{bottom: 120, backgroundColor: theme === 'dark' ? '#2a2a2a' : '#fff', boxShadow: 'none'}}>
-					<Plus size={40} color="#09a407" onClick={openAutogradeModal}/>
-				</div> */}
+				<Link to={`/quiz/new`}>
+				<div className={"new-post"} style={{bottom: 120, right: 50, width:40, height: 40, padding: 0}}>
+					<CheckCircle size={20} color="#fff"  style={{zIndex: 99}}/>
+				</div>
+				</Link>
 			</React.Fragment>
 			: null }
 
