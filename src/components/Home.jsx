@@ -32,14 +32,14 @@ console.log(_id)
 let userType = JSON.parse(localStorage.getItem('userType'))
 let theme = JSON.parse(localStorage.getItem('theme'))
 
-const CourseBox = ({courseID,courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
+const CourseBox = ({userInfo, courseID,courseTitle, year, dept, teacher, teacherImage, numberOfStudents}) => {
 
 	
 	let yearF = year.toUpperCase()
 	let deptF = dept.toUpperCase()
 	const color = getRandomColor()
 	if(userType === 'teacher') {
-		teacher = fname.charAt(0).toUpperCase().concat(fname.slice(1,fname.length)).concat(' ').concat(lname.charAt(0).toUpperCase().concat(lname.slice(1,lname.length)))
+		teacher = userInfo ? userInfo.fname.charAt(0).toUpperCase().concat(userInfo.fname.slice(1,userInfo.fname.length)).concat(' ').concat(userInfo.lname.charAt(0).toUpperCase().concat(userInfo.lname.slice(1,userInfo.lname.length))):null
 	}
 
 	return (
@@ -204,7 +204,7 @@ const MyCourses = (props) => {
 					courses ? 
 						 courses.map((course, index) => {
 
-							 return <CourseBox courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count ? course.student_count : 0}/>
+							 return <CourseBox userInfo={userInfo} courseID={course._id} key={index} courseTitle={course.name} year={course.year} dept={course.department} teacher={courseTeachers[index]} numberOfStudents={course.student_count ? course.student_count : 0}/>
 					})
 				:  null
 				
@@ -225,15 +225,34 @@ const MyCourses = (props) => {
 
 export default MyCourses
 
-const EmptyState = () => {
+export const EmptyState = ({title, d1, d2}) => {
+	if(!title) title = 'No courses'
+	if(!d1) d1 = 'You have not enrolled in any courses yet!'
+	if(!d2) d2 = 'Click on the green plus button to create or join a course'
 	return (
 		<div style={{width: '50%' ,alignSelf: "center", margin: '10px auto', display: "flex", alignItems: "center", flexDirection: "column", marginTop: 60}}>
 			<div className="changeColorBG" style={{width: 230, height: 230, borderRadius: 200, display: "flex", justifyContent: "center", alignItems: "center"}}>
 				<img src={emptyImage} style={{width: 110, height: 110}}/>
 			</div>
-			<h5 className="changeColor" style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 600, margin: '10px auto', padding: 0, marginTop: 30}}>No courses</h5>
-			<p  className="sub" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin: '10px auto', padding: 0, marginTop: 20}}>You have not enrolled in any courses yet!</p>
-			<p className="sub" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin: '10px auto', padding: 0,}}>Click on the green plus button to create or join a course</p>
+			<h5 className="changeColor" style={{fontFamily: 'Poppins', fontSize: 25, fontWeight: 600, margin: '10px auto', padding: 0, marginTop: 30}}>{title}</h5>
+			<p  className="sub" style={{fontFamily: 'Poppins', fontSize: 17, fontWeight: 500, margin: '10px auto', padding: 0, marginTop: 20}}>{d1}</p>
+			<p className="sub" style={{fontFamily: 'Poppins', fontSize: 17, fontWeight: 500, margin: '10px auto', padding: 0,}}>{d2}</p>
+		</div>
+	)
+}
+
+export const EmptyStateSmall = ({title, d1, d2}) => {
+	if(!title) title = 'No courses'
+	if(!d1) d1 = 'You have not enrolled in any courses yet!'
+	
+	return (
+		<div style={{width: '30%' ,alignSelf: "center", margin: '5px auto', display: "flex", alignItems: "center", flexDirection: "column", marginTop: 40}}>
+			<div className="changeColorBG" style={{width: 150, height: 150, borderRadius: 200, display: "flex", justifyContent: "center", alignItems: "center"}}>
+				<img src={emptyImage} style={{width: 60, height: 60}}/>
+			</div>
+			<h5 className="changeColor" style={{fontFamily: 'Poppins', fontSize: 20, fontWeight: 600, margin: '10px auto', padding: 0, marginTop: 15}}>{title}</h5>
+			<p  className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin: '10px auto', padding: 0, marginTop: 10, textAlign: 'center'}}>{d1}</p>
+			<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin: '10px auto', padding: 0, marginTop: 10, textAlign: 'center'}}>{d2}</p>
 		</div>
 	)
 }

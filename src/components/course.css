@@ -716,15 +716,18 @@ html img{
 
 .faq-content {
     background-color: var(--grey);
+    
     padding: 15px;
     border-radius: 10px;
 }
 
 .faq-content p{
     font-family: 'Poppins';
-    font-size: 15px;
+    font-size: 16px;
     margin: 0;
     color: var(--sub);
     font-weight: 500;
     padding: 0rem;
+    letter-spacing: 0.3px;
+    line-height: 25px;
 }

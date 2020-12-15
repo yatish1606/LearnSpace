@@ -16,6 +16,7 @@ import { StudentDetailsContext } from './contexts/StudentDetailsContext';
 import Autograde from './Autograde'
 import {toast} from 'react-toastify'
 import Axios from 'axios'
+import {EmptyState, EmptyStateSmall} from './Home'
 
 
 let randomUser = getRandomUser()
@@ -586,33 +587,42 @@ const Course1 = (props) => {
 				{/* Stream */}
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
 					{/*console.log(posts)*/}	
-					{posts.map((item, index) => {
+
+					{posts.length ?
+					posts.map((item, index) => {
 						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
-					})}
+					}): <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/>
+					}
 					
 				</div>
 
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
-
-					{posts.filter(p => p.is_assignment === 1).map((item, index) => {
-						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
-					})}
+				
+				{posts.filter(p => p.is_assignment === 1).length ?
+					posts.filter(p => p.is_assignment === 1).map((item, index) => {
+							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
+						}) : <EmptyStateSmall title='No Assignments' d1="Teacher has not posted any assignments in this course yet"/>
+				}
 
 				</div>
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
-
-					{posts.filter(p => p.is_assignment === 0).map((item, index) => {
+				{posts.filter(p => p.is_assignment === 0).length ?
+					posts.filter(p => p.is_assignment === 0).map((item, index) => {
 							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
-						})}
+						}) : <EmptyStateSmall title='No Study Material' d1="Teacher has not posted any study material in this course yet"/>
+				}
 				</div>
 
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
 
-					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
+					
 						
+						{userType === 'teacher' ?
+						<React.Fragment>
+						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
 						<div className="changeColorBG" style={{width: 200, height: 40, borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between", marginBottom: 0}}>
 							<div style={{width: 40, borderRadius: 0, height: 40, backgroundColor: '#ddd', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}}>
 								<Copy size={22} color="#434343" onClick={() =>  {
@@ -628,6 +638,8 @@ const Course1 = (props) => {
 						<p style={{fontFamily:'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, marginTop: 10, marginBottom: 20}}>
 								Copy this code and share with the students. They will use this code to join this course
 						</p>
+						</React.Fragment>
+						: null}
 
 					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:15}}>Students enrolled in Course</p>
 
