@@ -97,7 +97,16 @@ const AssignmentDetails = ({courseName, history}) => {
 	const openModal = () => setModal(true)
 	const closeModal = () => setModal(false)
 
-	const validateMarks = () => marks.length ? (marks > maxMarks ? false : true) : false
+	const validateMarks = () => {
+		let isValid = true
+		if(!marks.length){
+			isValid = false
+		}
+		if(marks > maxMarks) {
+			isValid = false
+		}
+		return isValid
+	}
 		
 	const [ignored, setIgnored] = React.useState(0)
 	const [assignment,setAssignment] = useState({})
