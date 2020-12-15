@@ -52,6 +52,10 @@ html img{
     border-bottom-width: 1.5px !important;
 }
 
+.borderrad {
+    border-color: var(--grey) !important;
+}
+
 .course-container {
     width: 80%;
     margin-left: 20%;
@@ -141,27 +145,39 @@ html img{
     border-radius: 10px;
     transition: 0.3s;
 }
+.checkmarkquiz {
+    position: absolute;
+    top: 12px;
+    right: 0px;
+    left: 130px;
+    height: 25px;
+    width: 25px;
+    background-color: var(--background);
+    border: 2.5px solid #d3d3d3;
+    border-radius: 10px;
+    transition: 0.3s;
+}
 
-.checkbox-container:hover input ~ .checkmark {
+.checkbox-container:hover input ~ .checkmark, .checkbox-container:hover input ~ .checkmarkquiz {
     background-color: var(--grey);
 }
  
-.checkbox-container input:checked ~ .checkmark {
+.checkbox-container input:checked ~ .checkmark , .checkbox-container input:checked ~ .checkmarkquiz {
     background-color: #09A407;
     border: 0.5px solid #09A407;
     transition: 0.3s;
 }
 
-.checkmark:after {
+.checkmark:after, .checkmarkquiz:after {
     content: "";
     position: absolute;
     display: none;
 }
   
-.checkbox-container input:checked ~ .checkmark:after {
+.checkbox-container input:checked ~ .checkmark:after, .checkbox-container input:checked ~ .checkmarkquiz:after {
     display: block;
 }
-.checkbox-container .checkmark:after {
+.checkbox-container .checkmark:after{
     left: 6.5px;
     top: 3.5px;
     width: 5px;
@@ -169,6 +185,18 @@ html img{
     border: solid white;
     border-width: 0 2px 2px 0;
     border-radius: 0.1px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.checkbox-container .checkmarkquiz:after {
+    left: 8px;
+    top: 4px;
+    width: 7.5px;
+    height: 13px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    border-radius: 0.5px;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
@@ -405,13 +433,13 @@ html img{
 
 .new-post {
     position: fixed;
-    right: 5vh;
-    bottom: 5vh;
+    right: 35px;
+    bottom: 35px;
     z-index: 9999;
     width: 70px;
     height: 70px;
     border-radius: 50px;
-    box-shadow: 2px 2px 10px #434343;
+    box-shadow: 2px 2px 10px #ababab;
     cursor: pointer;
     background-color: #09A407;
     display: flex;

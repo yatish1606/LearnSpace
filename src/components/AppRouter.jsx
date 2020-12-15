@@ -15,6 +15,7 @@ import TeacherDetailsContextProvider from './contexts/TeacherDetailsContext';
 import Notes from './Notes'
 import FAQ from './FAQ'
 import Search from './Search'
+import QuizQuestion from './QuizQuestion'
 
 const AppRouter = () => {
 
@@ -40,6 +41,7 @@ const AppRouter = () => {
 						<Route path="/notes" component={Notes} exact/>
 						<Route path="/faq" component={FAQ} exact/>
 						<Route path="/search" component={Search} exact/>
+						<Route path="/quiz/new" component={QuizQuestion} exact/>
 						<Route path="*" component={Sidebar} exact/> 
 						
 					</div>
