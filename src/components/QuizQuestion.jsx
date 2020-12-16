@@ -23,6 +23,59 @@ let user = localdata ? localdata : {
 		password: "",
 		_id: "404"
 }
+export const RenderQuestion = ({question, option1, option2, option3, option4, correctOption, QID, onDelete, canDelete = true}) => {
+    return (
+        <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
+            {canDelete ?
+            <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
+                <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
+            </div>:null
+            }
+            <div>
+                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
+                    <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option1}</p>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0',}} className="changeColorBG"></div>
+                    <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option2}</p>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
+                    <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option3}</p>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                    <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
+                    <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option4}</p>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export const RenderQuestionTextual = ({question, option1, keywords, QID, onDelete, canDelete = true}) => {
+    return (
+        <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
+            {canDelete ?
+            <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
+                <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
+            </div>:null
+            }
+            <div>
+                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+                {keywords.map(k => {
+                                return (
+                                    <div key={k} style={{display: 'inline-flex', flexDirection: 'row', padding: '2px 8px',borderRadius: 50,height: 30,alignItems: 'center', margin: '3px 4px 3px 0' }} className="changeColorBG">
+                                        <p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left", margin: '0 5px 0 5px', letterSpacing: 0.3}}>{k}</p>
+                                    </div>
+                                )
+                })}
+            </div>
+        </div>
+    )
+}
 
 
 const QuizQuestion = ({history}) => {
@@ -39,7 +92,8 @@ const QuizQuestion = ({history}) => {
     const [correctOption, setCorrectOption] = React.useState(1)
 
     const [textualQuestionTitle, setTextualQuestionTitle] = React.useState('')
-    
+    const [minChar, setMinChar]  = React.useState(null)
+    const [textualQuesMarks, setTQM] = React.useState(undefined) 
     const [keywords, setKeywords] = React.useState([])
     const [keywordInput, setKeywordInput] = React.useState('')
 
@@ -48,55 +102,7 @@ const QuizQuestion = ({history}) => {
     const [modalIsOpen, setModal] = React.useState(false)
 
 
-    const RenderQuestion = ({question, option1, option2, option3, option4, correctOption, QID, onDelete}) => {
-        return (
-            <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
-                <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
-                    <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
-                </div>
-                <div>
-                    <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
-
-                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
-                        <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option1}</p>
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0',}} className="changeColorBG"></div>
-                        <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option2}</p>
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
-                        <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option3}</p>
-                    </div>
-                    <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
-                        <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option4}</p>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    const RenderQuestionTextual = ({question, option1, keywords, QID, onDelete}) => {
-        return (
-            <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
-                <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
-                    <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
-                </div>
-                <div>
-                    <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
-                    {keywords.map(k => {
-                                    return (
-                                        <div key={k} style={{display: 'inline-flex', flexDirection: 'row', padding: '2px 8px',borderRadius: 50,height: 30,alignItems: 'center', margin: '3px 4px 3px 0' }} className="changeColorBG">
-                                            <p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left", margin: '0 5px 0 5px', letterSpacing: 0.3}}>{k}</p>
-                                        </div>
-                                    )
-                    })}
-                </div>
-            </div>
-        )
-    }
+    
 
     const addNewQuestion = () => {
 
@@ -121,17 +127,21 @@ const QuizQuestion = ({history}) => {
 
     const addNewQuestionTextual = () => {
 
-        if(!keywords.length || !textualQuestionTitle) {
+        if(!keywords.length || !textualQuestionTitle || !minChar || !textualQuesMarks) {
             toast.error('Invalid question')
             return
         }
-        let textualQuesMarks = 20
-
-        let obj = {questionTitle : textualQuestionTitle, keywords, textualQuesMarks, questionType:'text', QID: questionID}
+        
+        let minCharInt = parseInt(minChar)
+        let textualQuesMarksInt = parseInt(textualQuesMarks)
+        let obj = {questionTitle : textualQuestionTitle, keywords,textualQuesMarks: textualQuesMarksInt, minChar: minCharInt, questionType:'text', QID: questionID}
 
         setQuestions( questions => [...questions, obj] )
         setQID(questionID + 1)
         setKeywords([])
+        setMinChar(null)
+        setTQM(null)
+        setTextualQuestionTitle('')
         toast.success('Added a new question')
     }
 
@@ -150,8 +160,8 @@ const QuizQuestion = ({history}) => {
 
         let textualMarks = []
         questions.filter(q => q.questionType === 'text').forEach(q => textualMarks.push(q.textualQuesMarks))
-        let totalMarks = questions.filter(q => q.questionType === 'mcq').length + textualMarks.reduce((total,num) => total)
-        
+        let totalMarks = questions.filter(q => q.questionType === 'mcq').length + textualMarks.reduce((a,b) => a + b, 0)
+        console.log(questions.filter(q => q.questionType === 'text'))
         let loc = window.location.href.split('/')
 
         let quiz = {
@@ -256,24 +266,44 @@ const QuizQuestion = ({history}) => {
                     
                     <React.Fragment>
                         <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 30, marginBottom: 15}} placeholder="Enter question" value={textualQuestionTitle} onChange={t => setTextualQuestionTitle(t.target.value)}></input>
-                        <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Enter the important keywords for the ideal answer with space between each keyword</p>
+                        
                         
                         <div style={{display: 'flex', flexDirection: 'row',}}>
                             <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column', paddingRight: 20}}>
-                                <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 10}} placeholder="Enter keywords" 
-                                    value={keywordInput} 
-                                    onChange={t => setKeywordInput(t.target.value)}
-                                    onKeyDown={(e) => {
-                                        if ([',', ' ', 'Enter'].includes(e.key)) {
-                                            e.preventDefault();
-                                            var keyword = keywordInput.trim()
-                                            if (keyword) {
-                                            setKeywords(keywords => [...keywords, keyword])
-                                            setKeywordInput('')
-                                            }
-                                        }
-                                    }}
-                                />
+                                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                                    <div style={{display: 'flex', flexDirection: 'column',width: '50%',}}>
+                                        <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Enter the keywords for the answer with space between each word</p>
+                                        <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 10,}} placeholder="Enter keywords" 
+                                            value={keywordInput} 
+                                            onChange={t => setKeywordInput(t.target.value)}
+                                            onKeyDown={(e) => {
+                                                if ([',', ' ', 'Enter'].includes(e.key)) {
+                                                    e.preventDefault();
+                                                    var keyword = keywordInput.trim()
+                                                    if (keyword) {
+                                                    setKeywords(keywords => [...keywords, keyword])
+                                                    setKeywordInput('')
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div style={{display: 'flex', flexDirection: 'column',width: '25%', marginLeft: 20}}>
+                                        <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Minimum Characters required</p>
+                                        <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 10,}} placeholder="Enter min characters" 
+                                            value={minChar} 
+                                            onChange={t => setMinChar(t.target.value)}
+                                        />
+                                    </div>
+                                    <div style={{display: 'flex', flexDirection: 'column',width: '25%', marginLeft: 20}}>
+                                        <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Maximum Marks</p>
+                                        <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 10,}} placeholder="Enter max marks" 
+                                            value={textualQuesMarks} 
+                                            onChange={t => setTQM(t.target.value)}
+                                        />
+                                    </div>
+                                    
+                                </div>
                                 <div>
                                 {keywords.map(k => {
                                     return (
@@ -321,7 +351,7 @@ const QuizQuestion = ({history}) => {
 
                     {questions.length ?
                         <React.Fragment>
-                        <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:15, marginLeft: 60, letterSpacing: 0.6}}>{questions.length} QUESTIONS ADDED</p>
+                        <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:15, marginLeft: 0, letterSpacing: 0.4}}>{questions.length} QUESTIONS ADDED</p>
                             {
                             
                             questions.map((q,index) => {
@@ -383,7 +413,7 @@ const QuizQuestion = ({history}) => {
 					<button onClick={() => {
                         createQuiz()
                         closeModal()
-                        history.goBack()
+                        // history.goBack()
                     }}>
 						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Create</p>
 					</button>
