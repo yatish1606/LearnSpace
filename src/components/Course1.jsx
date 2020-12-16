@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -64,7 +64,7 @@ const styles = {
 	  backgroundColor: '#09A407',
 	  height: 4,
 	  borderRadius: 10,
-	  marginTop: 10
+	  marginTop: 0
 	},
 	overrides: {
 		MuiTab: {
@@ -84,14 +84,16 @@ const styles = {
 	  color: '#878787',
 	  minWidth: 72,
 	  fontWeight: 500,
-	  marginRight: 15,
+	//   marginRight: 15,
 	  fontSize:17,
-	  paddingRight: 20,
-	  paddingLeft: 10,
+	  paddingRight: 35,
+	  paddingLeft: 25,
 	  boxShadow: 'none',
-	  marginLeft: 15,
+	//   marginLeft: 15,
 	  letterSpacing : 0.3,
+	  height: 50,
 	  opacity: 1,
+	  borderBottom: '4px solid #eee',
 	  fontFamily: [
 		'Poppins'
 	  ].join(','),
@@ -519,7 +521,7 @@ const Course1 = (props) => {
 					<Plus size={40} color="white" onClick={openModal}/>
 				</div>
 
-				<Link to={`/quiz/new`}>
+				<Link to={`/quiz/new/${courseID}`}>
 				<div className={"new-post"} style={{bottom: 120, right: 50, width:40, height: 40, padding: 0}}>
 					<CheckCircle size={20} color="#fff"  style={{zIndex: 99}}/>
 				</div>
@@ -582,6 +584,7 @@ const Course1 = (props) => {
 					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Stream   </div>} />
 					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
 					<AntTab label={<div><Database size={22} style={{marginBottom: 5}} /> Study Material   </div>} />
+					<AntTab label={<div><HelpCircle size={22} style={{marginBottom: 5}} /> Quiz   </div>} />
 					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
@@ -615,6 +618,10 @@ const Course1 = (props) => {
 							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 						}) : <EmptyStateSmall title='No Study Material' d1="Teacher has not posted any study material in this course yet"/>
 				}
+				</div>
+
+				<div style={Object.assign({}, styles.slide, styles.slide2)}>
+				quizzes
 				</div>
 
 
