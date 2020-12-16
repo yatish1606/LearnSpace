@@ -35,7 +35,7 @@ let currentCourseId = window.location.pathname.replace('/course/','');
 
 let userType = JSON.parse(localStorage.getItem('userType'))
 
-const styles = {
+export const styles = {
 	tabs: {
 	  background: theme === 'dark' ? '#1B1B1B' :'#fff',
 	},
@@ -56,7 +56,7 @@ const styles = {
 	},
   };
 
-  const AntTabs = withStyles({
+  export const AntTabs = withStyles({
 	root: {
 		height: 50
 	},
@@ -75,7 +75,7 @@ const styles = {
 	  },
   })(Tabs);
 
-  const AntTab = withStyles(() => ({
+  export const AntTab = withStyles(() => ({
 	wrapper: {
 		flexDirection: 'row',
 	  },
