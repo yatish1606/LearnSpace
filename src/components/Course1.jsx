@@ -521,7 +521,7 @@ const Course1 = (props) => {
 					<Plus size={40} color="white" onClick={openModal}/>
 				</div>
 
-				<Link to={`/quiz/new/${courseID}`}>
+				<Link to={`/quiznew/${courseID}`}>
 				<div className={"new-post"} style={{bottom: 120, right: 50, width:40, height: 40, padding: 0}}>
 					<CheckCircle size={20} color="#fff"  style={{zIndex: 99}}/>
 				</div>
