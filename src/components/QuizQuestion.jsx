@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {FileText, Trash} from 'react-feather'
+import {FileText, Trash, Activity, BarChart2, List, Type, X} from 'react-feather'
 import './course.css'
 import Collapse from "@kunukn/react-collapse";
 import {getRandomUser2} from './random'
@@ -9,6 +9,9 @@ import isEqual from 'date-fns/is_equal';
 import { toast } from 'react-toastify';
 import './course.css'
 import {EmptyStateSmall} from './Home'
+import Toggle from 'react-toggle'
+import customStyles2 from './Sidebar'
+import Modal from 'react-modal'
 
 let userType = 'teacher'
 
@@ -25,6 +28,7 @@ let user = localdata ? localdata : {
 const QuizQuestion = ({history}) => {
 
     const [questions, setQuestions] = React.useState([])
+    const [questionID, setQID] = React.useState(0)
     
     const [quizName, setQuizName] = React.useState('')
     const [questionTitle, setQuestionTitle] = React.useState('')
@@ -34,12 +38,21 @@ const QuizQuestion = ({history}) => {
     const [option4, setO4] = React.useState('')
     const [correctOption, setCorrectOption] = React.useState(1)
 
+    const [textualQuestionTitle, setTextualQuestionTitle] = React.useState('')
+    
+    const [keywords, setKeywords] = React.useState([])
+    const [keywordInput, setKeywordInput] = React.useState('')
 
-    const RenderQuestion = ({question, option1, option2, option3, option4, correctOption}) => {
+    const [questionType, setQuestionType] = React.useState('mcq')
+
+    const [modalIsOpen, setModal] = React.useState(false)
+
+
+    const RenderQuestion = ({question, option1, option2, option3, option4, correctOption, QID, onDelete}) => {
         return (
             <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
                 <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
-                    <Trash size={20} className="sub" style={{cursor: 'pointer'}}/>
+                    <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
                 </div>
                 <div>
                     <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
@@ -49,7 +62,7 @@ const QuizQuestion = ({history}) => {
                         <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option1}</p>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
+                        <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0',}} className="changeColorBG"></div>
                         <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option2}</p>
                     </div>
                     <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
@@ -65,6 +78,26 @@ const QuizQuestion = ({history}) => {
         )
     }
 
+    const RenderQuestionTextual = ({question, option1, keywords, QID, onDelete}) => {
+        return (
+            <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
+                <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
+                    <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
+                </div>
+                <div>
+                    <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+                    {keywords.map(k => {
+                                    return (
+                                        <div key={k} style={{display: 'inline-flex', flexDirection: 'row', padding: '2px 8px',borderRadius: 50,height: 30,alignItems: 'center', margin: '3px 4px 3px 0' }} className="changeColorBG">
+                                            <p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left", margin: '0 5px 0 5px', letterSpacing: 0.3}}>{k}</p>
+                                        </div>
+                                    )
+                    })}
+                </div>
+            </div>
+        )
+    }
+
     const addNewQuestion = () => {
 
         if(!questionTitle.length || !option1.length || !option2.length || !option3 || !option4.length || correctOption <= 0 || correctOption >= 5) {
@@ -72,10 +105,11 @@ const QuizQuestion = ({history}) => {
             return 
         }
         
-        let obj = {questionTitle, option1, option2, option3, option4, correctOption}
-        console.log(correctOption)
+        let obj = {questionTitle, option1, option2, option3, option4, correctOption, questionType:'mcq', QID: questionID}
+        
         setQuestions( questions => [...questions, obj] )
 
+        setQID(questionID + 1)
         setQuestionTitle('')
         setO1('')
         setO2('')
@@ -83,6 +117,53 @@ const QuizQuestion = ({history}) => {
         setO4('')
         setCorrectOption(1)
         toast.success('Added a new question')
+    }
+
+    const addNewQuestionTextual = () => {
+
+        if(!keywords.length || !textualQuestionTitle) {
+            toast.error('Invalid question')
+            return
+        }
+        let textualQuesMarks = 20
+
+        let obj = {questionTitle : textualQuestionTitle, keywords, textualQuesMarks, questionType:'text', QID: questionID}
+
+        setQuestions( questions => [...questions, obj] )
+        setQID(questionID + 1)
+        setKeywords([])
+        toast.success('Added a new question')
+    }
+
+    const onDeleteQuestion = id => {
+        setQuestions(questions => questions.filter(q => q.QID !== id))
+    }
+
+
+    const handleKeywordDelete = toDelete => setKeywords(keywords.filter(k => k !== toDelete))
+
+    const openModal = () => setModal(true)
+    const closeModal = () => setModal(false)
+
+
+    const createQuiz = () => {
+
+        let textualMarks = []
+        questions.filter(q => q.questionType === 'text').forEach(q => textualMarks.push(q.textualQuesMarks))
+        let totalMarks = questions.filter(q => q.questionType === 'mcq').length + textualMarks.reduce((total,num) => total)
+        
+        let loc = window.location.href.split('/')
+
+        let quiz = {
+            questions,
+            numberOfQuestions: questions.length,
+            totalMarks,
+            startTime:null,
+            endTime:null,
+            teacher_id: user._id,
+            course_id: loc[loc.length - 1],
+        }
+        console.log(quiz)
     }
 	
 	
@@ -95,14 +176,30 @@ const QuizQuestion = ({history}) => {
             
             
             {/* Question Input */}
-            <div style={{display: 'flex', zIndex: 999, flexDirection: 'row',alignItems: 'center',  boxShadow: '-4px -4px 10px #eee', padding:'20px 10px', position: 'fixed', bottom: 0, width: '80%', alignSelf: 'center', borderTopLeftRadius: 15, borderTopRightRadius: 15 }} className={"background borderrad"}>
+            <div style={{height: 250, display: 'flex', zIndex: 0,  flexDirection: 'row',  boxShadow: '-4px -4px 10px #eee', padding:'30px 10px', position: 'fixed', bottom: 0, width: '80%', alignSelf: 'center', borderTopLeftRadius: 15, borderTopRightRadius: 15, paddingBottom: 10,  }} className={"background borderrad"}>
                 {/* <div style={{width: '200px', height: '90%', borderRadius: 10, marginRight: 10, margin:'5% 10px 5% 0'}} className="changeColorBG">
 
                 </div> */}
+                
                 <div style={{display: "flex", flexDirection: 'column', flexGrow: 1, padding: '0 10px'}}>
-                <p className="changeColor" style={{fontSize: 15.5, fontWeight: 600, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0}}>Add New Question</p>
+                <div style={{position: 'absolute', top: 30, right: 30, display: 'flex', flexDirection: 'row'}}>
+                    <p className="sub" style={{fontSize: 14.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 10}}>{questionType === 'mcq' ? 'Multiple Choice Question' : 'Textual Question'}</p>
+                    <Toggle
+                            defaultChecked={questionType === 'mcq'}
+                            icons={{
+                            checked: <List size={17} color="#fff" style={{position: "absolute", top: -2.5, left: -1}}/>,
+                            unchecked: <Type size={14} color="#fff" style={{position: "absolute", top: -2,}}/>,
+                            }}
+                            style={{}}
+                            className="chartToggle"
+                            onChange={() => questionType === 'mcq' ? setQuestionType('text') : setQuestionType('mcq')} 
+                    />
+                </div>
+                <p className="changeColor" style={{fontSize: 13.5, fontWeight: 600, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, position: 'absolute', top: 20, left: 20}}>ADD NEW QUESTION</p>
 					
-                    <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 15}} placeholder="Enter question" value={questionTitle} onChange={t => setQuestionTitle(t.target.value)}></input>
+                    {questionType ==='mcq' ? 
+                    <React.Fragment>
+                    <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 30, marginBottom: 15}} placeholder="Enter question" value={questionTitle} onChange={t => setQuestionTitle(t.target.value)}></input>
                     
                     <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Select the correct option with the checkmark</p>
                     <div style={{display: 'flex', flexDirection: 'row',}}>
@@ -148,10 +245,56 @@ const QuizQuestion = ({history}) => {
                                 </div>
                             </div>
                         </div>
-                        <button onClick={addNewQuestion} style={{height: 50, marginTop: 60}}>
+                        <button onClick={addNewQuestion} style={{height: 50, marginTop: 50}}>
                             <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Add Question</p>
                         </button>
                     </div>
+                    </React.Fragment> 
+                    
+                    :
+                    
+                    
+                    <React.Fragment>
+                        <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 30, marginBottom: 15}} placeholder="Enter question" value={textualQuestionTitle} onChange={t => setTextualQuestionTitle(t.target.value)}></input>
+                        <p className="sub" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>Enter the important keywords for the ideal answer with space between each keyword</p>
+                        
+                        <div style={{display: 'flex', flexDirection: 'row',}}>
+                            <div style={{display: 'flex', flexGrow: 1, flexDirection: 'column', paddingRight: 20}}>
+                                <input type="text" style={{height:40, fontSize: 18, width: '100%', marginTop: 10, marginBottom: 10}} placeholder="Enter keywords" 
+                                    value={keywordInput} 
+                                    onChange={t => setKeywordInput(t.target.value)}
+                                    onKeyDown={(e) => {
+                                        if ([',', ' ', 'Enter'].includes(e.key)) {
+                                            e.preventDefault();
+                                            var keyword = keywordInput.trim()
+                                            if (keyword) {
+                                            setKeywords(keywords => [...keywords, keyword])
+                                            setKeywordInput('')
+                                            }
+                                        }
+                                    }}
+                                />
+                                <div>
+                                {keywords.map(k => {
+                                    return (
+                                        <div key={k} style={{display: 'inline-flex', flexDirection: 'row', padding: '2px 8px',borderRadius: 50,height: 30,alignItems: 'center', margin: '3px 4px' }} className="changeColorBG">
+                                            <p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left", margin: '0 10px 0 5px', letterSpacing: 0.3}}>{k}</p>
+                                            <X size={15} className="changeColor" style={{cursor: 'pointer'}} onClick={() => handleKeywordDelete(k)}/>
+                                        </div>
+                                    )
+                                })}
+                                </div>
+                                
+                                
+                            </div>
+                        <button onClick={addNewQuestionTextual} style={{height: 50, marginTop: 50}}>
+                            <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Add Question</p>
+                        </button>
+                    </div>
+                        
+                    
+                    </React.Fragment>
+                    }
 				</div>
         </div>
 
@@ -179,17 +322,30 @@ const QuizQuestion = ({history}) => {
                     {questions.length ?
                         <React.Fragment>
                         <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:15, marginLeft: 60, letterSpacing: 0.6}}>{questions.length} QUESTIONS ADDED</p>
-                        {questions.map((q,index) => {
-                            return <RenderQuestion question={q.questionTitle} option1={q.option1} option2={q.option2} option3={q.option3} option4={q.option4} correctOption={q.correctOption}/>
-                        })}
+                            {
+                            
+                            questions.map((q,index) => {
+
+                                return q.questionType === 'mcq' ? <RenderQuestion question={q.questionTitle} option1={q.option1} option2={q.option2} option3={q.option3} option4={q.option4} correctOption={q.correctOption} QID={q.QID} onDelete={onDeleteQuestion}/>
+                                : <RenderQuestionTextual question={q.questionTitle} keywords={q.keywords} QID={q.QID} onDelete={onDeleteQuestion}/>
+                                
+                            })
+                            
+                            }
                         </React.Fragment>
                         : <EmptyStateSmall title="No Questions Added" d1="There are no questions in this quiz. Enter info in the bottom panel to add a question"/>
                     }
 
                     
                     <div style={{position: "fixed", top: 90, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-                        <button>
-                            <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>{userType === 'student' ? 'Join' : 'Create'}</p>
+                        <button onClick={() => {
+                            if(!questions.length) {
+                                toast.error('No questions in quiz')
+                                return 
+                            }
+                            openModal()
+                        }}>
+                            <p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Proceed</p>
                         </button>
                         <button style={{boxShadow: 'none', backgroundColor: 'transparent'}} onClick={() => history.goBack()}>
                             <p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
@@ -198,9 +354,82 @@ const QuizQuestion = ({history}) => {
 
 			
             </div>
+
+            <Modal
+				isOpen={modalIsOpen}
+				onRequestClose={closeModal}
+				style={customStyles}
+				contentLabel="Modal"
+				closeTimeoutMS={200}
+				className="background"
+				>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
+
+
+				
+				<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 25, padding:0, marginBottom:0}}>Create Quiz</h2>
+				
+				
+				<p style={{fontFamily: 'Poppins', fontSize: 17, color: '#ababab', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}} className="sub">Name of Quiz</p>
+				<input type="text" style={{height:40}} value={quizName} onChange={t => setQuizName(t.target.value)}></input>
+
+                <ul style={{margin:0, padding: 0, marginLeft: 20}}>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Once the quiz is created, it can be started at any time.</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>After the quiz is started, you can close the quiz at any time. Post that, student responses will be collected.</p></li>
+				</ul>
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button onClick={() => {
+                        createQuiz()
+                        closeModal()
+                        history.goBack()
+                    }}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Create</p>
+					</button>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+
+
+			</Modal>
+
+
+
         </div>
 
 	)
 }
 
 export default QuizQuestion
+
+export const customStyles = {
+	//   
+	content: {
+		position: 'absolute',
+		top: '25%',
+		left: '30%',
+		right: '30%',
+		bottom: '25%',
+		background: '#fff',
+		overflow: 'auto',
+		WebkitOverflowScrolling: 'touch',
+		borderRadius: '10px',
+		outline: 'none',
+		
+		padding: '25px',
+		alignSelf: 'center',
+		height: 'auto',
+		paddingTop: '30px'
+	  },
+	  overlay: {
+		position: 'fixed',
+		top: 0,
+		left: 0,
+		right: 0,
+		bottom: 0,
+		backgroundColor: '#000000ba',
+		zIndex: 9999
+	  },
+	};
