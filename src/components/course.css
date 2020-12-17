@@ -762,8 +762,9 @@ html img{
 
 .mcqhover {
     cursor: pointer;
+    border: 3px solid #ababab;
 }
 .mcqhover:hover {
-    background-color: var(--sub) !important;
+    background-color: #09a4079a !important;
     transition: 0.2s ease;
 }

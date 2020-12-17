@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {ArrowLeft, Grid, Edit, PlayCircle} from 'react-feather'
+import {ArrowLeft, Grid, Edit, PlayCircle,X} from 'react-feather'
 import './course.css'
 import {getRandomUser2} from './random'
 import Axios from 'axios'
@@ -9,6 +9,9 @@ import './course.css'
 import {AntTab, AntTabs} from './Course1'
 import SwipeableViews from 'react-swipeable-views'
 import {RenderQuestion, RenderQuestionTextual} from './QuizQuestion'
+import autosize from "autosize"
+import Modal from 'react-modal'
+import {customStyles} from './QuizQuestion'
 
 let userType = 'student'
 
@@ -99,13 +102,24 @@ const Quiz = ({history}) => {
 
     const [ignore, setIgnore] = React.useState(0)
     const forceUpdate = () => setIgnore(ignore + 1)
+    const [modalIsOpen, setModal] = React.useState(false)
+
+    const [quizResponse, setQR] = React.useState(null)
+
+    const openModal = () => setModal(true)
+    const closeModal = () => setModal(false)
 
     let quizAnswers = null
     
 
     const RenderQuizForStudent = () => {
 
-        
+        const textRef = React.useRef()
+
+        React.useEffect(() => {
+            autosize(document.querySelectorAll('textarea'))
+        })
+
         let questionsArray = obj.questions.sort((a,b) => a.QID > b.QID ? 1 : -1)
         
         const [answers, setAnswers] = React.useState([])
@@ -119,7 +133,9 @@ const Quiz = ({history}) => {
             setAnswers(answersArr)
             
         }
+
         quizAnswers = answers
+        
             
         console.log(answers)
         
@@ -174,7 +190,11 @@ const Quiz = ({history}) => {
                             let arr = [...answers]
                             arr[question.QID] = t.target.value
                             setAnswers(arr)
-                        }} value={answers[question.QID]}>
+                        }} 
+                        value={answers[question.QID]} 
+                        placeholder="Start typing your answer here"
+                        ref={textRef}
+                        >
                             
                         </textarea>
                         
@@ -215,7 +235,7 @@ const Quiz = ({history}) => {
                         charPercent = parseFloat((answers[index].trim().length/ques.minChar).toFixed(2))
                     } 
                     const textScore = parseFloat((ques.textualQuesMarks * 0.8 * keywordPercent).toFixed(2))  + parseFloat((ques.textualQuesMarks * 0.2 * charPercent).toFixed(2))
-                    score+=  Math.round(textScore)
+                    score +=  Math.round(textScore)
                     questionsAttempted++
                 }
             }
@@ -240,6 +260,8 @@ const Quiz = ({history}) => {
             marksObtained: score.score,
             questionsAttempted: score.questionsAttempted
         }
+        setQR(responseObj)
+        openModal()
         console.log(responseObj)
     }
     
@@ -251,7 +273,15 @@ const Quiz = ({history}) => {
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 25, marginLeft: 20}} >
                 <ArrowLeft size={27} className="sub" style={{cursor: "pointer"}} onClick={() => history.goBack()}/>                 
                 <h2 className="course-title" style={{fontSize: 30, margin: 0, marginLeft: 20}}>Quiz Title</h2>
+                
             </div>
+            <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 25, marginLeft: 25}}>INSTRUCTIONS FOR QUIZ</p>
+            <ul style={{margin:0, padding: 0, marginLeft: 25, marginTop: 10}}>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>This quiz contains {obj.questions.length} questions</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For multiple choice questions, click on your option to select it</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For textual or theoretical questions, start typing your answer inside the text box. The textbox will adjust its height if your answer is long.</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>The quiz is submitted only when you click the submit button. You will be able to view your score immediately after submitting the quiz</p></li>
+			</ul>
 
             {/* <p style={{fontSize: 14, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 30, marginLeft: 20, letterSpacing: 0.4}} className="sub">QUIZ DETAILS</p>
 
@@ -304,7 +334,7 @@ const Quiz = ({history}) => {
                 
                 <React.Fragment>
                     
-                    <div style={{width: '100%', marginTop: 25, borderTop: '3px solid',paddingLeft: 25, paddingTop: 30, paddingBottom: 50}} className="borderrad">
+                    <div style={{width: '100%', marginTop: 20, borderTop: '3px solid',paddingLeft: 25, paddingTop: 30, paddingBottom: 50}} className="borderrad">
 
                         
                         <RenderQuizForStudent/>
@@ -324,7 +354,43 @@ const Quiz = ({history}) => {
                 </React.Fragment>
             }
 
-            
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    style={customStyles}
+                    contentLabel="Modal"
+                    closeTimeoutMS={200}
+                    className="background"
+				>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
+
+
+				
+				<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 20, padding:0, marginBottom:0}}>Are you sure you want to submit the quiz ?</h2>
+
+                <h2 className="sub" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 16, padding:0, marginBottom:0, marginTop: 35}}>You attempted {quizResponse.questionsAttempted} out of {quizResponse.numberOfQuestions} questions</h2>
+				
+
+                <ul style={{margin:0, padding: 0, marginLeft: 0, marginTop: 20}}>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Once the quiz is submitted, you cannot attempt it again</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>You will be able to view your score immediately after submitting</p></li>
+				</ul>
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button onClick={() => {
+                        //submit quiz
+                        closeModal()
+                    }}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Submit</p>
+					</button>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+
+
+			</Modal>
             
 
         </div>

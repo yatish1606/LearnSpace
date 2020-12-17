@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.2.2",
+    "autosize": "^4.0.2",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "carbon-components-react": "^7.24.0",
