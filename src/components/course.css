@@ -759,3 +759,11 @@ html img{
     letter-spacing: 0.3px;
     line-height: 25px;
 }
+
+.mcqhover {
+    cursor: pointer;
+}
+.mcqhover:hover {
+    background-color: var(--sub) !important;
+    transition: 0.2s ease;
+}

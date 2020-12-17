@@ -52,6 +52,30 @@ input {
   color: var(--textColor);
 }
 
+textarea {
+  width: 100%;
+  background-color: var(--background);
+  border: none;
+  min-height: 150px;
+  border: 2.5px solid var(--grey);
+  padding: 10px;
+  /* border-radius: 10px; */
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* padding-left: 10px; */
+  transition: 0.2s ease-in;
+  margin-bottom: 1rem;
+  font-size: 18px;
+  font-family: 'Poppins';
+  font-weight: 400;
+  color: var(--textColor);
+  border-radius: 5px;
+  overflow-y: auto;
+  word-wrap:break-word
+}
+
 input::placeholder {
   color: #ababab;
   font-size: 18px;
