@@ -52,9 +52,42 @@ input {
   color: var(--textColor);
 }
 
+textarea {
+  width: 100%;
+  background-color: var(--background);
+  border: none;
+  min-height: 130px;
+  border: 2.5px solid var(--grey);
+  padding: 10px;
+  /* border-radius: 10px; */
+  margin-right: 1rem;
+  
+  /* padding-left: 10px; */
+  transition: 0.2s ease-in;
+  font-size: 18px;
+  font-family: 'Poppins';
+  font-weight: 400;
+  color: var(--textColor);
+  border-radius: 5px;
+  overflow-y: auto;
+  word-wrap:break-word;
+  resize: none;
+  box-sizing: border-box;
+}
+textarea::placeholder {
+  color: #ababab;
+  font-size: 15px;
+}
+
+textarea:focus {
+  border: 2.5px solid #09A407;
+  transition: 0.2s ease-in;
+}
+
+
 input::placeholder {
   color: #ababab;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 input:focus {
@@ -106,4 +139,26 @@ a:hover {
 
 .Toastify__toast--error {
   box-shadow: none;
+}
+
+ul {
+  list-style: none; /* Remove default bullets */
+ 
+}
+
+li {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+ul li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: var(--sub); /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-flex;
+  flex-direction: row; /* Needed to add space between the bullet and the text */
+  width: 10px;
+  margin-right: 15px;
 }

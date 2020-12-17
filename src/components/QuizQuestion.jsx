@@ -55,16 +55,20 @@ export const RenderQuestion = ({question, option1, option2, option3, option4, co
     )
 }
 
-export const RenderQuestionTextual = ({question, option1, keywords, QID, onDelete, canDelete = true}) => {
+export const RenderQuestionTextual = ({question, keywords, QID, onDelete, canDelete = true, textualQuesMarks}) => {
     return (
-        <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
+        <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row',}}>
             {canDelete ?
             <div style={{width: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, borderRadius: 10}} className="">
                 <Trash size={20} className="sub" style={{cursor: 'pointer'}} onClick={() => onDelete(QID)}/>
             </div>:null
             }
             <div>
-                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end'}}>
+                    <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+                    <p className="sub" style={{fontSize: 14, fontWeight: 500, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginLeft: 10}}>{textualQuesMarks} marks</p>
+                </div>
+                
                 {keywords.map(k => {
                                 return (
                                     <div key={k} style={{display: 'inline-flex', flexDirection: 'row', padding: '2px 8px',borderRadius: 50,height: 30,alignItems: 'center', margin: '3px 4px 3px 0' }} className="changeColorBG">
@@ -357,7 +361,7 @@ const QuizQuestion = ({history}) => {
                             questions.map((q,index) => {
 
                                 return q.questionType === 'mcq' ? <RenderQuestion question={q.questionTitle} option1={q.option1} option2={q.option2} option3={q.option3} option4={q.option4} correctOption={q.correctOption} QID={q.QID} onDelete={onDeleteQuestion}/>
-                                : <RenderQuestionTextual question={q.questionTitle} keywords={q.keywords} QID={q.QID} onDelete={onDeleteQuestion}/>
+                                : <RenderQuestionTextual question={q.questionTitle} keywords={q.keywords} QID={q.QID} onDelete={onDeleteQuestion} textualQuesMarks={q.textualQuesMarks}/>
                                 
                             })
                             
