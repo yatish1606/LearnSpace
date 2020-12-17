@@ -144,31 +144,31 @@ const Quiz = ({history}) => {
                 return (
                     <div style={{width: '100%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
                         <div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5}}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 10}}>
                                 <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 15}}>Q.{index+1}</p>
                                 <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.questionTitle}</p>
                             </div>
 
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 5, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 1)}>
-                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={"changeColorBG mcqhover"}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 1)}>
+                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 1 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option1}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 5, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 2)}>
-                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={"changeColorBG mcqhover"}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 2)}>
+                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 2 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option2}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 5, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 3)}>
-                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={"changeColorBG mcqhover"}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 3)}>
+                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 3 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option3}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 5, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 4)}>
-                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={"changeColorBG mcqhover"}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 4)}>
+                                <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 4 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option4}</p>
@@ -179,7 +179,7 @@ const Quiz = ({history}) => {
                 )
             } else {
                 return (
-                    <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'column',}}>
+                    <div style={{width: '88%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'column',}}>
                         
                         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5}}>
                             <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 15}}>Q.{index+1}</p>
@@ -192,7 +192,7 @@ const Quiz = ({history}) => {
                             setAnswers(arr)
                         }} 
                         value={answers[question.QID]} 
-                        placeholder="Start typing your answer here"
+                        placeholder="Start typing your answer here..."
                         ref={textRef}
                         >
                             
@@ -369,7 +369,7 @@ const Quiz = ({history}) => {
 				
 				<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 20, padding:0, marginBottom:0}}>Are you sure you want to submit the quiz ?</h2>
 
-                <h2 className="sub" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 16, padding:0, marginBottom:0, marginTop: 35}}>You attempted {quizResponse.questionsAttempted} out of {quizResponse.numberOfQuestions} questions</h2>
+                <h2 className="sub" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 16, padding:0, marginBottom:0, marginTop: 35}}>You attempted {quizResponse ? quizResponse.questionsAttempted : null} out of {quizResponse ? quizResponse.numberOfQuestions : null} questions</h2>
 				
 
                 <ul style={{margin:0, padding: 0, marginLeft: 0, marginTop: 20}}>

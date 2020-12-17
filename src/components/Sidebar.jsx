@@ -12,6 +12,7 @@ import Modal from 'react-modal';
 import {toast} from 'react-toastify'
 import Axios from 'axios'
 
+
 let randomUser = getRandomUser()
 
 
@@ -271,12 +272,14 @@ const Sidebar = (props) => {
 			<nav className={'nav-menu active'} style={{backgroundColor: theme === 'dark' ? '#212121' : '#f8f8f8'}}>
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
+						<Link to="/">
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80, paddingRight: 30}}>
-							<Codesandbox size={30} color="#09A407"/>
+							<Codesandbox size={27} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
-								<p style={{fontFamily: 'Poppins', fontSize: 16, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0}}>LearnSpace</p>
+								<p style={{fontFamily: 'Poppins', fontSize: 18, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0, letterSpacing: 0.25}}>LearnSpace</p>
 							</div>
 						</div>
+						</Link>
 					
 						<br/>
 
