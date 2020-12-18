@@ -238,17 +238,12 @@ const AssignmentDetails = ({courseName, history}) => {
 		
 	},[ignored,hasAttachment])
 
-	
-	
 
 	return (
 		<div className="course-container">
 
 			<div className="course-heading-block" style={{flexDirection: "row", paddingRight: 0}}>
 
-			<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
-			Delete Assignment</p>
-								
 
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
 
