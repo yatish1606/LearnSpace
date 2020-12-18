@@ -288,6 +288,14 @@ const Course1 = (props) => {
 	const [courseTeacher,setCourseTeacher] = useState({})
 	const [courseStudents,setCourseStudents] = useState([])
 
+	const [courseNameModalIsOpen, setCourseNameModal] = useState(false)
+	const openCourseNameModal = () => {
+		console.log("hi");
+		setCourseNameModal(true)
+	}
+	console.log(courseNameModalIsOpen);
+	const closeCourseNameModal = () => setCourseNameModal(false)
+
 	const [posts, setPosts] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
@@ -512,6 +520,22 @@ const Course1 = (props) => {
 		setIsOpenAutograde(false);
 	}
 
+	<Modal
+	isOpen={openCourseNameModal}
+	onRequestClose={closeCourseNameModal}
+	style={customStyles}
+	contentLabel="Modal"
+	closeTimeoutMS={200}
+	className="background"
+	>
+
+	<div>
+		hello
+	</div>
+
+
+</Modal>
+
 	console.log(courseInfo.course_code)
 	return (
 		<div className="course-container">
@@ -565,8 +589,8 @@ const Course1 = (props) => {
 					<div>
 						<h2 className="course-title">{courseInfo.name}</h2>
 					</div>
-					<div style={{marginLeft:10}}>
-						<Edit3 size={21} color="#09a407" className="changeColor"/>
+					<div style={{marginLeft:10, cursor:"pointer"}}>
+						<Edit3 size={21} color="#09a407" className="changeColor" onClick={openCourseNameModal}/>
 					</div>
             	</div>
 
