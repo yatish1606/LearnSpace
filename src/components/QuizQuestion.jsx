@@ -24,6 +24,8 @@ let user = localdata ? localdata : {
 		_id: "404"
 }
 export const RenderQuestion = ({question, option1, option2, option3, option4, correctOption, QID, onDelete, canDelete = true}) => {
+    console.log(option1, question)
+    console.log('rendering question')
     return (
         <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
             {canDelete ?
@@ -56,6 +58,8 @@ export const RenderQuestion = ({question, option1, option2, option3, option4, co
 }
 
 export const RenderQuestionTextual = ({question, keywords, QID, onDelete, canDelete = true, textualQuesMarks}) => {
+    if(!keywords) keywords = []
+    
     return (
         <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row',}}>
             {canDelete ?

@@ -13,6 +13,7 @@ import autosize from "autosize"
 import Modal from 'react-modal'
 import {customStyles} from './QuizQuestion'
 
+//let userType = JSON.parse(localStorage.getItem('userType'))
 let userType = 'student'
 
 let localdata = JSON.parse(localStorage.getItem('userDetails'))
@@ -108,6 +109,7 @@ const Quiz = ({history}) => {
 
 
     const [quizInfo, setQuizInfo] = React.useState(null)
+    const [questions, setQuestions] = React.useState([])
 
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
@@ -124,6 +126,26 @@ const Quiz = ({history}) => {
             }
         })
     }, [])
+
+    React.useEffect(() => {
+        let quizID = quizInfo ? quizInfo._id : null
+        Axios.get(`http://localhost:8000/questions/${quizID}`)
+        .then(res => {
+            if(res.data.success) {
+                let question = res.data.data
+                
+                question.map(q => {
+                    if(q.question_type === 'text') {
+                        let keys = q.keywords.split('.')
+                        q.keywords = keys
+                    }   
+                })
+                console.log(question)
+                setQuestions(question)
+            }
+        })
+        
+    }, [quizInfo])
     
 
     const RenderQuizForStudent = () => {
@@ -134,7 +156,7 @@ const Quiz = ({history}) => {
             autosize(document.querySelectorAll('textarea'))
         })
 
-        let questionsArray = obj.questions.sort((a,b) => a.QID > b.QID ? 1 : -1)
+        let questionsArray = questions ? questions.sort((a,b) => a.QID > b.QID ? 1 : -1) : null
         
         const [answers, setAnswers] = React.useState([])
         const [text, setText] = React.useState('')
@@ -154,38 +176,38 @@ const Quiz = ({history}) => {
         console.log(answers)
         
         return questionsArray.map((question, index) => {
-            if(question.questionType  === 'mcq') {
+            if(question.question_type  === 'mcq') {
                 return (
                     <div style={{width: '100%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
                         <div>
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 10}}>
                                 <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 15}}>Q.{index+1}</p>
-                                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.questionTitle}</p>
+                                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.question_title}</p>
                             </div>
 
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 1)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 1 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
-                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option1}</p>
+                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_1}</p>
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 2)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 2 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
-                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option2}</p>
+                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_2}</p>
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 3)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 3 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
-                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option3}</p>
+                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_3}</p>
                             </div>
                             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 4)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 4 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
-                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option4}</p>
+                                <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_4}</p>
                             </div>
                         </div>
                     </div>
@@ -197,8 +219,8 @@ const Quiz = ({history}) => {
                         
                         <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 5}}>
                             <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 15}}>Q.{index+1}</p>
-                            <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.questionTitle}</p>
-                            <p className="sub" style={{fontSize: 14, fontWeight: 500, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginLeft: 10}}>{question.textualQuesMarks} marks</p>
+                            <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.question_title}</p>
+                            <p className="sub" style={{fontSize: 14, fontWeight: 500, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginLeft: 10}}>{question.textual_ques_marks} marks</p>
                         </div>
                         <textarea onChange={(t) => {
                             let arr = [...answers]
@@ -224,9 +246,9 @@ const Quiz = ({history}) => {
         let score = 0
         let questionsAttempted = 0
         questions.map((ques, index) => {
-            if(ques.questionType === 'mcq') {
+            if(ques.question_type === 'mcq') {
                 if(answers[index]) {
-                    if(answers[index] === ques.correctOption){
+                    if(answers[index] === ques.correct_option){
                         score++
                         
                     }
@@ -236,6 +258,7 @@ const Quiz = ({history}) => {
                 if(answers[index]) {
                     let presentKeywords = 0
                     let charPercent = 0
+                    
                     ques.keywords.map(keyword => {
                         if(answers[index].includes(keyword,0)){
                             presentKeywords++
@@ -243,12 +266,12 @@ const Quiz = ({history}) => {
                     })
                     const keywordPercent = parseFloat(presentKeywords/ques.keywords.length).toFixed(2)
                     
-                    if(answers[index].trim().length > ques.minChar){
+                    if(answers[index].trim().length > ques.min_char){
                         charPercent = 1
                     } else {
-                        charPercent = parseFloat((answers[index].trim().length/ques.minChar).toFixed(2))
+                        charPercent = parseFloat((answers[index].trim().length/ques.min_char).toFixed(2))
                     } 
-                    const textScore = parseFloat((ques.textualQuesMarks * 0.8 * keywordPercent).toFixed(2))  + parseFloat((ques.textualQuesMarks * 0.2 * charPercent).toFixed(2))
+                    const textScore = parseFloat((ques.textual_ques_marks * 0.8 * keywordPercent).toFixed(2))  + parseFloat((ques.textual_ques_marks * 0.2 * charPercent).toFixed(2))
                     score +=  Math.round(textScore)
                     questionsAttempted++
                 }
@@ -260,14 +283,14 @@ const Quiz = ({history}) => {
     const submitQuiz = () => {
         
         let loc = window.location.href.split('/')
-        let score = calculateScore(obj.questions, quizAnswers)
+        let score = calculateScore(questions, quizAnswers)
         let textualMarks = []
-        let questions = obj.questions
-        questions.filter(q => q.questionType === 'text').forEach(q => textualMarks.push(q.textualQuesMarks))
-        let totalMarks = questions.filter(q => q.questionType === 'mcq').length + textualMarks.reduce((a,b) => a + b, 0)
+        let questions1 = questions
+        questions1.filter(q => q.question_type === 'text').forEach(q => textualMarks.push(q.textual_ques_marks))
+        let totalMarks = questions1.filter(q => q.question_type === 'mcq').length + textualMarks.reduce((a,b) => a + b, 0)
 
         let responseObj = {
-            numberOfQuestions: questions.length,
+            numberOfQuestions: questions1.length,
             quiz_id: parseInt(loc[loc.length - 1]),
             student_id: user._id,
             totalMarks,
@@ -317,15 +340,15 @@ const Quiz = ({history}) => {
                         <SwipeableViews index={index} onChangeIndex={handleChangeIndex}>
                         
                             <div style={Object.assign({}, styles.slide),{paddingLeft: 25}}>
-                                    <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 15, marginBottom:15, marginLeft: 0, letterSpacing: 0.4}}>{obj.questions.length} QUESTIONS IN QUIZ</p>
+                                    <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:15, marginLeft: 0, letterSpacing: 0.4}}>{questions ? questions.length : null} QUESTIONS IN QUIZ</p>
                                     {
                                         
-                                        obj.questions.map((q,index) => {
-
-                                            return q.questionType === 'mcq' ? <RenderQuestion question={q.questionTitle} option1={q.option1} option2={q.option2} option3={q.option3} option4={q.option4} correctOption={q.correctOption} QID={q.QID} canDelete={false}/>
-                                            : <RenderQuestionTextual question={q.questionTitle} keywords={q.keywords} QID={q.QID} canDelete={false} textualQuesMarks={q.textualQuesMarks}/>
+                                        questions ? questions.map((q,index) => {
                                             
-                                        })
+                                            return q.question_type === 'mcq' ? <RenderQuestion question={q.question_title} option1={q.option_1} option2={q.option_2} option3={q.option_3} option4={q.option_4} correctOption={q.correct_option} QID={q.QID} canDelete={false}/>
+                                            : <RenderQuestionTextual question={q.question_title} keywords={q.keywords} QID={q.QID} canDelete={false} textualQuesMarks={q.textual_ques_marks}/>
+                                            
+                                        }) : null
                                     
                                     }
                             </div>
