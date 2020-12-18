@@ -106,10 +106,24 @@ const Quiz = ({history}) => {
 
     const [quizResponse, setQR] = React.useState(null)
 
+
+    const [quizInfo, setQuizInfo] = React.useState(null)
+
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
 
     let quizAnswers = null
+
+    React.useEffect(() => {
+        let loc = window.location.href.split('/')
+        let quizid = loc[loc.length - 1]
+        Axios.get(`http://localhost:8000/quiz/${quizid}`)
+        .then(res => {
+            if(res.data.success) {
+                setQuizInfo(res.data.data[0])
+            }
+        })
+    }, [])
     
 
     const RenderQuizForStudent = () => {
@@ -272,23 +286,29 @@ const Quiz = ({history}) => {
               
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 25, marginLeft: 20}} >
                 <ArrowLeft size={27} className="sub" style={{cursor: "pointer"}} onClick={() => history.goBack()}/>                 
-                <h2 className="course-title" style={{fontSize: 30, margin: 0, marginLeft: 20}}>Quiz Title</h2>
+                <h2 className="course-title" style={{fontSize: 30, margin: 0, marginLeft: 20}}>{quizInfo ? quizInfo.quiz_title : null}</h2>
                 
             </div>
-            <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 25, marginLeft: 25}}>INSTRUCTIONS FOR QUIZ</p>
-            <ul style={{margin:0, padding: 0, marginLeft: 25, marginTop: 10}}>
-					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>This quiz contains {obj.questions.length} questions</p></li>
-					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For multiple choice questions, click on your option to select it</p></li>
-					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For textual or theoretical questions, start typing your answer inside the text box. The textbox will adjust its height if your answer is long.</p></li>
-					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>The quiz is submitted only when you click the submit button. You will be able to view your score immediately after submitting the quiz</p></li>
-			</ul>
+            {
+                userType === 'student' ?
+                <React.Fragment>
+                    <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 25, marginLeft: 25}}>INSTRUCTIONS FOR QUIZ</p>
+                    <ul style={{margin:0, padding: 0, marginLeft: 25, marginTop: 10}}>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>This quiz contains {quizInfo ? quizInfo.number_of_questions : null} questions</p></li>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For multiple choice questions, click on your option to select it</p></li>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For textual or theoretical questions, start typing your answer inside the text box. The textbox will adjust its height if your answer is long.</p></li>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>The quiz is submitted only when you click the submit button. You will be able to view your score immediately after submitting the quiz</p></li>
+                    </ul>
+                </React.Fragment> : null
+            }
+            
 
             {/* <p style={{fontSize: 14, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 30, marginLeft: 20, letterSpacing: 0.4}} className="sub">QUIZ DETAILS</p>
 
             <p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 10, marginLeft: 20, letterSpacing: 0.4}} className="sub">Total Marks : 25</p> */}
             {userType === 'teacher' ? 
                 <React.Fragment>
-                    <div style={{width: '100%', marginTop: 20}}>
+                    <div style={{width: '100%', marginTop: 10}}>
                         <AntTabs value={index} fullWidth  variant="scrollable" onChange={handleChange} style={{paddingLeft: 20, marginTop: 20}}>
                             <AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Questions   </div>} />
                             <AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Responses   </div>} />
@@ -296,7 +316,7 @@ const Quiz = ({history}) => {
 
                         <SwipeableViews index={index} onChangeIndex={handleChangeIndex}>
                         
-                            <div style={Object.assign({}, styles.slide)}>
+                            <div style={Object.assign({}, styles.slide),{paddingLeft: 25}}>
                                     <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 15, marginBottom:15, marginLeft: 0, letterSpacing: 0.4}}>{obj.questions.length} QUESTIONS IN QUIZ</p>
                                     {
                                         
