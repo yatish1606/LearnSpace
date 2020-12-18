@@ -246,9 +246,9 @@ const AssignmentDetails = ({courseName, history}) => {
 
 			<div className="course-heading-block" style={{flexDirection: "row", paddingRight: 0}}>
 
-				
-								<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
-								Due {formatDate(assignment.due_date)}</p>
+			<p style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+			Delete Assignment</p>
+								
 
                 <div style={{width: '60%', display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left", marginRight: '5%',}}>
 
@@ -276,6 +276,7 @@ const AssignmentDetails = ({courseName, history}) => {
                     <p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Description</p>
 										<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5}}>
 										{assignment.description}</p>
+										<br/>
                 
                     {/* <div className="file-box">
                         <div className="file-box-info">
@@ -287,8 +288,15 @@ const AssignmentDetails = ({courseName, history}) => {
 
 					{userType === 'teacher' ? 
 					<reactFragment>
+					{/*
 					<p className="heading" style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 25}}>Student Assessment</p>
 					<p style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 500, marginTop: 10, marginBotom: 10}}>Click on the assessment report to get a detailed analysis of the performance by students</p>
+					*/
+					}
+
+					<p style={{cursor: "pointer",fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
+								Due {formatDate(assignment.due_date)}</p>
+								<br/>
 
 					<Link to={`/assessmentreport/${assignmentID}`} >
 					<button style={{padding: '8px 15px', marginLeft: 0, marginTop: 0, textAlign: "center"}}>
