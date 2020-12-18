@@ -3,7 +3,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle} from 'react-feather'
+import {FileText, Grid, Book, Edit, User,Trash2, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle} from 'react-feather'
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -203,7 +203,23 @@ const Post = ({postType, title, info, assID}) => {
 	if(!title.length) title = ''
 	if(!info.length) info = ''
 
-	const isAssignment = postType === 'assignment'
+	const isAssignment = postType === 'assignment';
+
+	const deleteAssignment = () => {
+		console.log(assID)
+		console.log('deleting assignment')
+		
+		Axios.post(`https://dbms-back.herokuapp.com/deleteassignment/${assID}`)
+		.then(res => {
+			if(res.data.success) {
+				console.log(res.data);
+				toast.success('Deleted assignment')
+
+			} else {
+			}
+		})
+		.catch(() => {})
+	}
 
 	// const download = () => {
 	// 	console.log(assID)
@@ -232,17 +248,22 @@ const Post = ({postType, title, info, assID}) => {
 			</div>
 			<div className="post-options">
 				{
-					isAssignment ?
+					isAssignment ? 
+					<React.Fragment>
+					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 					<Link to={`/assignments/${assID}`}>
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 					</Link>
-
-					:
+					
+					
+					</React.Fragment>
+					: 
 					<React.Fragment>
+					
+					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
 						<Download size={22} className="sub"/>
 						</a>
-
 						{/* <Info size={22} className="sub"/> */}
 					</React.Fragment>
 				}
