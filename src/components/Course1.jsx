@@ -551,6 +551,40 @@ const Course1 = (props) => {
 		
 	}
 
+ const changeCourseNameStyles = {
+		//   
+		content: {
+			position: 'absolute',
+			top: '35%',
+			left: '30%',
+			right: '30%',
+			bottom: '35%',
+			background: '#fff',
+			overflow: 'auto',
+			WebkitOverflowScrolling: 'touch',
+			borderRadius: '10px',
+			outline: 'none',
+			
+			padding: '25px',
+			alignSelf: 'center',
+			height: 'auto',
+			paddingTop: '30px'
+			},
+			overlay: {
+			position: 'fixed',
+			top: 0,
+			left: 0,
+			right: 0,
+			bottom: 0,
+			backgroundColor: '#000000ba',
+			zIndex: 9999
+			},
+		};
+		
+		
+	
+	
+
 	
 
 	//console.log(courseInfo.course_code)
@@ -902,14 +936,14 @@ const Course1 = (props) => {
 				<Modal
 	isOpen={courseNameModalIsOpen}
 	onRequestClose={closeCourseNameModal}
-	style={customStyles}
+	style={changeCourseNameStyles}
 	contentLabel="Modal"
 	closeTimeoutMS={200}
 	className="background"
 	>
 <div>
-	<p style={{fontFamily: 'Poppins', fontSize: 15, color: '#ababab', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change Course Name</p>
-	<input type="text" style={{height:40}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
+	<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change Course Name</p>
+	<input type="text" placeholder="Enter new course name.." style={{height:40}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
 	
 	<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 		<button onClick={changeCourseName}>
