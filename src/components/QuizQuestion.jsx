@@ -24,6 +24,8 @@ let user = localdata ? localdata : {
 		_id: "404"
 }
 export const RenderQuestion = ({question, option1, option2, option3, option4, correctOption, QID, onDelete, canDelete = true}) => {
+    console.log(option1, question)
+    console.log('rendering question')
     return (
         <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
             {canDelete ?
@@ -56,6 +58,8 @@ export const RenderQuestion = ({question, option1, option2, option3, option4, co
 }
 
 export const RenderQuestionTextual = ({question, keywords, QID, onDelete, canDelete = true, textualQuesMarks}) => {
+    if(!keywords) keywords = []
+    
     return (
         <div style={{width: '80%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row',}}>
             {canDelete ?
@@ -115,7 +119,7 @@ const QuizQuestion = ({history}) => {
             return 
         }
         
-        let obj = {questionTitle, option1, option2, option3, option4, correctOption, questionType:'mcq', QID: questionID}
+        let obj = {questionTitle, option1, option2, option3, option4, correctOption, questionType:'mcq', QID: questionID, textualQuesMarks: null,minChar: null, keywords: null}
         
         setQuestions( questions => [...questions, obj] )
 
@@ -138,7 +142,7 @@ const QuizQuestion = ({history}) => {
         
         let minCharInt = parseInt(minChar)
         let textualQuesMarksInt = parseInt(textualQuesMarks)
-        let obj = {questionTitle : textualQuestionTitle, keywords,textualQuesMarks: textualQuesMarksInt, minChar: minCharInt, questionType:'text', QID: questionID}
+        let obj = {questionTitle : textualQuestionTitle, keywords,textualQuesMarks: textualQuesMarksInt, minChar: minCharInt, questionType:'text', QID: questionID, option1: null, option2: null, option3: null, option4: null, correctOption: null}
 
         setQuestions( questions => [...questions, obj] )
         setQID(questionID + 1)
@@ -172,12 +176,34 @@ const QuizQuestion = ({history}) => {
             questions,
             numberOfQuestions: questions.length,
             totalMarks,
-            startTime:null,
-            endTime:null,
+            isActive: false,
             teacher_id: user._id,
-            course_id: loc[loc.length - 1],
+            course_id: parseInt(loc[loc.length - 1]),
+            quizTitle: quizName
         }
         console.log(quiz)
+
+        let insertID = null
+
+        Axios.post('http://localhost:8000/quiz', quiz)
+        .then(res => {
+            if(res.data.success) {
+                insertID = res.data.data.insertId
+                console.log(insertID)
+                if(insertID) {
+                    quiz.questions.map(ques => {
+                        ques.quizID = insertID
+                        console.log(ques)
+                        Axios.post('http://localhost:8000/question', ques)
+                        .then(res => console.log(res))
+                        .catch(e => console.log(e))
+                    })
+                }
+            } else {
+
+            }
+        })
+        .catch(e => console.log('error', e))
     }
 	
 	
@@ -467,3 +493,29 @@ export const customStyles = {
 		zIndex: 9999
 	  },
 	};
+    // app.post('/quiz', (req,res) => {
+    //     const query = `INSERT INTO quiz (number_of_questions, total_marks, is_active, teacher_id, course_id, quiz_title)\
+    //                     VALUES (${req.body.numberOfQuestions}, ${req.body.totalMarks}, ${req.body.isActive}, ${req.body.teacher_id}, ${req.body.course_id}, '${req.body.quizTitle}');`;
+    //     db.query(query, (err, data) => {
+    //       if(err)
+    //         return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    //       else {
+            
+    //         const questions = req.body.questions
+    //         console.log(questions)
+    //         questions.map(q => {
+            
+    //           const newQuery = `INSERT INTO question (quiz_id,question_title, question_type,option_1, option_2, option_3, option_4, correct_option, textual_ques_marks, min_char,QID)\
+    //                             VALUES(${data.data.insertId}, '${q.questionTitle}', '${q.questionType}', ${q.option1},  ${q.option2},  ${q.option3},  ${q.option4},  ${q.correctOption},  ${q.textualQuesMarks},  ${q.minChar},  ${q.QID},);`;
+              
+    //           db.query(newQuery, (err, dataNew) => {
+    //             if(err)
+    //               return res.status(400).send({"success":false, "error":err.name, "message": err.message});
+    //             return res.send({"success":true, "data" : data});
+    //           })
+            
+    //         })
+            
+    //       }
+    //     })
+    //   })

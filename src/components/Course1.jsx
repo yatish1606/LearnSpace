@@ -3,7 +3,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
-import {FileText, Grid, Book, Edit, User,Trash2, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle} from 'react-feather'
+
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight} from 'react-feather'
+
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -45,7 +47,8 @@ export const styles = {
 	slide: {
 	  padding: 15,
 	  minHeight: 100,
-	  color: '#232323'
+	  color: '#232323',
+	  paddingBottom: 100
 	},
 	slide1: {
 	//   backgroundColor: 'white',
@@ -192,18 +195,24 @@ const studentsList = [
 
 
 
-const Post = ({postType, title, info, assID}) => {
 
-	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
+const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isActive}) => {
+	
+	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : postType === 'quiz' ?<HelpCircle size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
+
 	// const type = postType.split(" ").forEach(s => s.charAt(0).toUpperCase().concat(s.slice(1, s.length)))
+	if(postType === 'studymaterial') postType = 'study material'
 	let typeArr = postType.split(/(?=[A-Z])/)
 	typeArr.map(s => s.charAt(0).toUpperCase())
 
 	const type = typeArr.join(' ')
 	if(!title.length) title = ''
 	if(!info.length) info = ''
+	
 
-	const isAssignment = postType === 'assignment';
+	const isAssignment = postType === 'assignment'
+	const isQuiz = postType === 'quiz'
+	
 
 	const deleteAssignment = () => {
 		console.log(assID)
@@ -234,6 +243,7 @@ const Post = ({postType, title, info, assID}) => {
 	// 	.catch(() => console.log('error'))
 	// }
 
+
 	return (
 		<React.Fragment>
 		<div className="post-container">
@@ -242,8 +252,14 @@ const Post = ({postType, title, info, assID}) => {
 					<div className={"post-image-base changeColorBG"}>{icon}</div>
 				</div>
 				<div className="post-info">
-					<h6>{type}</h6>
+					{isQuiz ? null : <h6 className="sub" style={{fontWeight: 500, fontSize: 14, letterSpacing: 0.6}}>{type}</h6>}
 					<h3>{title}</h3>
+					{isQuiz ? 
+					<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+						<p className="sub" style={{fontSize: 15, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>{totalMarks} marks</p>
+						<p className="sub" style={{fontSize: 15, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, marginLeft: 10}}>{isActive ? 'active' : 'not active'}</p>
+					</div> : null
+					}
 				</div>
 			</div>
 			<div className="post-options">
@@ -253,11 +269,20 @@ const Post = ({postType, title, info, assID}) => {
 					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 					<Link to={`/assignments/${assID}`}>
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+						
 					</Link>
 					
-					
+					: isQuiz ?
+					<React.Fragment>
+						
+						<Link to={`/quiz/${quizID}`}>
+							<ChevronRight size={30} color="#09a407"/>
+						</Link>
+						
 					</React.Fragment>
-					: 
+					
+					:
+
 					<React.Fragment>
 					
 					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
@@ -308,6 +333,7 @@ const Course1 = (props) => {
 	const [courseInfo,setCourseInfo] = useState({})
 	const [courseTeacher,setCourseTeacher] = useState({})
 	const [courseStudents,setCourseStudents] = useState([])
+	const [quizzes, setQuizzes] = useState([])
 
 	const [courseNameModalIsOpen, setCourseNameModal] = useState(false)
 	const openCourseNameModal = () => {
@@ -356,18 +382,31 @@ const Course1 = (props) => {
 	React.useEffect(() => {
 		let arr = window.location.href.split('/');
 		let courseID = arr[arr.length -1];
+		let courseInfo = null
 		Axios.get( `https://dbms-back.herokuapp.com/courseinfo/${courseID}`)
 		.then(res => {
 
 				if(res.data.success) {
-					let courseInfo = res.data.data[0]
+					courseInfo = res.data.data[0]
+					console.log(courseInfo._id)
 					setCourseInfo(courseInfo)
 				} else {
 						console.log('error')
 				}
 		})
 		.catch(() => console.log('error'))
+
 	},[ignore])
+
+	React.useEffect(() => {
+		Axios.get(`http://localhost:8000/quizfromcourse/${courseInfo._id}`)
+		.then(res => {
+			if(res.data.success) {
+				setQuizzes(res.data.data)
+			}
+		})
+		.catch(e => console.log(e))
+	},[courseInfo])
 
 
 	React.useEffect(() => {
@@ -654,6 +693,12 @@ const Course1 = (props) => {
 					}): <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/>
 					}
 
+					{quizzes.length ? quizzes.map((item, index) => {
+							return <Post postType={'quiz'} title={item.quiz_title} info="" quizID={item._id} isActive={item.is_active} noOfQues={item.number_of_questions} totalMarks={item.total_marks}/>
+						}) : null
+						
+					}
+
 				</div>
 
 
@@ -664,6 +709,7 @@ const Course1 = (props) => {
 							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 						}) : <EmptyStateSmall title='No Assignments' d1="Teacher has not posted any assignments in this course yet"/>
 				}
+				
 
 				</div>
 
@@ -676,7 +722,10 @@ const Course1 = (props) => {
 				</div>
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
-				quizzes
+				{quizzes.length ? quizzes.map((item, index) => {
+							return <Post postType={'quiz'} title={item.quiz_title} info="" quizID={item._id} isActive={item.is_active} noOfQues={item.number_of_questions} totalMarks={item.total_marks}/>
+						}) : <EmptyStateSmall title='No Quiz' d1="Teacher has not posted any quizzes in this course yet"/>
+				}
 				</div>
 
 
@@ -861,3 +910,35 @@ const Course1 = (props) => {
 }
 
 export default Course1
+
+
+// const quizzes = [
+// 	{
+// 		quiz_id: 123,
+// 		number_of_questions: 2,
+// 		total_marks: 10,
+// 		is_active: true,
+// 		teacher_id: 234,
+// 		course_id: 453,
+// 		quiz_title: 'Quiz 1 : Class Test'
+// 	},
+// 	{
+// 		quiz_id: 124,
+// 		number_of_questions: 2,
+// 		total_marks: 10,
+// 		is_active: false,
+// 		teacher_id: 234,
+// 		course_id: 453,
+// 		quiz_title: 'Quiz 2 : Class Test'
+// 	},
+// 	{
+// 		quiz_id: 125,
+// 		number_of_questions: 2,
+// 		total_marks: 10,
+// 		is_active: true,
+// 		teacher_id: 254,
+// 		course_id: 453,
+// 		quiz_title: 'Quiz 3 : Class Test'
+// 	},
+// ]
+
