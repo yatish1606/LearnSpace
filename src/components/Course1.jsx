@@ -185,7 +185,9 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 				{
 					isAssignment ? 
 					<React.Fragment>
+					{userType === 'teacher' ?
 					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
+					: null }
 					<Link to={`/assignments/${assID}`}>
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 						
@@ -204,7 +206,9 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 
 					<React.Fragment>
 					
-					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{marginTop: 5}}/>
+					{userType === 'teacher' ?
+					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{marginTop: "5"}}/>
+					: null }
 						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
 						<Download size={22} className="sub"/>
 						</a>
@@ -281,7 +285,7 @@ const Course1 = (props) => {
 		console.log("hi");
 		setCourseNameModal(true)
 	}
-	
+	//console.log(courseNameModalIsOpen);
 	const closeCourseNameModal = () => setCourseNameModal(false)
 
 	const [posts, setPosts] = useState([])
@@ -522,7 +526,34 @@ const Course1 = (props) => {
 	}
 	
 
+	const [newCourseName, setNewCourseName] = useState('');
+
+	const changeCourseName = () => {
+
+		if(!newCourseName.length ) {
+			return toast.error('New Course Name cannot be empty')
+		}
+
+		console.log(newCourseName)
+		const url = `https://dbms-back.herokuapp.com/changecoursename/${courseID}`
+		Axios.post(url , {
+			'name': JSON.stringify(newCourseName)
+		})
+		.then(res => {	
+			if(res.data.success) {
+				toast.success('Course Name updated');
+				closeCourseNameModal();
+			} else {
+				return toast.error('Error updating course name')
+			}			
+		})
+		.catch(() => toast.error('Could not update your name. Please try again'))
+		
+	}
+
 	
+
+	//console.log(courseInfo.course_code)
 	return (
 		<React.Fragment>
 		
@@ -868,21 +899,34 @@ const Course1 = (props) => {
         </Modal>
 
 
-		<Modal
-			isOpen={courseNameModalIsOpen}
-			onRequestClose={closeCourseNameModal}
-			style={customStyles}
-			contentLabel="Modal"
-			closeTimeoutMS={200}
-			className="background"
-			>
+				<Modal
+	isOpen={courseNameModalIsOpen}
+	onRequestClose={closeCourseNameModal}
+	style={customStyles}
+	contentLabel="Modal"
+	closeTimeoutMS={200}
+	className="background"
+	>
+<div>
+	<p style={{fontFamily: 'Poppins', fontSize: 15, color: '#ababab', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change Course Name</p>
+	<input type="text" style={{height:40}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
+	
+	<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+		<button onClick={changeCourseName}>
+			<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
+		</button>
+		<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeCourseNameModal}>
+			<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+		</button>
+	</div>
+	</div>
 
-			<div>
-				hello
-			</div>
+
+</Modal>
 
 
-			</Modal>
+
+			
 
 
 
