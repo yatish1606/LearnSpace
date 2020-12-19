@@ -25,13 +25,12 @@ defaults.global.tooltips.backgroundColor = 'red'
 const generatePDF = (tickets) => {
     
     const doc = new jsPDF();
-    const tableColumn = ["ID", "Name", "Marks"];
+    const tableColumn = [ "Name", "Marks"];
     
     const tableRows = [];
   
     tickets.forEach(ticket => {
       const ticketData = [
-        ticket.student_id,
         ticket.fname.concat(' ').concat(ticket.lname),
         ticket.marks_obtained,
       ];

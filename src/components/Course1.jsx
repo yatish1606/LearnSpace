@@ -21,6 +21,8 @@ import Axios from 'axios'
 import {EmptyState, EmptyStateSmall} from './Home'
 import { RefreshCcw, RefreshCw, RotateCcw, Edit3 } from 'react-feather'
 import {getRandomUser2} from './random'
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 let randomUsers = [getRandomUser2(),getRandomUser2(),getRandomUser2(),getRandomUser2(),getRandomUser2(), ]
 
@@ -246,6 +248,38 @@ const Message = ({name, message, time, userType, userID}) => {
 }
 
 
+const generatePDF = (tickets) => {
+    
+	const doc = new jsPDF();
+	const tableColumn = ["Name","Year","Department", "Email"];
+	
+	const tableRows = [];
+
+	tickets.forEach(ticket => {
+		const ticketData = [
+			ticket.fname.concat(' ').concat(ticket.lname),
+			ticket.year,
+			ticket.department,
+			ticket.email
+		];
+		
+		tableRows.push(ticketData);
+	});
+
+	console.log(tableRows);
+
+
+	console.log(doc.getFontList())
+	doc.autoTable(tableColumn, tableRows, { startY: 90 })
+
+	doc.addFont('Helvetica', 'Helvetica', '')
+	doc.setFontSize(22)
+	doc.setFont('Helvetica', 'bold')
+	doc.text("Course Students Report", 15, 20 )
+
+	
+	doc.save(`report.pdf`);
+}
 
 
 
@@ -587,6 +621,9 @@ const Course1 = (props) => {
 		};
 		
 		
+		const downloadCourseStudents = () => {
+			console.log(courseStudents);
+		}
 	
 	
 
@@ -644,7 +681,7 @@ const Course1 = (props) => {
 
 	
 	
-console.log(scrollPos)
+//console.log(scrollPos)
 	//console.log(courseInfo.course_code)
 	return (
 		<React.Fragment>
@@ -816,6 +853,12 @@ console.log(scrollPos)
 
 						{userType === 'teacher' ?
 						<React.Fragment>
+						<div style={{display: "flex", flexDirection:"row",fontFamily: 'Poppins',  height: "40px",alignItems: "center",marginBottom: 20}}>
+						<p className="" style={{ fontSize: 16, color: '#232323', fontWeight: 600, textAlign: "left",paddingTop: 20, marginBottom:15}}>
+						Course Students' Report: </p>
+						<button onClick={() => generatePDF(courseStudents)} style={{color: 'white',backgroundColor: "#09A407",justifyContent: "center",width: "100px",height: "40px", fontWeight: 500, letterSpacing: 0.6, fontSize: 16, marginLeft:10, padding: 0,alignItems:"center"}}>
+						Download</button>
+						</div>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
 						<div className="changeColorBG" style={{width: 200, height: 40, borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between", marginBottom: 0}}>
 							<div style={{width: 40, borderRadius: 0, height: 40, backgroundColor: '#ddd', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer"}}>
