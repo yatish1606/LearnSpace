@@ -15,8 +15,8 @@ import {customStyles} from './QuizQuestion'
 import { EmptyState, EmptyStateSmall } from './Home';
 import { Link } from 'react-router-dom';
 
-//let userType = JSON.parse(localStorage.getItem('userType'))
-let userType = 'teacher'
+let userType = JSON.parse(localStorage.getItem('userType'))
+//let userType = 
 
 let localdata = JSON.parse(localStorage.getItem('userDetails'))
 let user = localdata ? localdata : {
@@ -108,7 +108,9 @@ const Quiz = ({history}) => {
         console.log('forceupdating')}
     const [modalIsOpen, setModal] = React.useState(false)
     const [modalIsOpenResult, setModalResult] = React.useState(false) 
+    const [modalIsOpenRename, setModalIsOpenRename] = React.useState(false)
     const [quizResponse, setQR] = React.useState(null)
+    const [quizNewName, setQuizNewName] = React.useState('')
 
 
     const [quizInfo, setQuizInfo] = React.useState(null)
@@ -120,6 +122,8 @@ const Quiz = ({history}) => {
     const closeModal = () => setModal(false)
     const openModalResult = () => setModalResult(true)
     const closeModalResult = () => setModalResult(false)
+    const openModalRename = () => setModalIsOpenRename(true)
+    const closeModalRename = () => setModalIsOpenRename(false)
 
     let quizAnswers = null
 
@@ -422,7 +426,41 @@ const Quiz = ({history}) => {
         })
         
     }
-	console.log('status', isActive)
+    
+    const deleteQuiz = () => {
+        let quizID = quizInfo._id
+        Axios.post(`http://localhost:8000/deletequiz/${quizID}`)
+        .then(res => {
+            if(res.data.success) {
+                Axios.post(`http://localhost:8000/deletequestion/${quizID}`)
+                .then(res1 => {
+                    if(res1.data.success) {
+                        Axios.post(`http://localhost:8000/deletequizsubmission/${quizID}`)
+                        .then(res2 => {
+                            if(res2.data.success) {
+                               toast.success('Deleted quiz successfully')
+                               history.goBack()
+                            }
+                        })
+                    }
+                })
+            }
+        })
+        .catch(() => toast.error('Error deleting quiz'))
+    }
+
+    const renameQuiz = () => {
+        let quizID = quizInfo._id
+        Axios.post(`http://localhost:8000/renamequiz/${quizID}`, {quiz_name: quizNewName})
+        .then(res => {
+            if(res.data.success) {
+                setQuizNewName('')
+                toast.success('Quiz name updated')
+                forceUpdate()
+            }
+        })
+    }
+
 	return (
 		
 		<div className={"background course-container"} style={{paddingLeft: 0, paddingRight: 0}}>
@@ -520,9 +558,9 @@ const Quiz = ({history}) => {
                     
                     }
                     
-						<Trash2 size={20} color="#09a407" style={{margin: 'auto 20px auto 0', cursor:'pointer'}}/>
+						<Trash2 size={20} color="#09a407" style={{margin: 'auto 20px auto 0', cursor:'pointer'}} onClick={deleteQuiz}/>
 					
-					    <Edit3 size={21} color="#09a407" style={{margin: 'auto 20px auto 0', cursor: 'pointer'}}/>
+					    <Edit3 size={21} color="#09a407" style={{margin: 'auto 20px auto 0', cursor: 'pointer'}} onClick={openModalRename}/>
 			        </div>
                 </React.Fragment> 
                 
@@ -623,6 +661,44 @@ const Quiz = ({history}) => {
 
 
 			</Modal>
+
+            <Modal
+                    isOpen={modalIsOpenRename}
+                    onRequestClose={closeModalRename}
+                    style={customStyles}
+                    contentLabel="Modal"
+                    closeTimeoutMS={200}
+                    className="background"
+				>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModalRename}/>		
+
+
+				
+				<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 20, padding:0, marginBottom:0}}>Change name of quiz</h2>
+
+                <input
+                    placeholder="Enter new name for quiz"
+                    value={quizNewName}
+                    onChange={(t) => setQuizNewName(t.target.value)}
+                    style={{marginTop: 60}}
+                />
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<button onClick={() => {
+                        renameQuiz()
+                        closeModalRename()
+                    }}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
+					</button>
+					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModalRename}>
+						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+					</button>
+				</div>
+
+
+			</Modal>
+
             
 
         </div>
