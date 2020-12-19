@@ -31,6 +31,10 @@ html img{
     background-color: var(--grey) !important;
 }
 
+.changeColorBGnotimp {
+    background-color: var(--grey);
+}
+
 .sub {
     color: var(--sub) !important;
 }

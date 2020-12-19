@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle} from 'react-feather'
+import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle, Trash2, Edit3} from 'react-feather'
 import './course.css'
 import {getRandomUser2} from './random'
 import Axios from 'axios'
@@ -114,6 +114,7 @@ const Quiz = ({history}) => {
     const [quizInfo, setQuizInfo] = React.useState(null)
     const [questions, setQuestions] = React.useState([])
     const [isActive, setIsActive] = React.useState(quizInfo ? quizInfo.is_active === 0 ? false : true : false)
+    const [quizResults, setQuizResults] = React.useState([])
 
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
@@ -135,6 +136,17 @@ const Quiz = ({history}) => {
         })
     }, [isActive])
 
+    React.useEffect(() => {
+        let loc = window.location.href.split('/')
+        let quizid = loc[loc.length - 1]
+        Axios.get(`http://localhost:8000/quizresult/${quizid}`)
+        .then(res => {
+            if(res.data.success) {
+                setQuizResults(res.data.data)
+            }
+        })
+    }, [])
+
    
     React.useEffect(() => {
         let quizID = quizInfo ? quizInfo._id : null
@@ -155,6 +167,64 @@ const Quiz = ({history}) => {
         })
         
     }, [quizInfo])
+
+    const MarksRowHeading = () => {
+        return (
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50, marginBottom: 20, paddingBottom: 20, borderBottom: '1px solid', marginRight: 20, marginLeft: 10, marginTop: 20}} className="borderr">
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%'}}>
+                    <p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 600, width: 60, textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0, letterSpacing: 0.5 }} className="changeColor">
+                        ID
+                    </p>
+                    <div style={{width: 40, height: 40, borderRadius: 25, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 10, marginRight: 10}}>
+                        
+                    </div>
+                    <p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'left', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 20,letterSpacing: 0.5, flexGrow: 1 }} className="changeColor">
+                        NAME
+                    </p>
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 200}} className="changeColor">
+                        QUES ATTEMPTED
+                    </p>
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 200 }} className="changeColor">
+                        MARKS OBTAINED
+                    </p>
+					
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 100 }} className="changeColor">
+                        
+                    </p>
+                </div>
+                
+            </div>
+        )
+    }
+    
+    const MarksRow = ({student_id, student_name, marks_obtained, total_marks, ques_attempted, no_of_ques}) => {
+        return (
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: 50, marginBottom: 20, paddingBottom: 20, borderBottom: '1px solid', marginRight: 20, marginLeft: 10}} className="borderr">
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', width: '100%'}}>
+                    <p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 600, width: 60, textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0, letterSpacing: 0.5 }} className="changeColor">
+                        #{student_id}
+                    </p>
+                    <div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 10, marginRight: 10}}>
+                        <img className="changeColorBG" src={getRandomUser2()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+                    </div>
+                    <p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'left', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 20,letterSpacing: 0.5, flexGrow: 1 }} className="changeColor">
+                        {student_name}
+                    </p>
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 200}} className="changeColor">
+                        {ques_attempted} / {no_of_ques}
+                    </p>
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 200, color: '#09a407' }}>
+                        {marks_obtained} / {total_marks}
+                    </p>
+					
+					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 100 }} className="changeColor">
+                        
+                    </p>
+                </div>
+                
+            </div>
+        )
+	}
     
 
     const RenderQuizForStudent = () => {
@@ -302,7 +372,8 @@ const Quiz = ({history}) => {
             student_id: user._id,
             totalMarks,
             marksObtained: score.score,
-            questionsAttempted: score.questionsAttempted
+            questionsAttempted: score.questionsAttempted,
+            studentName: user.fname.concat(' ').concat(user.lname)
         }
         setQR(responseObj)
         openModal()
@@ -391,13 +462,29 @@ const Quiz = ({history}) => {
             {userType === 'teacher' ? 
                 <React.Fragment>
                     <div style={{width: '100%', marginTop: 0}}>
-                        <AntTabs value={index} fullWidth  variant="scrollable" onChange={handleChange} style={{paddingLeft: 20, marginTop: 10}}>
-                            <AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Questions   </div>} />
+                        <AntTabs value={index} fullWidth  variant="scrollable" onChange={handleChange} style={{paddingLeft: 10, marginTop: 10}}>
                             <AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Responses   </div>} />
+                            <AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Questions   </div>} />
+                            
                         </AntTabs>
 
                         <SwipeableViews index={index} onChangeIndex={handleChangeIndex}>
-                        
+                            <div style={Object.assign({}, styles.slide)}>
+
+                            {quizResults.length ? 
+                                <React.Fragment>
+                                    <p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 15, marginBottom:20, marginLeft: 15, letterSpacing: 0.3}}>Detailed Assessment Report</p>
+                                    <MarksRowHeading/>
+                                    {quizResults.map(result => {
+                                        return <MarksRow student_id={result.student_id} student_name={result.student_name} total_marks={result.total_marks} marks_obtained={result.marks_obtained} no_of_ques={result.no_of_ques} ques_attempted={result.ques_attempted}/>
+                                    })}
+                                </React.Fragment>
+                               : <EmptyStateSmall title="No responses yet" d1="No students have submitted the quiz yet. Refesh the page to check again"/>
+                            }
+
+
+                            </div>
+
                             <div style={Object.assign({}, styles.slide),{paddingLeft: 25}}>
                                     <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 20, marginBottom: 20, marginLeft: 0}}>{questions ? questions.length : null} QUESTIONS IN QUIZ</p>
                                     {
@@ -412,28 +499,30 @@ const Quiz = ({history}) => {
                                     }
                             </div>
 
-                            <div style={Object.assign({}, styles.slide)}>
-
-                            </div>
+                            
 
                         </SwipeableViews>
 
                     </div>
 
-                    <div style={{position: "absolute", top: 90, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+                    <div style={{position: "absolute", top: 100, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					{!isActive ? 
-                        <button style={{paddingLeft: 15, transition:'0.5s ease'}} onClick={startQuiz}>
+                        <button style={{paddingLeft: 15, transition:'0.5s ease', marginTop: 0}} onClick={startQuiz}>
                             <PlayCircle size={22} color="white"/>
-                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>Begin Quiz</p>
+                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10, marginTop: 0}}>Begin Quiz</p>
                         </button>
                         :
-                        <button style={{paddingLeft: 15,transition:'0.5s ease'}} onClick={endQuiz}>
+                        <button style={{paddingLeft: 15,transition:'0.5s ease', marginTop: 0}} onClick={endQuiz}>
                             <XCircle size={22} color="white"/>
-                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>End Quiz</p>
+                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10, marginTop: 0}}>End Quiz</p>
                         </button> 
                      
                     
                     }
+                    
+						<Trash2 size={20} color="#09a407" style={{margin: 'auto 20px auto 0', cursor:'pointer'}}/>
+					
+					    <Edit3 size={21} color="#09a407" style={{margin: 'auto 20px auto 0', cursor: 'pointer'}}/>
 			        </div>
                 </React.Fragment> 
                 
