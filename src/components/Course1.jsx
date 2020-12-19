@@ -271,7 +271,7 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 						
 					</Link>
-					
+					</React.Fragment>
 					: isQuiz ?
 					<React.Fragment>
 						
