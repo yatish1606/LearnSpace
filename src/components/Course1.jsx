@@ -3,7 +3,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
+
 import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight} from 'react-feather'
+
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
 import Modal from 'react-modal';
@@ -17,6 +19,8 @@ import Autograde from './Autograde'
 import {toast} from 'react-toastify'
 import Axios from 'axios'
 import {EmptyState, EmptyStateSmall} from './Home'
+import { RefreshCcw, RefreshCw, RotateCcw, Edit3 } from 'react-feather'
+
 
 
 let randomUser = getRandomUser()
@@ -39,7 +43,7 @@ export const styles = {
 	tabs: {
 	  background: theme === 'dark' ? '#1B1B1B' :'#fff',
 	},
-	
+
 	slide: {
 	  padding: 15,
 	  minHeight: 100,
@@ -191,14 +195,16 @@ const studentsList = [
 
 
 
+
 const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isActive}) => {
 	
 	const icon = postType === 'assignment' ? <FileText size={25} color="#09a407"/> : postType === 'quiz' ?<HelpCircle size={25} color="#09a407"/> : <Book size={25} color="#09a407"/>
+
 	// const type = postType.split(" ").forEach(s => s.charAt(0).toUpperCase().concat(s.slice(1, s.length)))
 	if(postType === 'studymaterial') postType = 'study material'
 	let typeArr = postType.split(/(?=[A-Z])/)
 	typeArr.map(s => s.charAt(0).toUpperCase())
-	
+
 	const type = typeArr.join(' ')
 	if(!title.length) title = ''
 	if(!info.length) info = ''
@@ -207,6 +213,37 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 	const isAssignment = postType === 'assignment'
 	const isQuiz = postType === 'quiz'
 	
+
+	const deleteAssignment = () => {
+		console.log(assID)
+		console.log('deleting assignment')
+		
+		Axios.post(`https://dbms-back.herokuapp.com/deleteassignment/${assID}`)
+		.then(res => {
+			if(res.data.success) {
+				console.log(res.data);
+				toast.success('Deleted assignment')
+
+			} else {
+			}
+		})
+		.catch(() => {})
+	}
+
+	// const download = () => {
+	// 	console.log(assID)
+	// 	Axios.get(`http://dbms-back.herokuapp.com/getattachedfile/${assID}`)
+	// 	.then(res => {
+	// 		if(res.data.success) {
+
+	// 		} else {
+	// 			console.log('error1')
+	// 		}
+	// 	})
+	// 	.catch(() => console.log('error'))
+	// }
+
+
 	return (
 		<React.Fragment>
 		<div className="post-container">
@@ -228,6 +265,8 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 			<div className="post-options">
 				{
 					isAssignment ? 
+					<React.Fragment>
+					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 					<Link to={`/assignments/${assID}`}>
 						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
 						
@@ -243,17 +282,19 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					</React.Fragment>
 					
 					:
+
 					<React.Fragment>
+					
+					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
 						<Download size={22} className="sub"/>
 						</a>
-						
 						{/* <Info size={22} className="sub"/> */}
 					</React.Fragment>
 				}
-				
+
 			</div>
-			
+
 		</div>
 		</React.Fragment>
 	)
@@ -273,10 +314,10 @@ const Course1 = (props) => {
 	const handleChangeIndex = index => setIndex(index)
 	const [modalIsOpen,setIsOpen] = React.useState(false);
 	const [modalIsOpenAutograde,setIsOpenAutograde] = React.useState(false);
-	
+
 	const [year, setYear] = React.useState('');
 	const [department, setDepartment] = React.useState('');
-	
+
 	const [isAssignment, setIsAssignment] = React.useState(false)
 	const [dueDate, setDueDate] = useState(null)
 	const [maxMarks, setMaxMarks] = useState(null)
@@ -294,17 +335,25 @@ const Course1 = (props) => {
 	const [courseStudents,setCourseStudents] = useState([])
 	const [quizzes, setQuizzes] = useState([])
 
+	const [courseNameModalIsOpen, setCourseNameModal] = useState(false)
+	const openCourseNameModal = () => {
+		console.log("hi");
+		setCourseNameModal(true)
+	}
+	console.log(courseNameModalIsOpen);
+	const closeCourseNameModal = () => setCourseNameModal(false)
+
 	const [posts, setPosts] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
 
 	let arr = window.location.href.split('/');
 	let courseID = arr[arr.length -1];
-    
+
 	const forceUpdate = React.useCallback(() => setIgnored(v => v + 1), [])
 
 	const handleDueDateChange = day => {
-		
+
 		setDueDate(day)
 		var q = new Date();
 		var m = q.getMonth()
@@ -313,7 +362,7 @@ const Course1 = (props) => {
 
 		var today = new Date(y,m,d)
 		let ourDate = new Date(day)
-		
+
 		if(ourDate < today) {
 			toast.error('Invalid date')
 			setDueDate(null)
@@ -323,7 +372,7 @@ const Course1 = (props) => {
 	const validateTitle = () => title ? (title.length ? true : false) : false
 	const validateDescription = () => description ? (description.length ? true : false) : false
 	const validateMarks = () => maxMarks ? (maxMarks.length ? true : false) : false
-	
+
 
 	useEffect(() => {
 		console.log(props.match.params[0])
@@ -336,7 +385,7 @@ const Course1 = (props) => {
 		let courseInfo = null
 		Axios.get( `https://dbms-back.herokuapp.com/courseinfo/${courseID}`)
 		.then(res => {
-			
+
 				if(res.data.success) {
 					courseInfo = res.data.data[0]
 					console.log(courseInfo._id)
@@ -365,12 +414,12 @@ const Course1 = (props) => {
 		// console.log(teacher_id)
 		Axios.get( `https://dbms-back.herokuapp.com/teacher/${teacher_id}`)
 		.then(res => {
-			
+
 				if(res.data.success) {
 					let teacher = res.data.data[0]
 					setCourseTeacher(teacher)
 				} else {
-						
+
 				}
 		})
 		.catch(() => {})
@@ -378,15 +427,15 @@ const Course1 = (props) => {
 	//console.log(courseTeacher)
 
 	React.useEffect(() => {
-	
+
 		Axios.get( `https://dbms-back.herokuapp.com/records/${courseID}`)
 		.then(res => {
-			
+
 				if(res.data.success) {
 					let courseStudents = res.data.data
 					setCourseStudents(courseStudents);
 				} else {
-						
+
 				}
 		})
 		.catch(() => {})
@@ -429,7 +478,7 @@ const Course1 = (props) => {
 				toast.error('Form is invalid')
 				return
 			}
-		}		
+		}
 
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
@@ -462,7 +511,7 @@ const Course1 = (props) => {
 			toast.error("error")
 		})
 
-		
+
 	}
 
 	const removeStudent = (student_id,course_id) => {
@@ -473,7 +522,7 @@ const Course1 = (props) => {
 		})
 		.then(res => {
 			if(res.data.success) {
-				
+
 			} else {
 				//toast.error("Error removing student")
 			}
@@ -518,11 +567,11 @@ const Course1 = (props) => {
 	function openAutogradeModal() {
 		setIsOpenAutograde(true);
 		}
-	
+
 	function afterOpenModal() {
     // references are now sync'd and can be accessed.
   	}
- 
+
 	function closeModal(){
 		setIsOpen(false);
 	}
@@ -531,12 +580,28 @@ const Course1 = (props) => {
 		setIsOpenAutograde(false);
 	}
 
+	<Modal
+	isOpen={openCourseNameModal}
+	onRequestClose={closeCourseNameModal}
+	style={customStyles}
+	contentLabel="Modal"
+	closeTimeoutMS={200}
+	className="background"
+	>
+
+	<div>
+		hello
+	</div>
+
+
+</Modal>
+
 	console.log(courseInfo.course_code)
 	return (
 		<div className="course-container">
-			
-			
-			{userType === 'teacher' ? 
+
+
+			{userType === 'teacher' ?
 			<React.Fragment>
 				<div className="new-post">
 					<Plus size={40} color="white" onClick={openModal}/>
@@ -550,7 +615,7 @@ const Course1 = (props) => {
 			</React.Fragment>
 			: null }
 
-			
+
 			{/* {modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null} */}
 
 
@@ -561,7 +626,7 @@ const Course1 = (props) => {
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
 				<Link to={`/`}>
-					{userType === 'student' ? 
+					{userType === 'student' ?
 						<p onClick={() => {
 								removeStudent(user._id,courseID);
 								toast.success('Left course successfully')
@@ -572,7 +637,7 @@ const Course1 = (props) => {
 					:
 						<p onClick={() => {
 							deleteCourse(courseInfo.course_code, courseID);
-							
+
 						}
 					}
 						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
@@ -580,7 +645,15 @@ const Course1 = (props) => {
 					}
 				</Link>
 
-				<h2 className="course-title">{courseInfo.name}</h2>
+				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
+					<div>
+						<h2 className="course-title">{courseInfo.name}</h2>
+					</div>
+					<div style={{marginLeft:10, cursor:"pointer"}}>
+						<Edit3 size={21} color="#09a407" className="changeColor" onClick={openCourseNameModal}/>
+					</div>
+            	</div>
+
 				<h4 style={{ color: '#434343', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, marginTop: 5, fontSize: 20}} className="heading">
 				{courseInfo.year} {courseInfo.department}</h4>
 				<div className="instructor-box">
@@ -593,7 +666,7 @@ const Course1 = (props) => {
 						{courseTeacher.fname} {courseTeacher.lname}</h6>
 					</div>
 				</div>
-				
+
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 20}} className="heading">Description</p>
 				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">
 				{courseInfo.description}</p>
@@ -609,28 +682,28 @@ const Course1 = (props) => {
 					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
-				
+
 				{/* Stream */}
 				<div style={Object.assign({}, styles.slide, styles.slide1)}>
-					{/*console.log(posts)*/}	
+					{/*console.log(posts)*/}
 
 					{posts.length ?
 					posts.map((item, index) => {
 						return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
 					}): <EmptyStateSmall title='No Posts' d1="Teacher has not posted anything in this course yet"/>
 					}
+
 					{quizzes.length ? quizzes.map((item, index) => {
 							return <Post postType={'quiz'} title={item.quiz_title} info="" quizID={item._id} isActive={item.is_active} noOfQues={item.number_of_questions} totalMarks={item.total_marks}/>
 						}) : null
 						
 					}
-				
-					
+
 				</div>
 
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
-				
+
 				{posts.filter(p => p.is_assignment === 1).length ?
 					posts.filter(p => p.is_assignment === 1).map((item, index) => {
 							return <Post postType={item.is_assignment ? 'assignment' : 'studymaterial'} title={item.title} info={item.description} assID={item._id}/>
@@ -658,8 +731,8 @@ const Course1 = (props) => {
 
 				<div style={Object.assign({}, styles.slide, styles.slide3)}>
 
-					
-						
+
+
 						{userType === 'teacher' ?
 						<React.Fragment>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
@@ -674,7 +747,7 @@ const Course1 = (props) => {
 								{courseInfo.course_code ? courseInfo.course_code : '' }
 							</p>
 						</div>
-						
+
 						<p style={{fontFamily:'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, verticalAlign: "middle", margin:0, padding: 0, marginTop: 10, marginBottom: 20}}>
 								Copy this code and share with the students. They will use this code to join this course
 						</p>
@@ -691,7 +764,7 @@ const Course1 = (props) => {
 								<div className={"student-box-photo changeColorBG"}><img src={getRandomUser()} style={{width: 35, height: 35, marginTop: 4}}/></div>
 								<h5 className="changeColor">{name}</h5>
 							</div>
-							{userType === 'teacher' ? 
+							{userType === 'teacher' ?
 							<React.Fragment>
 							<UserX onClick={() => {
 								removeStudent(student._id,courseID);
@@ -701,7 +774,7 @@ const Course1 = (props) => {
 							/>
 							</React.Fragment>
 							: null }
-							
+
 						</div>
 						)
 					})}
@@ -721,7 +794,7 @@ const Course1 = (props) => {
 			closeTimeoutMS={200}
 			className="background"
 			>
-				
+
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center",}}>
 					<div className="changeColorBG" style={{width: '3rem', height: '3rem', borderRadius: '5rem', backgroundColor: '#eeeeee', display: "flex", alignItems: 'center', justifyContent: "center", overflow: "hidden"}}>
 						<FileText size={25} color="#09a407"/>
@@ -732,7 +805,7 @@ const Course1 = (props) => {
 					</div>
             	</div>
 
-			
+
 				<div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30}}>
 					<div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
 						<label class={"checkbox-container sub"} style={{borderColor: !isAssignment ? '#09a407' : ''}}>
@@ -748,14 +821,14 @@ const Course1 = (props) => {
 							<span class="checkmark" style={{right: 0, left: 160}}></span>
 						</label>
 					</div>
-					
+
 				</div>
 
 				<div style={{display: "flex", flexDirection: "row"}}>
 
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
-						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)} 
+						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)}
 						// onBlur={() => validateTitle() ? null : toast.error('Title cannot be empty')}
 						></input>
 					</div>
@@ -764,9 +837,9 @@ const Course1 = (props) => {
 						<React.Fragment>
 							<div style={{display: "flex", flexDirection: "column", width: '25%', marginRight: 25}}>
 								<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
-								<DayPickerInput 
+								<DayPickerInput
 									onDayChange={handleDueDateChange}
-									style={{fontFamily: 'Poppins', fontSize: 14}} 
+									style={{fontFamily: 'Poppins', fontSize: 14}}
 									navbarElement={<ArrowLeft size={15}/>}
 									//onBlur={() => validateDate() ? console.log('date is valid') : toast.error('Invalid date')}
 								/>
@@ -779,10 +852,10 @@ const Course1 = (props) => {
 								></input>
 							</div>
 						</React.Fragment>
-					: null 
+					: null
 					}
 
-					
+
 
 				</div>
 
@@ -794,24 +867,24 @@ const Course1 = (props) => {
 
 				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
 
-				{attachment ? null : 
+				{attachment ? null :
 				<button className='changeColorBG' style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
 					<input type="file" onChange={handleFileUpload} className="file-upload"/>
 					<Plus size={18} className="changeColor" style={{marginRight: 10}}/>
 					<p className="changeColor" style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
 				</button>
 				}
-								
 
-				{attachment ? 		
+
+				{attachment ?
 					<div className="uploaded-file" style={{width: '40%', marginTop: 10}}>
 						<h6>{attachment.name}</h6>
 						<X size={22} color="#878787" style={{width: '10%', cursor: "pointer"}} onClick={() => handleFileUpload(null)}/>
 					</div>
-					: null 
+					: null
 				}
 
-				
+
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
@@ -821,8 +894,8 @@ const Course1 = (props) => {
 					</button>
 				</div>
 
-				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>		
-				
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModal}/>
+
         </Modal>
 
 
@@ -837,6 +910,7 @@ const Course1 = (props) => {
 }
 
 export default Course1
+
 
 // const quizzes = [
 // 	{
