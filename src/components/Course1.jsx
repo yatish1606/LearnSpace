@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
 
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send} from 'react-feather'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
@@ -20,6 +20,7 @@ import {toast} from 'react-toastify'
 import Axios from 'axios'
 import {EmptyState, EmptyStateSmall} from './Home'
 import { RefreshCcw, RefreshCw, RotateCcw, Edit3 } from 'react-feather'
+import {getRandomUser2} from './random'
 
 
 
@@ -61,9 +62,12 @@ export const styles = {
 	},
   };
 
+  let pos = window.scrollY
+
   export const AntTabs = withStyles({
 	root: {
-		height: 50
+		height: 50,
+		
 	},
 	indicator: {
 	  backgroundColor: '#09A407',
@@ -121,78 +125,6 @@ export const styles = {
   }))((props) => <Tab disableRipple {...props} />);
 
 
-// const postInfo = [
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Introduction to Operating Systems',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 1 : Threads',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Operating Systems : Basic Principles',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 2 : Multithreading Matrix Multiplication',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Processess',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 3 : File Management',
-// 		info: ''
-// 	},
-// ]
-
-const studentsList = [
-	{
-		fName: 'John',
-		lName: 'Doe',
-		imag: userImage,
-	},
-	{
-		fName: 'Kate',
-		lName: 'Smith',
-		imag: userImage,
-	},
-	{
-		fName: 'Yatish',
-		lName: 'Kelkar',
-		imag: userImage,
-	},
-	{
-		fName: 'Gaurav',
-		lName: 'Khairnar',
-		imag: userImage,
-	},
-	{
-		fName: 'Mahesh',
-		lName: 'Nahak',
-		imag: userImage,
-	},
-	{
-		fName: 'Kshitij',
-		lName: 'Chitnis',
-		imag: userImage,
-	},
-	{
-		fName: 'Ronald',
-		lName: 'Weasley',
-		imag: userImage,
-	},
-]
-
-
 
 
 
@@ -230,20 +162,6 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 		})
 		.catch(() => {})
 	}
-
-	// const download = () => {
-	// 	console.log(assID)
-	// 	Axios.get(`http://dbms-back.herokuapp.com/getattachedfile/${assID}`)
-	// 	.then(res => {
-	// 		if(res.data.success) {
-
-	// 		} else {
-	// 			console.log('error1')
-	// 		}
-	// 	})
-	// 	.catch(() => console.log('error'))
-	// }
-
 
 	return (
 		<React.Fragment>
@@ -302,6 +220,27 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 }
 
 
+const Message = ({name, message, time, userType}) => {
+	let isTeacher = userType === 'teacher'
+	return (
+		<div style={{width: 'auto', minHeight: 50, margin:'0 20px 5px 0px', display: 'flex', flexDirection: 'column', alignItems: isTeacher ? 'flex-end' : 'flex-start'}}>
+			<p style={{fontFamily: 'Poppins', fontSize: 12.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name}</p>
+			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start'}}>
+				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0, marginTop: 2}}>
+                        <img className="changeColorBG" src={getRandomUser2()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+                </div>
+				
+				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':''}} className="changeColorBGnotimp">
+					<p style={{fontFamily: 'Poppins', fontSize: 15, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 4}} className="changeColor">{message}</p>
+					<p style={{fontFamily: 'Poppins', fontSize: 11, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 0, textAlign: 'right'}} className="sub">{time}</p>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+
+
 
 
 
@@ -342,7 +281,7 @@ const Course1 = (props) => {
 		console.log("hi");
 		setCourseNameModal(true)
 	}
-	console.log(courseNameModalIsOpen);
+	
 	const closeCourseNameModal = () => setCourseNameModal(false)
 
 	const [posts, setPosts] = useState([])
@@ -581,11 +520,22 @@ const Course1 = (props) => {
 	function closeAutogradeModal(){
 		setIsOpenAutograde(false);
 	}
-
 	
 
-	console.log(courseInfo.course_code)
+	
 	return (
+		<React.Fragment>
+		
+		{/* <div className="background" style={{width: '80%', height: 70, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', paddingTop: 10, boxShadow:'0 -2px 10px #eee', marginLeft: '20%', padding: '5px 10px'}}>
+				<input style={{width: '96%', marginRight:5}}
+					placeholder="Type a message..."
+					autofocus
+				/>
+				<button style={{width: 45, height: 45, borderRadius: 25,marginTop:0, marginLeft:0, padding:0, display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="background">
+					<Send size={23} color="#09a407" style={{transform:'rotate(45deg)', marginRight:5}}/>
+				</button>
+		</div> */}
+
 		<div className="course-container">
 
 
@@ -607,6 +557,7 @@ const Course1 = (props) => {
 
 			{/* {modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null} */}
 
+			
 
 
 
@@ -684,6 +635,13 @@ const Course1 = (props) => {
 						}) : null
 						
 					}
+					
+
+					{/* <Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet" time="10.11/20 2:53 pm" userType="teacher"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet udbciusdbciu iaubcuia isubfiuas iubsuiabsxiuab aiubdiuasbxuiasb" time="10.11/20 2:53 pm" userType="teacher"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/> */}
 
 				</div>
 
@@ -931,6 +889,7 @@ const Course1 = (props) => {
 
 
 		</div>
+		</React.Fragment>
 	)
 }
 

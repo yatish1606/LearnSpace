@@ -39,6 +39,10 @@ html img{
     color: var(--sub) !important;
 }
 
+.subnotimp {
+    color: var(--sub);
+}
+
 .subBG {
     background-color: var(--sub) !important;
 }
