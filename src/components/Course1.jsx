@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
 
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight,Trash2} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send} from 'react-feather'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
@@ -20,6 +20,7 @@ import {toast} from 'react-toastify'
 import Axios from 'axios'
 import {EmptyState, EmptyStateSmall} from './Home'
 import { RefreshCcw, RefreshCw, RotateCcw, Edit3 } from 'react-feather'
+import {getRandomUser2} from './random'
 
 
 
@@ -61,9 +62,12 @@ export const styles = {
 	},
   };
 
+  let pos = window.scrollY
+
   export const AntTabs = withStyles({
 	root: {
-		height: 50
+		height: 50,
+		
 	},
 	indicator: {
 	  backgroundColor: '#09A407',
@@ -83,6 +87,7 @@ export const styles = {
   export const AntTab = withStyles(() => ({
 	wrapper: {
 		flexDirection: 'row',
+		
 	  },
 	root: {
 	  textTransform: 'none',
@@ -91,14 +96,14 @@ export const styles = {
 	  fontWeight: 500,
 	//   marginRight: 15,
 	  fontSize:17,
-	  paddingRight: 35,
-	  paddingLeft: 25,
+	  paddingRight: 20,
+	  paddingLeft: 20,
 	  boxShadow: 'none',
-	//   marginLeft: 15,
+	  marginLeft: 15,
 	  letterSpacing : 0.3,
 	  height: 50,
 	  opacity: 1,
-	  borderBottom: '4px solid #eee',
+	//   borderBottom: '4px solid #eee',
 	  fontFamily: [
 		'Poppins'
 	  ].join(','),
@@ -120,78 +125,6 @@ export const styles = {
   }))((props) => <Tab disableRipple {...props} />);
 
 
-// const postInfo = [
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Introduction to Operating Systems',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 1 : Threads',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Operating Systems : Basic Principles',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 2 : Multithreading Matrix Multiplication',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'studyMaterial',
-// 		title: 'Processess',
-// 		info: ''
-// 	},
-// 	{
-// 		type: 'assignment',
-// 		title: 'OS Programming Assignment 3 : File Management',
-// 		info: ''
-// 	},
-// ]
-
-const studentsList = [
-	{
-		fName: 'John',
-		lName: 'Doe',
-		imag: userImage,
-	},
-	{
-		fName: 'Kate',
-		lName: 'Smith',
-		imag: userImage,
-	},
-	{
-		fName: 'Yatish',
-		lName: 'Kelkar',
-		imag: userImage,
-	},
-	{
-		fName: 'Gaurav',
-		lName: 'Khairnar',
-		imag: userImage,
-	},
-	{
-		fName: 'Mahesh',
-		lName: 'Nahak',
-		imag: userImage,
-	},
-	{
-		fName: 'Kshitij',
-		lName: 'Chitnis',
-		imag: userImage,
-	},
-	{
-		fName: 'Ronald',
-		lName: 'Weasley',
-		imag: userImage,
-	},
-]
-
-
 
 
 
@@ -205,14 +138,14 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 	let typeArr = postType.split(/(?=[A-Z])/)
 	typeArr.map(s => s.charAt(0).toUpperCase())
 
-	const type = typeArr.join(' ')
+	let type = typeArr.join(' ')
 	if(!title.length) title = ''
 	if(!info.length) info = ''
 	
 
 	const isAssignment = postType === 'assignment'
 	const isQuiz = postType === 'quiz'
-	
+	if(isQuiz) type = 'QUIZ'
 
 	const deleteAssignment = () => {
 		console.log(assID)
@@ -230,20 +163,6 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 		.catch(() => {})
 	}
 
-	// const download = () => {
-	// 	console.log(assID)
-	// 	Axios.get(`http://dbms-back.herokuapp.com/getattachedfile/${assID}`)
-	// 	.then(res => {
-	// 		if(res.data.success) {
-
-	// 		} else {
-	// 			console.log('error1')
-	// 		}
-	// 	})
-	// 	.catch(() => console.log('error'))
-	// }
-
-
 	return (
 		<React.Fragment>
 		<div className="post-container">
@@ -252,12 +171,12 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					<div className={"post-image-base changeColorBG"}>{icon}</div>
 				</div>
 				<div className="post-info">
-					{isQuiz ? null : <h6 className="sub" style={{fontWeight: 500, fontSize: 14, letterSpacing: 0.6}}>{type}</h6>}
-					<h3>{title}</h3>
+					<h6 className="sub" style={{fontWeight: 500, fontSize: 14, letterSpacing: 0.6}}>{type}</h6>
+					<h3 style={{marginTop: 5}}>{title}</h3>
 					{isQuiz ? 
 					<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-						<p className="sub" style={{fontSize: 15, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>{totalMarks} marks</p>
-						<p className="sub" style={{fontSize: 15, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, marginLeft: 10}}>{isActive ? 'active' : 'not active'}</p>
+						<p className="sub" style={{fontSize: 13, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, marginTop: 0, letterSpacing: 0.3}}>{noOfQues} questions, {totalMarks} marks</p>
+						
 					</div> : null
 					}
 				</div>
@@ -276,10 +195,10 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					</React.Fragment>
 					: isQuiz ?
 					<React.Fragment>
-						
 						<Link to={`/quiz/${quizID}`}>
-							<ChevronRight size={30} color="#09a407"/>
+							<ChevronRight size={30} color="#09a407" style={{marginRight: -5, paddingRight: 0}}/>
 						</Link>
+						<p style={{fontSize: 14, color: isActive ? '#09a407' : '#7E7E7E', fontFamily: 'Poppins', marginRight: isActive ? 15 : 0, fontWeight: 500, verticalAlign:'bottom', marginBottom: 0, marginLeft: 10, backgroundColor: isActive ? '#09a4072a' : '', textAlign: 'center',padding:'5px 15px', letterSpacing: isActive? 0.4 : 0.6, borderRadius: 20, marginTop: 5, }} className="changeColorBGnotimp">{isActive ? 'active' : 'not active'}</p>
 						
 					</React.Fragment>
 					
@@ -288,7 +207,7 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					<React.Fragment>
 					
 					{userType === 'teacher' ?
-					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
+					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{marginTop: "5"}}/>
 					: null }
 						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
 						<Download size={22} className="sub"/>
@@ -303,6 +222,27 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 		</React.Fragment>
 	)
 }
+
+
+const Message = ({name, message, time, userType}) => {
+	let isTeacher = userType === 'teacher'
+	return (
+		<div style={{width: 'auto', minHeight: 50, margin:'0 20px 5px 0px', display: 'flex', flexDirection: 'column', alignItems: isTeacher ? 'flex-end' : 'flex-start'}}>
+			<p style={{fontFamily: 'Poppins', fontSize: 12.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name}</p>
+			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start'}}>
+				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0, marginTop: 2}}>
+                        <img className="changeColorBG" src={getRandomUser2()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+                </div>
+				
+				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':''}} className="changeColorBGnotimp">
+					<p style={{fontFamily: 'Poppins', fontSize: 15, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 4}} className="changeColor">{message}</p>
+					<p style={{fontFamily: 'Poppins', fontSize: 11, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 0, textAlign: 'right'}} className="sub">{time}</p>
+				</div>
+			</div>
+		</div>
+	)
+}
+
 
 
 
@@ -323,6 +263,7 @@ const Course1 = (props) => {
 	const [department, setDepartment] = React.useState('');
 
 	const [isAssignment, setIsAssignment] = React.useState(false)
+	const [isQuiz, setIsQuiz] = React.useState(false)
 	const [dueDate, setDueDate] = useState(null)
 	const [maxMarks, setMaxMarks] = useState(null)
 	const [title, setTitle] = useState(null)
@@ -583,6 +524,7 @@ const Course1 = (props) => {
 	function closeAutogradeModal(){
 		setIsOpenAutograde(false);
 	}
+	
 
 	const [newCourseName, setNewCourseName] = useState('');
 
@@ -613,26 +555,40 @@ const Course1 = (props) => {
 
 	//console.log(courseInfo.course_code)
 	return (
+		<React.Fragment>
+		
+		{/* <div className="background" style={{width: '80%', height: 70, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', paddingTop: 10, boxShadow:'0 -2px 10px #eee', marginLeft: '20%', padding: '5px 10px'}}>
+				<input style={{width: '96%', marginRight:5}}
+					placeholder="Type a message..."
+					autofocus
+				/>
+				<button style={{width: 45, height: 45, borderRadius: 25,marginTop:0, marginLeft:0, padding:0, display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="background">
+					<Send size={23} color="#09a407" style={{transform:'rotate(45deg)', marginRight:5}}/>
+				</button>
+		</div> */}
+
 		<div className="course-container">
 
 
 			{userType === 'teacher' ?
 			<React.Fragment>
-				<div className="new-post">
-					<Plus size={40} color="white" onClick={openModal}/>
+				<div className="new-post" style={{position: 'absolute', zIndex:999, top: 100, borderRadius: 5, right: 20,display: 'flex', flexDirection: 'row', padding: '5px 15px' , width: 'auto', height: 45, alignItems: 'center', boxShadow: 'none', paddingLeft: 10}} onClick={openModal}>
+					<Plus size={22} color="white" />
+					<p  style={{fontFamily: 'Poppins', color: 'white', fontWeight: 500, letterSpacing: 0.6, fontSize: 16, margin:0, padding: 0, marginLeft: 5, marginRight: 5}}>Post</p>
 				</div>
 
-				<Link to={`/quiznew/${courseID}`}>
+				{/* <Link to={`/quiznew/${courseID}`}>
 				<div className={"new-post"} style={{bottom: 120, right: 50, width:40, height: 40, padding: 0}}>
 					<CheckCircle size={20} color="#fff"  style={{zIndex: 99}}/>
 				</div>
-				</Link>
+				</Link> */}
 			</React.Fragment>
 			: null }
 
 
 			{/* {modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null} */}
 
+			
 
 
 
@@ -640,32 +596,29 @@ const Course1 = (props) => {
 			<div className="course-heading-block">
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
-				<Link to={`/`}>
+				
 					{userType === 'student' ?
-						<p onClick={() => {
-								removeStudent(user._id,courseID);
-								toast.success('Left course successfully')
-							}
-						}
-						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
-						Leave Course</p>
+						<Link to={`/`}>
+							<div onClick={() => {
+									removeStudent(user._id,courseID);
+									toast.success('Left course successfully')}}
+							>
+								<LogOut size={20} color="#09a407" style={{position: 'absolute', top: 115, right: 20}}/>
+							</div>
+						</Link>
 					:
-						<p onClick={() => {
-							deleteCourse(courseInfo.course_code, courseID);
-
-						}
+						<div >
+							<Link to={`/`}>
+								<Trash2 size={20} color="#09a407" style={{position: 'absolute', top: 115, right: userType === 'teacher' ? 140 : 20}} onClick={() => {deleteCourse(courseInfo.course_code, courseID);}}/>
+							</Link>
+							<Edit3 size={21} color="#09a407" style={{position: 'absolute', top: 115, right: 190, cursor: 'pointer'}} className="changeColor" onClick={openCourseNameModal}/>
+						</div>
 					}
-						style={{cursor: "pointer", position: "absolute", right:40,fontSize: 16, color: '#09A407', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
-						Delete Course</p>
-					}
-				</Link>
+				
 
-				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 20}}>
+				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 0}}>
 					<div>
 						<h2 className="course-title">{courseInfo.name}</h2>
-					</div>
-					<div style={{marginLeft:10, cursor:"pointer"}}>
-						<Edit3 size={21} color="#09a407" className="changeColor" onClick={openCourseNameModal}/>
 					</div>
             	</div>
 
@@ -713,6 +666,13 @@ const Course1 = (props) => {
 						}) : null
 						
 					}
+					
+
+					{/* <Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet" time="10.11/20 2:53 pm" userType="teacher"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet udbciusdbciu iaubcuia isubfiuas iubsuiabsxiuab aiubdiuasbxuiasb" time="10.11/20 2:53 pm" userType="teacher"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
+					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/> */}
 
 				</div>
 
@@ -771,7 +731,8 @@ const Course1 = (props) => {
 
 					<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:15}}>Students enrolled in Course</p>
 
-					{courseStudents.map((student, index) => {
+					{courseStudents.length ?
+					courseStudents.map((student, index) => {
 						let name = student.fname + " "+student.lname
 						return (
 						<div className="student-box" key={index}>
@@ -792,7 +753,7 @@ const Course1 = (props) => {
 
 						</div>
 						)
-					})}
+					}) : <EmptyStateSmall title="No students" d1="There are no students enrolled in this course" d2="Share the course code with students so that they can join"/>}
 				</div>
 				</SwipeableViews>
 			</div>
@@ -816,39 +777,49 @@ const Course1 = (props) => {
 					</div>
 					<div style={{marginLeft: '1rem'}}>
 						<h2 className="changeColor" style={{textAlign: "left", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 22, padding:0, marginBottom:0}}>Post New Material</h2>
-						<p className="grey" style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>Send new study material or assignments to students</p>
+						<p className="grey" style={{fontFamily: 'Mulish', fontSize: 16, color: '#878787', fontWeight: 600, margin:0, padding:0, marginTop:5}}>Create new study material, assignment or quiz</p>
 					</div>
             	</div>
 
 
 				<div style={{width: '100%', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 30}}>
 					<div style={{display: "flex",flexDirection: "row", alignItems: "center"}}>
-						<label class={"checkbox-container sub"} style={{borderColor: !isAssignment ? '#09a407' : ''}}>
+						<label class={"checkbox-container sub"} style={{borderColor: !isAssignment && !isQuiz ? '#09a407' : ''}}>
 							<Book size={22} style={{marginRight: 15}} className="sub"/>
 							Study Material
-							<input type="checkbox" onClick={() => setIsAssignment(false)} checked={!isAssignment}/>
+							<input type="checkbox" onClick={() => {setIsAssignment(false) ;setIsQuiz(false)}} checked={!isAssignment && !isQuiz}/>
 							<span class="checkmark" style={{right: 0, left: 180}}></span>
 						</label>
-						<label class={"checkbox-container sub"} style={{borderColor: isAssignment ? '#09a407' : ''}}>
+						<label class={"checkbox-container sub"} style={{borderColor: isAssignment && !isQuiz ? '#09a407' : ''}}>
 							<FileText size={22} style={{marginRight: 15}} className="sub"/>
 							Assignment
-							<input type="checkbox" onClick={() => setIsAssignment(true)} checked={isAssignment}/>
+							<input type="checkbox" onClick={() => {setIsAssignment(true);setIsQuiz(false)}} checked={isAssignment && !isQuiz}/>
 							<span class="checkmark" style={{right: 0, left: 160}}></span>
 						</label>
+						{/* <Link to={`/quiznew/${courseID}`}> */}
+						<label class={"checkbox-container sub"} style={{borderColor: isQuiz ? '#09a407' : ''}}>
+							<HelpCircle size={22} style={{marginRight: 15}} className="sub"/>
+							Quiz
+							<input type="checkbox" onClick={() => {setIsQuiz(!isQuiz)}} checked={isQuiz}/>
+							<span class="checkmark" style={{right: 0, left: 100}}></span>
+						</label>
+						{/* </Link> */}
 					</div>
 
 				</div>
 
 				<div style={{display: "flex", flexDirection: "row"}}>
 
+					
+					{!isQuiz ? 
 					<div style={{display: "flex", flexDirection: "column", width: '60%', marginRight: 25}}>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Title</p>
 						<input type="text" style={{height:40, width: '100%'}} onChange={t => setTitle(t.target.value)}
 						// onBlur={() => validateTitle() ? null : toast.error('Title cannot be empty')}
 						></input>
-					</div>
+					</div> : null }
 
-					{isAssignment ?
+					{isAssignment && !isQuiz ?
 						<React.Fragment>
 							<div style={{display: "flex", flexDirection: "column", width: '25%', marginRight: 25}}>
 								<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Due date of assignment</p>
@@ -873,17 +844,21 @@ const Course1 = (props) => {
 
 
 				</div>
-
+				{!isQuiz ? 
+				
+				<React.Fragment>
 				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Description</p>
 				<input type="text" style={{height:40}} onChange={t => setDescription(t.target.value)}
 				// onBlur={() => validateDescription() ? null : toast.error('Description cannot be empty')}
 				></input>
+				</React.Fragment>
+				: null }
 
 
-				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0}}>Add attachment</p>
+				<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 35, marginBottom:0, display: isQuiz ? 'none' :'block'}}>Add attachment</p>
 
-				{attachment ? null :
-				<button className='changeColorBG' style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40}}>
+				{isQuiz ? null : attachment ? null :
+				<button className='changeColorBG' style={{backgroundColor: "transparent", border: '0px solid #eee', boxShadow: "none", padding: '5px 10px', alignItems: "center", flexDirection: "row", justifyContent: "center", overflow: "hidden", height: 40,}}>
 					<input type="file" onChange={handleFileUpload} className="file-upload"/>
 					<Plus size={18} className="changeColor" style={{marginRight: 10}}/>
 					<p className="changeColor" style={{fontSize: 15, fontWeight: 700, color: '#09a407', margin:0, fontFamily: 'Mulish'}}>Upload file</p>
@@ -891,7 +866,7 @@ const Course1 = (props) => {
 				}
 
 
-				{attachment ?
+				{attachment && !isQuiz ?
 					<div className="uploaded-file" style={{width: '40%', marginTop: 10}}>
 						<h6>{attachment.name}</h6>
 						<X size={22} color="#878787" style={{width: '10%', cursor: "pointer"}} onClick={() => handleFileUpload(null)}/>
@@ -899,9 +874,19 @@ const Course1 = (props) => {
 					: null
 				}
 
+				{isQuiz ? 
+				<ul style={{margin:0, padding: 0, marginLeft: 0, marginTop: 30}}>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>You can create a quiz which can be attempted by students</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>Quiz can have two types of questions, multiple choice questions (MCQ) or textual questions</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For textual or theoretical questions, you need to provide some keywords based upon which the student repsonses will be autograded</p></li>
+					<li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>Each MCQ carries one mark while you can decide how many marks each textual question can be worth</p></li>
+				</ul> : null
+				}
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-					<button>
+					<button onClick={() => {if(isQuiz)
+						window.location.href=`/quiznew/${courseID}`}
+					}>
 						<p style={{fontSize: 16, fontWeight: 600, color: 'white', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}} onClick={postMaterial}>Create</p>
 					</button>
 					<button style={{boxShadow: 'none', backgroundColor: 'transparent'}} onClick={closeModal}>
@@ -941,11 +926,14 @@ const Course1 = (props) => {
 
 
 
+			
+
 
 
 
 
 		</div>
+		</React.Fragment>
 	)
 }
 
