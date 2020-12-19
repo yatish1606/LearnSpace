@@ -257,10 +257,9 @@ const Sidebar = (props) => {
 					<div style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 						<h6 style={{fontSize: 15, color: theme === 'dark' ? '#eee' : '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 5}}>
 						{user.fname} {user.lname}</h6>
-						{/*<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
-	{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>*/}
-						<Link to="/registerlogin"><p style={{fontSize: 14, color: '#09a407', fontFamily: 'Poppins', fontWeight: 400, margin:0, padding: 0}}>
-						Log out</p></Link>
+						<p style={{fontSize: 13, color: '#878787', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0}}>
+	{userType[0].toUpperCase() + userType.slice(1,userType.length)}</p>
+						
 					</div>
 				</div>
 
@@ -414,11 +413,24 @@ const Sidebar = (props) => {
 							<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>DEPARTMENT</p>
 							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{user.department} </p>
 						</div>
+						<div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 12,justifyContent: "center"}}>
+							<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>COURSES ENROLLED</p>
+							<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{courses.length} courses </p>
+						</div>
 					</React.Fragment>
 				
-				: null
+				: <React.Fragment>
+					<div style={{display: "flex", flexDirection: "row", alignItems: "center", marginTop: 12,justifyContent: "center"}}>
+						<p style={{fontFamily: 'Poppins', fontSize: 14, fontWeight: 500, margin:0, padding: 0, marginRight: 10, letterSpacing: 0.7, verticalAlign: 'middle', marginTop: 5, color: '#09a407'}}>COURSES TEACHING</p>
+						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, fontWeight: 500, margin:0, padding: 0}}>{courses.length} courses </p>
+					</div>
+				</React.Fragment>
 				}
-
+				<Link to="/registerlogin">
+					<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', fontWeight: 500, margin:0, padding: 0, letterSpacing: 0.4, marginTop: 50, textAlign: 'center'}}>
+						Log out
+					</p>
+				</Link>
 
 			</Modal>
 
