@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {ArrowLeft, Grid, Edit, PlayCircle,X} from 'react-feather'
+import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle} from 'react-feather'
 import './course.css'
 import {getRandomUser2} from './random'
 import Axios from 'axios'
@@ -12,9 +12,11 @@ import {RenderQuestion, RenderQuestionTextual} from './QuizQuestion'
 import autosize from "autosize"
 import Modal from 'react-modal'
 import {customStyles} from './QuizQuestion'
+import { EmptyState, EmptyStateSmall } from './Home';
+import { Link } from 'react-router-dom';
 
 //let userType = JSON.parse(localStorage.getItem('userType'))
-let userType = 'student'
+let userType = 'teacher'
 
 let localdata = JSON.parse(localStorage.getItem('userDetails'))
 let user = localdata ? localdata : {
@@ -102,17 +104,21 @@ const Quiz = ({history}) => {
     const handleChangeIndex = index => setIndex(index)
 
     const [ignore, setIgnore] = React.useState(0)
-    const forceUpdate = () => setIgnore(ignore + 1)
+    const forceUpdate = () => {setIgnore(ignore + 1) 
+        console.log('forceupdating')}
     const [modalIsOpen, setModal] = React.useState(false)
-
+    const [modalIsOpenResult, setModalResult] = React.useState(false) 
     const [quizResponse, setQR] = React.useState(null)
 
 
     const [quizInfo, setQuizInfo] = React.useState(null)
     const [questions, setQuestions] = React.useState([])
+    const [isActive, setIsActive] = React.useState(quizInfo ? quizInfo.is_active === 0 ? false : true : false)
 
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
+    const openModalResult = () => setModalResult(true)
+    const closeModalResult = () => setModalResult(false)
 
     let quizAnswers = null
 
@@ -123,10 +129,13 @@ const Quiz = ({history}) => {
         .then(res => {
             if(res.data.success) {
                 setQuizInfo(res.data.data[0])
+                console.log(res.data.data[0])
+                setIsActive(res.data.data[0].is_active === 0 ? false : true)
             }
         })
-    }, [])
+    }, [isActive])
 
+   
     React.useEffect(() => {
         let quizID = quizInfo ? quizInfo._id : null
         Axios.get(`http://localhost:8000/questions/${quizID}`)
@@ -140,7 +149,7 @@ const Quiz = ({history}) => {
                         q.keywords = keys
                     }   
                 })
-                console.log(question)
+                // console.log(question)
                 setQuestions(question)
             }
         })
@@ -159,8 +168,6 @@ const Quiz = ({history}) => {
         let questionsArray = questions ? questions.sort((a,b) => a.QID > b.QID ? 1 : -1) : null
         
         const [answers, setAnswers] = React.useState([])
-        const [text, setText] = React.useState('')
-       
         
         const handleMCQAnswer = (index, option) => {
             
@@ -301,8 +308,50 @@ const Quiz = ({history}) => {
         openModal()
         console.log(responseObj)
     }
+
+    const postQuizSubmission = () => {
+        if(quizInfo) {
+            if(!quizInfo.is_active) {
+                return toast.error('Quiz submission is closed')
+            }
+        }
+        Axios.post('http://localhost:8000/submitquiz', quizResponse)
+        .then(res => {
+            if(res.data.success) {
+                console.log(res.data)
+                openModalResult()
+            } else {
+                toast.error('You have already submitted this quiz')
+            }
+        })
+        .catch(e => toast.error('You have already submitted this quiz'))
+    }
     
-	
+    const startQuiz = () => {
+        setIsActive(true)
+        forceUpdate()
+        Axios.post(`http://localhost:8000/startquiz/${quizInfo._id}`)
+        .then(res => {
+            if(res.data.success) {
+                
+            }
+        })
+       
+    }
+
+    const endQuiz = () => {
+        console.log('ending quiz')
+        setIsActive(false)
+        forceUpdate()
+        Axios.post(`http://localhost:8000/endquiz/${quizInfo._id}`)
+        .then(res => {
+            if(res.data.success) {
+               
+            }
+        })
+        
+    }
+	console.log('status', isActive)
 	return (
 		
 		<div className={"background course-container"} style={{paddingLeft: 0, paddingRight: 0}}>
@@ -322,7 +371,17 @@ const Quiz = ({history}) => {
                             <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>For textual or theoretical questions, start typing your answer inside the text box. The textbox will adjust its height if your answer is long.</p></li>
                             <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>The quiz is submitted only when you click the submit button. You will be able to view your score immediately after submitting the quiz</p></li>
                     </ul>
-                </React.Fragment> : null
+                </React.Fragment> 
+                
+                :
+
+                <React.Fragment>
+                    <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 25, marginLeft: 25}}>ABOUT QUIZ</p>
+                    <ul style={{margin:0, padding: 0, marginLeft: 25, marginTop: 10}}>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>This quiz contains {quizInfo ? quizInfo.number_of_questions : null} questions</p></li>
+                            <li><p className="sub" style={{fontFamily: 'Poppins', fontSize: 14, color: '#545454', fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 0, marginBottom:0}}>Once you begin the quiz , you can stop it anytime. Student submissions will not be accepted once the quiz is ended.</p></li>
+                    </ul>
+                </React.Fragment> 
             }
             
 
@@ -331,8 +390,8 @@ const Quiz = ({history}) => {
             <p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 10, marginLeft: 20, letterSpacing: 0.4}} className="sub">Total Marks : 25</p> */}
             {userType === 'teacher' ? 
                 <React.Fragment>
-                    <div style={{width: '100%', marginTop: 10}}>
-                        <AntTabs value={index} fullWidth  variant="scrollable" onChange={handleChange} style={{paddingLeft: 20, marginTop: 20}}>
+                    <div style={{width: '100%', marginTop: 0}}>
+                        <AntTabs value={index} fullWidth  variant="scrollable" onChange={handleChange} style={{paddingLeft: 20, marginTop: 10}}>
                             <AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Questions   </div>} />
                             <AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Responses   </div>} />
                         </AntTabs>
@@ -340,7 +399,7 @@ const Quiz = ({history}) => {
                         <SwipeableViews index={index} onChangeIndex={handleChangeIndex}>
                         
                             <div style={Object.assign({}, styles.slide),{paddingLeft: 25}}>
-                                    <p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 25, marginBottom:15, marginLeft: 0, letterSpacing: 0.4}}>{questions ? questions.length : null} QUESTIONS IN QUIZ</p>
+                                    <p className="changeColor" style={{fontSize: 13.5, fontWeight: 500, margin:0, fontFamily: 'Poppins', letterSpacing: 0.3, padding: 0, marginTop: 20, marginBottom: 20, marginLeft: 0}}>{questions ? questions.length : null} QUESTIONS IN QUIZ</p>
                                     {
                                         
                                         questions ? questions.map((q,index) => {
@@ -362,14 +421,19 @@ const Quiz = ({history}) => {
                     </div>
 
                     <div style={{position: "absolute", top: 90, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-					<button style={{paddingLeft: 15}}>
-                        <PlayCircle size={22} color="white"/>
-						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>Begin Quiz</p>
-					</button>
-                    {/* <button style={{paddingLeft: 15}}>
-                        <XCircle size={22} color="white"/>
-						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>End Quiz</p>
-					</button> */}
+					{!isActive ? 
+                        <button style={{paddingLeft: 15, transition:'0.5s ease'}} onClick={startQuiz}>
+                            <PlayCircle size={22} color="white"/>
+                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>Begin Quiz</p>
+                        </button>
+                        :
+                        <button style={{paddingLeft: 15,transition:'0.5s ease'}} onClick={endQuiz}>
+                            <XCircle size={22} color="white"/>
+                            <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 10}}>End Quiz</p>
+                        </button> 
+                     
+                    
+                    }
 			        </div>
                 </React.Fragment> 
                 
@@ -379,21 +443,23 @@ const Quiz = ({history}) => {
                     
                     <div style={{width: '100%', marginTop: 20, borderTop: '3px solid',paddingLeft: 25, paddingTop: 30, paddingBottom: 50}} className="borderrad">
 
-                        
+                        {isActive ?
                         <RenderQuizForStudent/>
+                        : <EmptyStateSmall title="Quiz has not started yet" d1="If you think this is a mistake, please contact your teacher"/>
+                        }
 
 
 
 
 
                     </div>
-                    
+                    {isActive ? 
                     <div style={{position: "fixed", top: 90, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
                         <button style={{paddingLeft: 15}} onClick={submitQuiz}>
                             {/* <PlayCircle size={22} color="white"/> */}
                             <p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8, marginLeft: 5}}>Submit</p>
                         </button>
-			        </div>
+			        </div> : null }
                 </React.Fragment>
             }
 
@@ -422,7 +488,7 @@ const Quiz = ({history}) => {
 
 				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 					<button onClick={() => {
-                        //submit quiz
+                        postQuizSubmission()
                         closeModal()
                     }}>
 						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Submit</p>
@@ -430,6 +496,40 @@ const Quiz = ({history}) => {
 					<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeModal}>
 						<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
 					</button>
+				</div>
+
+
+			</Modal>
+
+            <Modal
+                    isOpen={modalIsOpenResult}
+                    onRequestClose={closeModalResult}
+                    style={customStyles}
+                    contentLabel="Modal"
+                    closeTimeoutMS={200}
+                    className="background"
+				>
+
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModalResult}/>		
+
+
+				<h2 className="sub" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 15, padding:0, marginBottom:0, marginTop: 50, letterSpacing: 0.5}}>QUIZ RESULT</h2>
+				<h2 className="changeColor" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 20, padding:0, marginBottom:0,marginTop: 50 }}>You obtained {quizResponse ? quizResponse.marksObtained : null} out of {quizResponse ? quizResponse.totalMarks : null} marks in {quizInfo ? quizInfo.quiz_title : null}</h2>
+
+                
+
+				<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+					<Link to={`/course/${quizInfo ? quizInfo.course_id : ''}`}>
+                    <button onClick={() => {
+                        
+                        closeModalResult()
+                    
+                    }}>
+                        
+						<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Okay</p>
+					</button>
+                    </Link>
+					
 				</div>
 
 
