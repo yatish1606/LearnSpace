@@ -64,6 +64,10 @@ html img{
     border-color: var(--grey) !important;
 }
 
+.boxshadowtop {
+    box-shadow: 0px 10px 20px var(--sub) !important;
+}
+
 .course-container {
     width: 80%;
     margin-left: 20%;

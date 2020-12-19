@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
 
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send, MessageSquare} from 'react-feather'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
@@ -22,7 +22,7 @@ import {EmptyState, EmptyStateSmall} from './Home'
 import { RefreshCcw, RefreshCw, RotateCcw, Edit3 } from 'react-feather'
 import {getRandomUser2} from './random'
 
-
+let randomUsers = [getRandomUser2(),getRandomUser2(),getRandomUser2(),getRandomUser2(),getRandomUser2(), ]
 
 let randomUser = getRandomUser()
 let theme = JSON.parse(localStorage.getItem('theme'))
@@ -224,19 +224,21 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 }
 
 
-const Message = ({name, message, time, userType}) => {
-	let isTeacher = userType === 'teacher'
+const Message = ({name, message, time, userType, userID}) => {
+
+	let time_real = new Date(parseInt(time)).toLocaleString()
+	let isTeacher = user._id === userID
 	return (
 		<div style={{width: 'auto', minHeight: 50, margin:'0 20px 5px 0px', display: 'flex', flexDirection: 'column', alignItems: isTeacher ? 'flex-end' : 'flex-start'}}>
 			<p style={{fontFamily: 'Poppins', fontSize: 12.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name}</p>
 			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start'}}>
 				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0, marginTop: 2}}>
-                        <img className="changeColorBG" src={getRandomUser2()} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
+                        <img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
                 </div>
 				
 				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':''}} className="changeColorBGnotimp">
 					<p style={{fontFamily: 'Poppins', fontSize: 15, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 4}} className="changeColor">{message}</p>
-					<p style={{fontFamily: 'Poppins', fontSize: 11, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 0, textAlign: 'right'}} className="sub">{time}</p>
+					<p style={{fontFamily: 'Poppins', fontSize: 11, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 0, textAlign: 'right'}} className="sub">{time_real}</p>
 				</div>
 			</div>
 		</div>
@@ -279,6 +281,8 @@ const Course1 = (props) => {
 	const [courseTeacher,setCourseTeacher] = useState({})
 	const [courseStudents,setCourseStudents] = useState([])
 	const [quizzes, setQuizzes] = useState([])
+	const [message, setMessage] = useState('')
+	const [messages, setMessages] = React.useState([])
 
 	const [courseNameModalIsOpen, setCourseNameModal] = useState(false)
 	const openCourseNameModal = () => {
@@ -291,6 +295,7 @@ const Course1 = (props) => {
 	const [posts, setPosts] = useState([])
 
 	const [ignore, setIgnored] = React.useState(0)
+	const [scrollPos, setScrollPos] = React.useState(0)
 
 	let arr = window.location.href.split('/');
 	let courseID = arr[arr.length -1];
@@ -586,20 +591,82 @@ const Course1 = (props) => {
 	
 
 	
+	const sendMessage = () => {
+		if(!message.length) return 
+		console.log('seding message')
 
+		let loc = window.location.href.split('/')
+		setMessage('')
+		const obj = {
+			user_id: user._id,
+			user_name: user.fname.concat(' ').concat(user.lname),
+			user_type: userType,
+			message_content: message.trim(),
+			time_stamp: new Date().getTime().toString(),
+			course_id: loc[loc.length - 1]
+		}
+		Axios.post(`http://localhost:8000/message`, obj )
+		.then(res => {
+			if(res.data.success) {
+				console.log(res.data.data)
+			}
+		})
+		Axios.get(`http://localhost:8000/messagesfromcourse/${loc[loc.length-1]}`)
+		.then(res => {
+			if(res.data.success) {
+				setMessages(res.data.data)
+			}
+		})
+	}
+
+	React.useEffect(() => {
+		console.log('fetchingmessages')
+		let loc = window.location.href.split('/')
+		Axios.get(`http://localhost:8000/messagesfromcourse/${loc[loc.length-1]}`)
+		.then(res => {
+			if(res.data.success) {
+				setMessages(res.data.data)
+			}
+		})
+	}, [])
+
+	// React.useEffect(() => {
+	// 	console.log('adding listener')
+	// 	const handleScroll = e => {
+	// 		console.log('handling scroll')
+	// 		console.log(e)
+	// 		setScrollPos(e.target)
+	// 	}
+
+	// 	window.addEventListener("scroll", handleScroll, {passive: true})
+	// 	return () => window.removeEventListener("scroll", handleScroll)
+	// })
+
+	
+	
+console.log(scrollPos)
 	//console.log(courseInfo.course_code)
 	return (
 		<React.Fragment>
-		
-		{/* <div className="background" style={{width: '80%', height: 70, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', paddingTop: 10, boxShadow:'0 -2px 10px #eee', marginLeft: '20%', padding: '5px 10px'}}>
-				<input style={{width: '96%', marginRight:5}}
+		{index === 1 ?
+		<div className={"background boxshadowtop"} style={{borderTopLeftRadius: 15 , borderTopRightRadius: 15,width: '80%', height: 75, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', paddingTop: 15, marginLeft: '20%', padding: '5px 10px'}}>
+				<input style={{width: '96%', marginRight:5, marginTop: 0, paddingLeft: 10}}
 					placeholder="Type a message..."
 					autofocus
+					value={message}
+					onChange={t => setMessage(t.target.value)}
+					onKeyDown={(e) => {
+						if (['Enter'].includes(e.key)) {
+							e.preventDefault();
+							sendMessage()
+						}
+					}}
 				/>
-				<button style={{width: 45, height: 45, borderRadius: 25,marginTop:0, marginLeft:0, padding:0, display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="background">
-					<Send size={23} color="#09a407" style={{transform:'rotate(45deg)', marginRight:5}}/>
+				<button style={{width: 45, height: 45, borderRadius: 25,marginTop:0, marginLeft:0, padding:0, display: 'flex', alignItems: 'center', justifyContent: 'center'}} className="background" onClick={sendMessage}>
+					<Send size={23} color={message.length ? "#09a407" : '#ababab'} style={{transform:'rotate(45deg)', marginRight:5, transition: '0.2s ease'}}/>
 				</button>
-		</div> */}
+		</div> : null 
+		}
 
 		<div className="course-container">
 
@@ -637,7 +704,7 @@ const Course1 = (props) => {
 									removeStudent(user._id,courseID);
 									toast.success('Left course successfully')}}
 							>
-								<LogOut size={20} color="#09a407" style={{position: 'absolute', top: 115, right: 20}}/>
+								<LogOut size={25} color="#09a407" style={{position: 'absolute', top: 115, right: 40}}/>
 							</div>
 						</Link>
 					:
@@ -678,6 +745,7 @@ const Course1 = (props) => {
 			<div style={{width: '100%', marginTop: 20}}>
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
 					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Stream   </div>} />
+					<AntTab label={<div><MessageSquare size={22} style={{marginBottom: 5, marginRight: 5}} /> Chat   </div>} />
 					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
 					<AntTab label={<div><Database size={22} style={{marginBottom: 5}} /> Study Material   </div>} />
 					<AntTab label={<div><HelpCircle size={22} style={{marginBottom: 5}} /> Quiz   </div>} />
@@ -702,15 +770,19 @@ const Course1 = (props) => {
 					}
 					
 
-					{/* <Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet" time="10.11/20 2:53 pm" userType="teacher"/>
-					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
-					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet udbciusdbciu iaubcuia isubfiuas iubsuiabsxiuab aiubdiuasbxuiasb" time="10.11/20 2:53 pm" userType="teacher"/>
-					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/>
-					<Message name="Yatish Kelkar" message="Teacher has not posted any assignments in this course yet onuiasxnuiasnxuiasnx siubsuixb isubISUBXISU XU" time="10.11/20 2:53 pm" userType="student"/> */}
+					
+				</div>
+
+				<div style={Object.assign({}, styles.slide, styles.slide2)}>
+
+					{messages.sort((a,b) => a.time_stamp < b.time_stamp ? 1 : -1).map(m => {
+						return <Message name={m.user_name} message={m.message_content} time={m.time_stamp} userType={m.user_type} userID={m.user_id}/>
+					})}
+					
 
 				</div>
 
-
+				
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
 
 				{posts.filter(p => p.is_assignment === 1).length ?
