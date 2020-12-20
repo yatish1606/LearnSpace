@@ -22,13 +22,14 @@ defaults.global.defaultFontColor = '#ababab'
 defaults.global.defaultFontWeight = 500
 defaults.global.tooltips.backgroundColor = 'red'
 
-const generatePDF = (tickets) => {
+const generatePDF = (tickets,notSubmittedTickets) => {
     
     const doc = new jsPDF();
     const tableColumn = [ "Name", "Marks"];
-    
+    const tableColumnNotSubmitted = ["Name"]
     const tableRows = [];
-  
+    const tableRowsNotSubmitted = [];
+
     tickets.forEach(ticket => {
       const ticketData = [
         ticket.fname.concat(' ').concat(ticket.lname),
@@ -37,6 +38,14 @@ const generatePDF = (tickets) => {
       
       tableRows.push(ticketData);
     });
+
+    notSubmittedTickets.forEach(ticket => {
+        const ticketData = [
+          ticket.fname.concat(' ').concat(ticket.lname),
+        ];
+        
+        tableRowsNotSubmitted.push(ticketData);
+      });
 
     const topper = tickets.length ? tickets.reduce(function(prev, current) {
         return (prev.marks > current.marks) ? prev : current
@@ -57,6 +66,8 @@ const generatePDF = (tickets) => {
     // doc.addImage(barChart, 'png',0,yHeight + 150)
     console.log(doc.getFontList())
     doc.autoTable(tableColumn, tableRows, { startY: 90 })
+    doc.autoTable(tableColumnNotSubmitted, tableRowsNotSubmitted, { startY: 170 })
+
 
     doc.addFont('Helvetica', 'Helvetica', '')
     doc.setFontSize(22)
@@ -76,6 +87,7 @@ const generatePDF = (tickets) => {
     doc.setFontSize(18)
     doc.setFont('Helvetica', 'bold')
     doc.text("Table of student scores", 15, 80 )
+    doc.text("Table of assignment defaulters", 15, 160 )
 
     doc.save(`report.pdf`);
 }
@@ -105,6 +117,9 @@ const AssessmentReport = ({history}) => {
     const [topper, setTopper] = useState(null)
     const [avg, setAvg] = useState(null)
     const [studentMarksList, SML] = useState([])
+
+    const [notSubmitted,setNotSubmitted] = useState([])
+
 
     let studentMarksInfo = []
 
@@ -177,6 +192,18 @@ const AssessmentReport = ({history}) => {
         console.log(studentMarksList)
         
     }, [studentMarks])
+
+    React.useEffect(() => {
+		Axios.get(`https://dbms-back.herokuapp.com/marks/${assignmentID}`)
+		.then(res => {
+			console.log(res.data)
+			let a = res.data;
+			setNotSubmitted(a.not_submitted)
+		})
+		.catch(() => console.log('error'))
+
+		
+	},[ignored])
 
     const chartRefLine = useRef(null)
     const chartRefBar = useRef(null)
@@ -569,7 +596,7 @@ const AssessmentReport = ({history}) => {
                     : null
                 }
                 
-                <div className="new-post" onClick={() => generatePDF(studentMarksList)} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
+                <div className="new-post" onClick={() => generatePDF(studentMarksList,notSubmitted)} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}}>
 					<Download size={30} color="white"/>
 				</div>
 
