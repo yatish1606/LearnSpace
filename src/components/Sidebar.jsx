@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import './Sidebar.css';
-import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, Edit3, CheckSquare, CheckCircle, Clipboard, Layout, User, Search } from 'react-feather'
+import { Menu, X, Codesandbox, Home, Info, Database, Book, Settings, LogOut, HelpCircle, Sun, Moon, Edit3, CheckSquare, CheckCircle, Clipboard, Layout, User, Search, Bell } from 'react-feather'
 import CreateCourse from './CreateCourse';
 import { useLocation } from 'react-router-dom'
 import userImage from '../assets/user.png'
@@ -235,7 +235,7 @@ const Sidebar = (props) => {
 
 				{console.log(courses)}
 				{/* <ToggleButton size="medium" color="primary" className={useStyles}/> */}
-				<Toggle
+				{/* <Toggle
 					defaultChecked={isLightTheme}
 					icons={{
 					checked: <Moon size={17} color="#232323" style={{position: "absolute", top: -3}}/>,
@@ -243,9 +243,11 @@ const Sidebar = (props) => {
 					}}
 					className="toggle"
 					onChange={handleThemeChange} 
-				/>
-				
-				
+				/> */}
+				{/* <div className="settings-icon" style={{marginRight: 0}}>
+					<Bell size={21} color={theme === 'dark' ? '#eee' : '#232323'} className="seticon" onClick={openModal}/>
+				</div>
+				 */}
 				<div className="settings-icon">
 					<Settings size={21} color={theme === 'dark' ? '#eee' : '#232323'} className="seticon" onClick={openModal}/>
 				</div>
@@ -273,7 +275,7 @@ const Sidebar = (props) => {
 						
 						<Link to="/">
 						<div style={{display: "flex", flexDirection: "row",  alignItems: "center", alignSelf: "center",justifyContent: "center", height: 80, paddingRight: 30}}>
-							<Codesandbox size={27} color="#09A407"/>
+							<Codesandbox size={25} color="#09A407"/>
 							<div style={{alignItems: "flex-start", display: "flex", justifyContent: "space-between"}}>
 								<p style={{fontFamily: 'Poppins', fontSize: 18, color: theme === 'dark' ? '#eee': '#232323', fontWeight: 600, paddingLeft: 10, margin:0, letterSpacing: 0.25}}>LearnSpace</p>
 							</div>
@@ -293,10 +295,28 @@ const Sidebar = (props) => {
 							)
 						})}
 
-						<div style={{width: '90%', height:1.5, backgroundColor: theme === 'dark' ? '#434343' : '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div>
+						<div style={{width: '86%', height: 85, borderRadius: 10, backgroundColor: '#09a4072a', margin:'10px 7%', padding: '15px 15px'}} className="">
+							<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+								<p className="changeColor" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 15, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0}}>{theme === 'light' ? 'Light theme':'Dark theme'}</p>
+								<Toggle
+									defaultChecked={isLightTheme}
+									icons={{
+									checked: <Moon size={17} color="#232323" style={{position: "absolute", top: -3}}/>,
+									unchecked: <Sun size={14} color="#fff" style={{position: "absolute", top: -2,}}/>,
+									}}
+									className="toggle"
+									onChange={handleThemeChange} 
+								/>
+					
+							</div>
+							<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 13, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0, marginTop:10}}>Switch to {theme === 'light' ? 'dark' : 'light'} theme now</p>
+						
+						</div>
+
+						{/* <div style={{width: '90%', height:1.5, backgroundColor: theme === 'dark' ? '#434343' : '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%' }}></div> */}
 
 						<div style={{display: "flex", flexDirection: "row", alignItems: "center", width: '100%' ,paddingLeft: 30,paddingRight: 20 , justifyContent: "space-between",}}>
-							<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 16, textAlign: "left", letterSpacing: 0.3, marginTop: 25 }}>MY COURSES</p>
+							<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: theme==='dark' ? '#878787' : '#434343', fontSize: 15, textAlign: "left", letterSpacing: 0.3, margin:'10px 0', marginTop: 18, padding:0 }}>MY COURSES</p>
 							{/* <CreateCourse/> */}
 						</div>
 						

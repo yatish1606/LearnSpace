@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle, Trash2, Edit3} from 'react-feather'
+import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle, Trash2, Edit3, BarChart2, Activity} from 'react-feather'
 import './course.css'
 import {getRandomUser2} from './random'
 import Axios from 'axios'
@@ -14,6 +14,13 @@ import Modal from 'react-modal'
 import {customStyles} from './QuizQuestion'
 import { EmptyState, EmptyStateSmall } from './Home';
 import { Link } from 'react-router-dom';
+import userImage from '../assets/user.png'
+import userImage2 from '../assets/user2.png'
+import userImage3 from '../assets/user3.png'
+import userImage4 from '../assets/user4.png'
+import Toggle from 'react-toggle'
+import "react-toggle/style.css"
+import {Line, Bar} from 'react-chartjs-2'
 
 let userType = JSON.parse(localStorage.getItem('userType'))
 //let userType = 
@@ -26,73 +33,6 @@ let user = localdata ? localdata : {
 		password: "",
 		_id: "404"
 }
-
-let obj = {
-    course_id: "1",
-    endTime: null,
-    numberOfQuestions: 2,
-    startTime: null,
-    teacher_id: 491,
-    totalMarks: 6,
-    questions: [
-        {
-            QID: 0,
-            correctOption: 1,
-            option1: "drgdf",
-            option2: "dfgdfv",
-            option3: "dfgdf",
-            option4: "dfgdf",
-            questionTitle: "zfgdfz",
-            questionType: "mcq"
-        },
-        {
-            QID: 1,
-            keywords: ["sfs", "sfdf", "fgdf"],
-            minChar: 20,
-            questionTitle: "dhdfgh",
-            questionType: "text",
-            textualQuesMarks: 5
-        },
-        {
-            QID: 2,
-            correctOption: 1,
-            option1: "drgdf",
-            option2: "dfgdfv",
-            option3: "dfgdf",
-            option4: "dfgdf",
-            questionTitle: "zfgdfz",
-            questionType: "mcq"
-        },
-        {
-            QID: 3,
-            keywords: ["sfs", "sfdf", "fgdf"],
-            minChar: 20,
-            questionTitle: "dhdfgh",
-            questionType: "text",
-            textualQuesMarks: 5
-        },
-        {
-            QID: 4,
-            correctOption: 1,
-            option1: "drgdf",
-            option2: "dfgdfv",
-            option3: "dfgdf",
-            option4: "dfgdf",
-            questionTitle: "zfgdfz",
-            questionType: "mcq"
-        },
-        {
-            QID: 5,
-            keywords: ["sfs", "sfdf", "fgdf"],
-            minChar: 20,
-            questionTitle: "dhdfgh",
-            questionType: "text",
-            textualQuesMarks: 5
-        }
-
-    ]
-}
-
 
 
 const Quiz = ({history}) => {
@@ -111,12 +51,17 @@ const Quiz = ({history}) => {
     const [modalIsOpenRename, setModalIsOpenRename] = React.useState(false)
     const [quizResponse, setQR] = React.useState(null)
     const [quizNewName, setQuizNewName] = React.useState('')
+    
+    const [chart, setChart] = React.useState('bar')
 
 
     const [quizInfo, setQuizInfo] = React.useState(null)
     const [questions, setQuestions] = React.useState([])
     const [isActive, setIsActive] = React.useState(quizInfo ? quizInfo.is_active === 0 ? false : true : false)
     const [quizResults, setQuizResults] = React.useState([])
+
+    const [topper, setTopper] = React.useState(null)
+    const [avg, setAvg] = React.useState(0)
 
     const openModal = () => setModal(true)
     const closeModal = () => setModal(false)
@@ -192,9 +137,6 @@ const Quiz = ({history}) => {
                         MARKS OBTAINED
                     </p>
 					
-					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 100 }} className="changeColor">
-                        
-                    </p>
                 </div>
                 
             </div>
@@ -221,9 +163,7 @@ const Quiz = ({history}) => {
                         {marks_obtained} / {total_marks}
                     </p>
 					
-					<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500,textAlign: 'center', verticalAlign: 'middle', margin: 0, padding: 0 , paddingLeft: 0,letterSpacing: 0.5, width: 100 }} className="changeColor">
-                        
-                    </p>
+					
                 </div>
                 
             </div>
@@ -461,6 +401,17 @@ const Quiz = ({history}) => {
         })
     }
 
+    React.useEffect(() => {
+        const topper1 = quizResults.length ? quizResults.reduce(function(prev, current) {
+            return (prev.marks_obtained > current.marks_obtained) ? prev : current
+        }):null
+        setTopper(topper1)
+    
+        let avg1 = quizResults ? quizResults.filter(s => s.marks_obtained).reduce((r, c) => r + c.marks_obtained, 0) / quizResults.length: null;
+        setAvg(avg1.toFixed(2))
+    }, [quizResults])
+    
+
 	return (
 		
 		<div className={"background course-container"} style={{paddingLeft: 0, paddingRight: 0}}>
@@ -516,9 +467,67 @@ const Quiz = ({history}) => {
                                     {quizResults.map(result => {
                                         return <MarksRow student_id={result.student_id} student_name={result.student_name} total_marks={result.total_marks} marks_obtained={result.marks_obtained} no_of_ques={result.no_of_ques} ques_attempted={result.ques_attempted}/>
                                     })}
+                                    <p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 18, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 45, marginBottom:20, marginLeft: 15, letterSpacing: 0.3}}>Graphical Report</p>
                                 </React.Fragment>
                                : <EmptyStateSmall title="No responses yet" d1="No students have submitted the quiz yet. Refesh the page to check again"/>
                             }
+
+                            
+                                <div style={{display: "flex", flexDirection: 'row', width: '100%', marginTop: 20, paddingRight: 15, paddingLeft: 15}}>
+                                    <div style={{width: '85%'}}>
+                                        <div style={{marginTop: -30, marginLeft: '92%'}}>
+                                            <Toggle
+                                                defaultChecked={chart === 'line'}
+                                                icons={{
+                                                checked: <Activity size={17} color="#fff" style={{position: "absolute", top: -2.5, left: -1}}/>,
+                                                unchecked: <BarChart2 size={14} color="#fff" style={{position: "absolute", top: -2,}}/>,
+                                                }}
+                                                style={{position: "absolute",left:0}}
+                                                className="chartToggle"
+                                                onChange={() => setChart(chart === 'bar' ? 'line' : 'bar')} 
+                                            />
+
+                                        </div>
+                                        
+                                        <div className="chart" style={{ overflow:'visible', padding:0, width: '98%', marginTop: 20}}>
+                                        
+                                        
+                                        {chart === 'line' ? <LineChart quizResults={quizResults ? quizResults : []}/> : <BarChartCustom quizResults={quizResults ? quizResults : []}/>}
+                                        </div>
+                                
+                                    </div>
+                                    <div style={{flexGrow: 1, display: "flex", flexDirection: "column"}}>
+                                        <div className="stats-box-2">
+                                            <h3>Quiz Topper</h3>
+                                            <div className="stats-box-2-stats">
+                                                <div className="background"  style={{width: 45, height: 45, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row"}}>
+                                                    <img className="background" src={userImage3} style={{width: 40, height: 40, marginRight: 0, marginTop: 5}}/>
+                                                </div>
+                                                <div>
+                                                    <h2 style={{fontSize: 20, color: '#FF9800', marginTop: 7}}>{topper ? topper.marks_obtained : null}/{topper ? topper.total_marks : null}</h2>
+                                                    <p>{topper ? topper.student_name : null}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="stats-box-2">
+                                            <h3>Average Class Marks</h3>
+                                            <div className="stats-box-2-stats" style={{flexDirection: 'row', marginTop: 20}}>
+                                                <h2>{avg ? avg : null}</h2>
+                                                <BarChart2 size={35} className="sub" style={{marginRight: 5}}/>
+                                            </div>
+                                        </div>
+                                        <div className="stats-box-2">
+                                            <h3>Count</h3>
+                                            <div className="students-box" style={{marginTop: 10, padding: 0, marginLeft: 0}}>
+                                                <div className="students-box-circle" style={{marginLeft: 0, background: '#09a407'}}><img src={userImage}/></div>
+                                                <div className="students-box-circle" style={{marginLeft: 17,  background: '#0F98D9', transform: 'scale(1.02)'}}><img src={userImage3}/></div>
+                                                <div className="students-box-circle" style={{marginLeft: 34,  background: '#545454', transform: 'scale(1.05)'}}><img src={userImage4}/></div>
+                                                <p className="sub" style={{marginLeft: 70, fontFamily:'Poppins', fontSize: 13, color: '#434343', fontWeight: 500, marginTop: 30}}>
+                                                {quizResults.length} students submitted the quiz</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
                             </div>
@@ -535,6 +544,8 @@ const Quiz = ({history}) => {
                                         }) : null
                                     
                                     }
+
+
                             </div>
 
                             
@@ -723,3 +734,220 @@ const styles = {
 	},
 	
   }
+
+
+
+  const LineChart = ({quizResults}) => {
+
+    let labelsArr = []
+    quizResults.map(q => labelsArr.push(''))
+    
+    return (
+        <Line
+                                    width='100%'
+                                    height="43%"
+                                    //ref={chartRefLine}
+                                    data={{
+                                        labels:labelsArr,
+                                        datasets: [{
+                                            label:'Stock Price',
+                                            backgroundColor: ['#0AA0131a'],
+                                            data: quizResults.map(q => q.marks_obtained),
+                                            borderColor: '#0AA013',
+                                            borderWidth: 3,
+                                            hoverBorderWidth: 5,
+                                            hoverRadius: 5,
+                                            hoverBackgroundColor:'#0AA013',
+                                            showLine: true,
+                                            hitRadius:30
+                                        }]
+                                    }}
+                                    options={{
+                                        
+                                        layout: {
+                                            padding: {
+                                              bottom: 30,
+                                              
+                                            }
+                                        },
+                                        plugins:[{
+                                            afterDraw: chart => {      
+                                              var ctx = chart.chart.ctx; 
+                                              var xAxis = chart.scales['x-axis-0'];
+                                              var yAxis = chart.scales['y-axis-0'];
+                                              xAxis.ticks.forEach((value, index) => {  
+                                                var x = xAxis.getPixelForTick(index);      
+                                                var image = new Image().src = userImage
+                                                // image.src = userImage,
+                                                ctx.drawImage(image, x - 12, yAxis.bottom + 10);
+                                              });      
+                                            }
+                                        }],
+                                        showLines: true,
+                                        legend: {
+                                            display:false,
+                                        },
+                                        // title : {display : true, text: `Predicted stock of ${this.state.selectedCompany.label}`, fontFamily:'Raleway', fontSize:14, fontColor:'#878787', fontWeight: 400},
+                                        scales: {
+                                            xAxes: [{
+                                                gridLines: {
+                                                    display:false,
+                                                },
+                                                ticks: {
+                                                    stepSize: 20,
+                                                    beginAtZero: true,
+                                                    
+                                                }
+                                            }],
+                                            yAxes: [{
+                                                gridLines: {
+                                                    display:true,
+                                                    color:'#eeeeee',
+                                                    lineWidth: 0.5
+                                                } ,
+                                                ticks: {
+                                                    stepSize: 10,
+                                                    beginAtZero: true,
+                                                    max: quizResults.length  ? quizResults[0].total_marks : 0
+                                                },  
+                                            }]
+                                        },
+                                        tooltips: {
+                                            mode: 'index',
+                                            backgroundColor: 'white',
+                                            borderWidth: 0.5,
+                                            borderColor:'#d3d3d3',
+                                            cornerRadius: 8,
+                                            caretSize: 10,
+                                            xPadding: 12,
+                                            yPadding: 12,
+                                            titleFontColor: '#434343',
+                                            titleFontSize: 0,
+                                            titleFontFamily: 'Poppins',
+                                            bodyFontFamily: 'Poppins',
+                                            bodyAlign: 'center',
+                                            bodyFontSize: 13,
+                                            bodyFontColor: '#434343',
+                                            caretPadding: 20,
+                                            displayColors: false,
+                                            callbacks: {
+                                                label: function(tooltipItem, data) {
+                                                    var label = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                                                    return `${label} marks`;
+                                                }, 
+                                                labelTextColor: function(tooltipItem, chart) {
+                                                    return '#543453';
+                                                },
+                                                labelColor: function(tooltipItem, chart) {
+                                                    return {
+                                                        borderColor: '#000000000',
+                                                        backgroundColor: '#00000000',
+                                                    };
+                                                },
+                                            }
+                                        }
+                                        
+                                    }}
+                                    
+                                />
+    )
+}
+
+const BarChartCustom = ({quizResults}) => {
+    
+    let labelsArr = []
+    quizResults.map(q => labelsArr.push(q.student_name))
+    console.log()
+    return (
+        <Bar
+                                    width='100%'
+                                    height="43%"
+                                    //ref={chartRefBar}
+                                    data={{
+                                        labels:labelsArr,
+                                        datasets: [{
+                                            label:'Stock Price',
+                                            backgroundColor: '#0AA0132a',
+                                            data: quizResults.map(q => q.marks_obtained),
+                                            borderColor: '#0AA013',
+                                            borderWidth: 3,
+                                            cornerRadius: 10,
+                                            hoverBorderWidth: 3,
+                                            hoverRadius: 5,
+                                            hoverBackgroundColor:'#0AA0134a',
+                                            showLine: true,
+                                            hitRadius:30,
+                                            radius: 10
+                                        }]
+                                    }}
+                                    
+                                    options={{
+                                        
+                                        showLines: true,
+                                        legend: {
+                                            display:false,
+                                        },
+                                        // title : {display : true, text: `Predicted stock of ${this.state.selectedCompany.label}`, fontFamily:'Raleway', fontSize:14, fontColor:'#878787', fontWeight: 400},
+                                        scales: {
+                                            xAxes: [{
+                                                gridLines: {
+                                                    display:false
+                                                },
+                                                ticks: {
+                                                    stepSize: 10,
+                                                    beginAtZero: false,
+                                                },
+                                            }],
+                                            yAxes: [{
+                                                gridLines: {
+                                                    display:true,
+                                                    color:'#eeeeee',
+                                                    lineWidth: 0.5
+                                                } ,
+                                                ticks: {
+                                                    stepSize: 10,
+                                                    beginAtZero: true,
+                                                    max: quizResults.length  ? quizResults[0].total_marks : 0
+                                                },  
+                                            }]
+                                        },
+                                        tooltips: {
+                                            mode: 'index',
+                                            backgroundColor: 'white',
+                                            borderWidth: 0.5,
+                                            borderColor:'#d3d3d3',
+                                            cornerRadius: 8,
+                                            caretSize: 10,
+                                            xPadding: 12,
+                                            yPadding: 12,
+                                            titleFontColor: '#434343',
+                                            titleFontSize: 0,
+                                            titleFontFamily: 'Poppins',
+                                            bodyFontFamily: 'Poppins',
+                                            bodyAlign: 'center',
+                                            bodyFontSize: 13,
+                                            bodyFontColor: '#434343',
+                                            caretPadding: 20,
+                                            displayColors: false,
+                                            callbacks: {
+                                                label: function(tooltipItem, data) {
+                                                    var label = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || '';
+                                                    return `${label} marks`;
+                                                }, 
+                                                labelTextColor: function(tooltipItem, chart) {
+                                                    return '#543453';
+                                                },
+                                                labelColor: function(tooltipItem, chart) {
+                                                    return {
+                                                        borderColor: '#000000000',
+                                                        backgroundColor: '#00000000',
+                                                    };
+                                                },
+                                            }
+                                        }
+                                        
+                                    }}
+                                    
+                                />
+    )
+}
