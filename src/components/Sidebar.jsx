@@ -287,11 +287,13 @@ const Sidebar = (props) => {
 						
 						{menuOptions.map((item, index) => {
 							return (
-								<div key={index} className="nav-text">
-									<Link to={item.path}>
+								<Link to={item.path}>
+								<div key={index} className="nav-text" style={{paddingLeft: 15, fontFamily:'Poppins'}}>
+									
 										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323", fontSize: 17, letterSpacing: 0.4, fontWeight: 500}}>{item.icon}   {item.title} </span>
-									</Link>
+									
 								</div>
+								</Link>
 							)
 						})}
 
@@ -323,11 +325,13 @@ const Sidebar = (props) => {
 						
 						{sidebarData.map((item,index) => {
 							return (
-								<div key={index} className="nav-text">
-									<Link to={`/course/${item._id}`}>
-										<span className="row" style={{color: GetCurrentPath() === `/course/${item._id}` ? '#17B903' :  theme === 'dark' ? '#BABABA' : "#232323", fontWeight: 500, letterSpacing: 0.3}}> {item.name} </span>
-									</Link>
+								<Link to={`/course/${item._id}`}>
+								<div key={index} className="nav-text" style={{paddingLeft: 15, fontFamily:'Poppins'}}>
+									
+										<span className="row" style={{color: GetCurrentPath() === `/course/${item._id}` ? '#17B903' :  theme === 'dark' ? '#BABABA' : "#232323", fontWeight: 500, letterSpacing: 0.3,fontSize: 16}}> {item.name} </span>
+									
 								</div>
+								</Link>
 							)
 						})}
 
