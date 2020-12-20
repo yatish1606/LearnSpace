@@ -188,10 +188,12 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					isAssignment ? 
 					<React.Fragment>
 					{userType === 'teacher' ?
-					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
+					<div className="settings-icon">
+					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{margin: 0}}/>
+					</div>
 					: null }
 					<Link to={`/assignments/${assID}`}>
-						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, letterSpacing: 0.3}}>View assignment</p>
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, letterSpacing: 0.3, marginTop: 5}}>View assignment</p>
 						
 					</Link>
 					</React.Fragment>
@@ -209,10 +211,14 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					<React.Fragment>
 					
 					{userType === 'teacher' ?
-					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{marginTop: "5"}}/>
+					<div className="settings-icon" style={{padding:0}}>
+					<Trash2 size={22} className="sub" onClick={deleteAssignment} style={{margin: 0}}/>
+					</div>
 					: null }
 						<a href={`http://dbms-back.herokuapp.com/getattachedfile/${assID}`}>
-						<Download size={22} className="sub"/>
+						<div className="settings-icon" style={{padding:0, marginRight: 10}}>
+						<Download size={22} className="sub" style={{margin: 0}}/>
+						</div>
 						</a>
 						{/* <Info size={22} className="sub"/> */}
 					</React.Fragment>
@@ -723,8 +729,8 @@ const Course1 = (props) => {
 			{userType === 'teacher' ?
 			<React.Fragment>
 				<div className="new-post" style={{position: 'absolute', zIndex:999, top: 100, borderRadius: 5, right: 20,display: 'flex', flexDirection: 'row', padding: '5px 15px' , width: 'auto', height: 45, alignItems: 'center', boxShadow: 'none', paddingLeft: 10}} onClick={openModal}>
-					<Plus size={22} color="white" />
-					<p  style={{fontFamily: 'Poppins', color: 'white', fontWeight: 500, letterSpacing: 0.6, fontSize: 16, margin:0, padding: 0, marginLeft: 5, marginRight: 5}}>Post</p>
+					<Plus className="tab" size={22}  />
+					<p className="tab"  style={{fontFamily: 'Poppins', color: 'white', fontWeight: 600, letterSpacing: 0.6, fontSize: 16, margin:0, padding: 0, marginLeft: 5, marginRight: 5}}>Post</p>
 				</div>
 
 				{/* <Link to={`/quiznew/${courseID}`}>
@@ -732,9 +738,33 @@ const Course1 = (props) => {
 					<CheckCircle size={20} color="#fff"  style={{zIndex: 99}}/>
 				</div>
 				</Link> */}
+
 			</React.Fragment>
 			: null }
-
+				<div style={{position: 'absolute', top: 105, right: 20, display: 'flex', flexDirection: 'row', marginRight: userType === 'teacher' ? 100 : 0}}>
+					{userType === 'student' ?
+						<Link to={`/`}>
+							<div onClick={() => {
+									removeStudent(user._id,courseID);
+									toast.success('Left course successfully')}}
+							>
+								<LogOut size={25} color="#09a407" style={{}}/>
+							</div>
+						</Link>
+					:
+						<div style={{display: 'flex', flexDirection: 'row-reverse', alignItems: 'center'}}>
+							<Link to={`/`}>
+								<div className="settings-icon">
+									<Trash2 size={20} color="#09a407" style={{}} onClick={() => {deleteCourse(courseInfo.course_code, courseID);}}/>
+								</div>
+								
+							</Link>
+							<div className="settings-icon" style={{marginRight: 0}}>
+							<Edit3 size={21} color="#09a407" style={{cursor: 'pointer'}} className="changeColor" onClick={openCourseNameModal}/>
+							</div>
+						</div>
+					}
+				</div>
 
 			{/* {modalIsOpenAutograde ? <Autograde modalIsOpen={modalIsOpenAutograde} closeModal={closeAutogradeModal}/> : null} */}
 
@@ -747,23 +777,7 @@ const Course1 = (props) => {
 
 				{/* <MoreVertical style={{position: "absolute", right:40,}} size={30} color="#434343"/> */}
 				
-					{userType === 'student' ?
-						<Link to={`/`}>
-							<div onClick={() => {
-									removeStudent(user._id,courseID);
-									toast.success('Left course successfully')}}
-							>
-								<LogOut size={25} color="#09a407" style={{position: 'absolute', top: 115, right: 40}}/>
-							</div>
-						</Link>
-					:
-						<div >
-							<Link to={`/`}>
-								<Trash2 size={20} color="#09a407" style={{position: 'absolute', top: 115, right: userType === 'teacher' ? 140 : 20}} onClick={() => {deleteCourse(courseInfo.course_code, courseID);}}/>
-							</Link>
-							<Edit3 size={21} color="#09a407" style={{position: 'absolute', top: 115, right: 190, cursor: 'pointer'}} className="changeColor" onClick={openCourseNameModal}/>
-						</div>
-					}
+					
 				
 
 				<div style={{width: 'auto', display: "flex", flexDirection: "row", alignItems: "center", marginTop: 0}}>
