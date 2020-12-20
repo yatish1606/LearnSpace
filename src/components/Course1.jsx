@@ -4,7 +4,7 @@ import Tab from '@material-ui/core/Tab';
 import { Link } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views';
 
-import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send, MessageSquare} from 'react-feather'
+import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowLeft, Database, CheckCircle, HelpCircle, ChevronRight, Trash2, LogOut, Send, MessageSquare, MessageCircle} from 'react-feather'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
@@ -191,7 +191,7 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 					<Trash2 size={22} className="sub" onClick={deleteAssignment}/>
 					: null }
 					<Link to={`/assignments/${assID}`}>
-						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0}}>View assignment</p>
+						<p style={{fontSize: 16, color: '#09a407', fontFamily: 'Poppins', marginRight: 0, fontWeight: 500, verticalAlign: "middle", marginBottom: 0, letterSpacing: 0.3}}>View assignment</p>
 						
 					</Link>
 					</React.Fragment>
@@ -226,21 +226,33 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 }
 
 
-const Message = ({name, message, time, userType, userID}) => {
+const Message = ({name, message, time, userType, userID, prev}) => {
 
 	let time_real = new Date(parseInt(time)).toLocaleString()
+	time_real = time_real.slice(0, time_real.length - 6).concat(time_real.slice(time_real.length - 3, time_real.length+1))
+	
+	if((new Date(Date.now()) - new Date(parseInt(time))) < 86400000) {
+		time_real = time_real.slice(11,time_real.length+1)
+	}
+
+	let prevUser = prev ? prev.user_name : ''
+	let prevUserType = prev ? prev.user_type : ''
+
+	let name_real = (prevUser === name && prevUserType === userType) ? '' : name
+	
 	let isTeacher = user._id === userID
 	return (
 		<div style={{width: 'auto', minHeight: 50, margin:'0 20px 5px 0px', display: 'flex', flexDirection: 'column', alignItems: isTeacher ? 'flex-end' : 'flex-start'}}>
-			<p style={{fontFamily: 'Poppins', fontSize: 12.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name}</p>
+			<p style={{fontFamily: 'Poppins', fontSize: 12, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name_real}</p>
+			
 			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start'}}>
 				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0, marginTop: 2}}>
                         <img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
                 </div>
 				
-				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':''}} className="changeColorBGnotimp">
-					<p style={{fontFamily: 'Poppins', fontSize: 15, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 4}} className="changeColor">{message}</p>
-					<p style={{fontFamily: 'Poppins', fontSize: 11, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 0, textAlign: 'right'}} className="sub">{time_real}</p>
+				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':'', paddingBottom: 2}} className="changeColorBGnotimp">
+					<p style={{fontFamily: 'Poppins', fontSize: 14.5, letterSpacing: 0.1, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 3}} className="changeColor">{message}</p>
+					<p style={{fontFamily: 'Poppins', fontSize: 10.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 400, marginTop: 0, textAlign: 'right'}} className="sub">{time_real}</p>
 				</div>
 			</div>
 		</div>
@@ -781,12 +793,12 @@ const Course1 = (props) => {
 
 			<div style={{width: '100%', marginTop: 20}}>
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
-					<AntTab label={<div><Grid size={22} style={{marginBottom: 5, marginRight: 5}} /> Stream   </div>} />
-					<AntTab label={<div><MessageSquare size={22} style={{marginBottom: 5, marginRight: 5}} /> Chat   </div>} />
-					<AntTab label={<div><Edit size={22} style={{marginBottom: 5}} /> Assignments   </div>} />
-					<AntTab label={<div><Database size={22} style={{marginBottom: 5}} /> Study Material   </div>} />
-					<AntTab label={<div><HelpCircle size={22} style={{marginBottom: 5}} /> Quiz   </div>} />
-					<AntTab label={<div><User size={22} style={{marginBottom: 5}} /> People   </div>} />
+					<AntTab label={<div> Stream   </div>} />
+					<AntTab label={<div> Chat   </div>} />
+					<AntTab label={<div> Assignments   </div>} />
+					<AntTab label={<div> Study Material   </div>} />
+					<AntTab label={<div> Quiz   </div>} />
+					<AntTab label={<div> People   </div>} />
 				</AntTabs>
 				<SwipeableViews index={index} onChangeIndex={handleChangeIndex} >
 
@@ -812,8 +824,8 @@ const Course1 = (props) => {
 
 				<div style={Object.assign({}, styles.slide, styles.slide2)}>
 
-					{messages.sort((a,b) => a.time_stamp < b.time_stamp ? 1 : -1).map(m => {
-						return <Message name={m.user_name} message={m.message_content} time={m.time_stamp} userType={m.user_type} userID={m.user_id}/>
+					{messages.sort((a,b) => a.time_stamp < b.time_stamp ? 1 : -1).map((m, index) => {
+						return <Message name={m.user_name} message={m.message_content} time={m.time_stamp} userType={m.user_type} userID={m.user_id} prev={index > 0 ? messages[index-1] : null}/>
 					})}
 					
 
