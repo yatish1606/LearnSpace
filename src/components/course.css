@@ -68,6 +68,10 @@ html img{
     box-shadow: 0px 10px 20px var(--sub) !important;
 }
 
+.tab {
+    color: var(--background) !important;
+}
+
 .course-container {
     width: 80%;
     margin-left: 20%;
