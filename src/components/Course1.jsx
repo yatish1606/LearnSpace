@@ -698,10 +698,10 @@ const Course1 = (props) => {
 	return (
 		<React.Fragment>
 		{index === 1 ?
-		<div className={"background boxshadowtop"} style={{borderTopLeftRadius: 15 , borderTopRightRadius: 15,width: '80%', height: 75, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', paddingTop: 15, marginLeft: '20%', padding: '5px 10px'}}>
+		<div className={"background boxshadowtop"} style={{borderTopLeftRadius: 15 , borderTopRightRadius: 15,width: '80%', height: 75, position: 'fixed', bottom: 0, margin:'0 auto', zIndex: 999, display: 'flex', flexDirection: 'row', marginLeft: '20%', padding: '5px 10px', paddingTop: 15}}>
 				<input style={{width: '96%', marginRight:5, marginTop: 0, paddingLeft: 10}}
 					placeholder="Type a message..."
-					autofocus
+					autofocus={index == 1}
 					value={message}
 					onChange={t => setMessage(t.target.value)}
 					onKeyDown={(e) => {
@@ -1069,8 +1069,8 @@ const Course1 = (props) => {
 	className="background"
 	>
 <div>
-	<p style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 20, marginBottom:0}}>Change Course Name</p>
-	<input type="text" placeholder="Enter new course name.." style={{height:40}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
+	<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Change Course Name</p>
+	<input type="text" placeholder="Enter new course name.." style={{height:40, marginTop: 30}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
 	
 	<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
 		<button onClick={changeCourseName}>
@@ -1081,6 +1081,7 @@ const Course1 = (props) => {
 		</button>
 	</div>
 	</div>
+	<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeCourseNameModal}/>
 
 
 </Modal>
