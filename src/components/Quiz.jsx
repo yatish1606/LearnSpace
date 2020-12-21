@@ -75,7 +75,7 @@ const Quiz = ({history}) => {
     React.useEffect(() => {
         let loc = window.location.href.split('/')
         let quizid = loc[loc.length - 1]
-        Axios.get(`http://localhost:8000/quiz/${quizid}`)
+        Axios.get(`http://dbms-back.herokuapp.com/quiz/${quizid}`)
         .then(res => {
             if(res.data.success) {
                 setQuizInfo(res.data.data[0])
@@ -88,7 +88,7 @@ const Quiz = ({history}) => {
     React.useEffect(() => {
         let loc = window.location.href.split('/')
         let quizid = loc[loc.length - 1]
-        Axios.get(`http://localhost:8000/quizresult/${quizid}`)
+        Axios.get(`http://dbms-back.herokuapp.com/quizresult/${quizid}`)
         .then(res => {
             if(res.data.success) {
                 setQuizResults(res.data.data)
@@ -99,7 +99,7 @@ const Quiz = ({history}) => {
    
     React.useEffect(() => {
         let quizID = quizInfo ? quizInfo._id : null
-        Axios.get(`http://localhost:8000/questions/${quizID}`)
+        Axios.get(`http://dbms-back.herokuapp.com/questions/${quizID}`)
         .then(res => {
             if(res.data.success) {
                 let question = res.data.data
@@ -330,7 +330,7 @@ const Quiz = ({history}) => {
                 return toast.error('Quiz submission is closed')
             }
         }
-        Axios.post('http://localhost:8000/submitquiz', quizResponse)
+        Axios.post('http://dbms-back.herokuapp.com/submitquiz', quizResponse)
         .then(res => {
             if(res.data.success) {
                 console.log(res.data)
@@ -345,7 +345,7 @@ const Quiz = ({history}) => {
     const startQuiz = () => {
         setIsActive(true)
         forceUpdate()
-        Axios.post(`http://localhost:8000/startquiz/${quizInfo._id}`)
+        Axios.post(`http://dbms-back.herokuapp.com/startquiz/${quizInfo._id}`)
         .then(res => {
             if(res.data.success) {
                 
@@ -358,7 +358,7 @@ const Quiz = ({history}) => {
         console.log('ending quiz')
         setIsActive(false)
         forceUpdate()
-        Axios.post(`http://localhost:8000/endquiz/${quizInfo._id}`)
+        Axios.post(`http://dbms-back.herokuapp.com/endquiz/${quizInfo._id}`)
         .then(res => {
             if(res.data.success) {
                
@@ -369,13 +369,13 @@ const Quiz = ({history}) => {
     
     const deleteQuiz = () => {
         let quizID = quizInfo._id
-        Axios.post(`http://localhost:8000/deletequiz/${quizID}`)
+        Axios.post(`http://dbms-back.herokuapp.com/deletequiz/${quizID}`)
         .then(res => {
             if(res.data.success) {
-                Axios.post(`http://localhost:8000/deletequestion/${quizID}`)
+                Axios.post(`http://dbms-back.herokuapp.com/deletequestion/${quizID}`)
                 .then(res1 => {
                     if(res1.data.success) {
-                        Axios.post(`http://localhost:8000/deletequizsubmission/${quizID}`)
+                        Axios.post(`http://dbms-back.herokuapp.com/deletequizsubmission/${quizID}`)
                         .then(res2 => {
                             if(res2.data.success) {
                                toast.success('Deleted quiz successfully')
@@ -391,7 +391,7 @@ const Quiz = ({history}) => {
 
     const renameQuiz = () => {
         let quizID = quizInfo._id
-        Axios.post(`http://localhost:8000/renamequiz/${quizID}`, {quiz_name: quizNewName})
+        Axios.post(`http://dbms-back.herokuapp.com/renamequiz/${quizID}`, {quiz_name: quizNewName})
         .then(res => {
             if(res.data.success) {
                 setQuizNewName('')

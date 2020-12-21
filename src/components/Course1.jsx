@@ -401,7 +401,7 @@ const Course1 = (props) => {
 	},[ignore])
 
 	React.useEffect(() => {
-		Axios.get(`http://localhost:8000/quizfromcourse/${courseInfo._id}`)
+		Axios.get(`http://dbms-back.herokuapp.com/quizfromcourse/${courseInfo._id}`)
 		.then(res => {
 			if(res.data.success) {
 				setQuizzes(res.data.data)
@@ -660,13 +660,13 @@ const Course1 = (props) => {
 			time_stamp: new Date().getTime().toString(),
 			course_id: loc[loc.length - 1]
 		}
-		Axios.post(`http://localhost:8000/message`, obj )
+		Axios.post(`http://dbms-back.herokuapp.com/message`, obj )
 		.then(res => {
 			if(res.data.success) {
 				console.log(res.data.data)
 			}
 		})
-		Axios.get(`http://localhost:8000/messagesfromcourse/${loc[loc.length-1]}`)
+		Axios.get(`http://dbms-back.herokuapp.com/messagesfromcourse/${loc[loc.length-1]}`)
 		.then(res => {
 			if(res.data.success) {
 				setMessages(res.data.data)
@@ -677,7 +677,7 @@ const Course1 = (props) => {
 	React.useEffect(() => {
 		console.log('fetchingmessages')
 		let loc = window.location.href.split('/')
-		Axios.get(`http://localhost:8000/messagesfromcourse/${loc[loc.length-1]}`)
+		Axios.get(`http://dbms-back.herokuapp.com/messagesfromcourse/${loc[loc.length-1]}`)
 		.then(res => {
 			if(res.data.success) {
 				setMessages(res.data.data)
