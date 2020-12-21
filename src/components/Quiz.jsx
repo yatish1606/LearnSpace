@@ -1,6 +1,6 @@
 import React from 'react'
 import './CreateCourse.css';
-import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle, Trash2, Edit3, BarChart2, Activity} from 'react-feather'
+import {ArrowLeft, Grid, Edit, PlayCircle,X, XCircle, Trash2, Edit3, BarChart2, Activity, Download} from 'react-feather'
 import './course.css'
 import {getRandomUser2} from './random'
 import Axios from 'axios'
@@ -21,6 +21,8 @@ import userImage4 from '../assets/user4.png'
 import Toggle from 'react-toggle'
 import "react-toggle/style.css"
 import {Line, Bar} from 'react-chartjs-2'
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 let userType = JSON.parse(localStorage.getItem('userType'))
 //let userType = 
@@ -32,6 +34,41 @@ let user = localdata ? localdata : {
 		email: "",
 		password: "",
 		_id: "404"
+}
+
+const generatePDF = (tickets) => {
+    
+    const doc = new jsPDF();
+    const tableColumn = [ "Name", "Questions Attempted", "Marks"];
+    
+    const tableRows = [];
+    if(!tickets.length) return
+
+    tickets.forEach(ticket => {
+      const ticketData = [
+        ticket.student_name,
+        (ticket.ques_attempted+'').concat(' / ').concat((ticket.no_of_ques+'')),
+        (ticket.marks_obtained+'').concat(' / ').concat((ticket.total_marks+'')),
+      ];
+      
+      tableRows.push(ticketData);
+    });
+
+   
+    console.log(doc.getFontList())
+    doc.autoTable(tableColumn, tableRows, { startY: 40 })
+
+
+    doc.addFont('Helvetica', 'Helvetica', '')
+    doc.setFontSize(22)
+    doc.setFont('Helvetica', 'bold')
+    doc.text("Quiz Assessment Report", 15, 20 )
+
+    doc.setFontSize(16)
+    doc.setFont('Helvetica', '')
+    doc.text(`Quiz was submitted by ${tickets.length} students`, 15, 30 )
+
+    doc.save(`report.pdf`);
 }
 
 
@@ -75,7 +112,7 @@ const Quiz = ({history}) => {
     React.useEffect(() => {
         let loc = window.location.href.split('/')
         let quizid = loc[loc.length - 1]
-        Axios.get(`https://dbms-back.herokuapp.com/quiz/${quizid}`)
+        Axios.get(`http://dbms-back.herokuapp.com/quiz/${quizid}`)
         .then(res => {
             if(res.data.success) {
                 setQuizInfo(res.data.data[0])
@@ -88,7 +125,7 @@ const Quiz = ({history}) => {
     React.useEffect(() => {
         let loc = window.location.href.split('/')
         let quizid = loc[loc.length - 1]
-        Axios.get(`https://dbms-back.herokuapp.com/quizresult/${quizid}`)
+        Axios.get(`http://dbms-back.herokuapp.com/quizresult/${quizid}`)
         .then(res => {
             if(res.data.success) {
                 setQuizResults(res.data.data)
@@ -99,7 +136,7 @@ const Quiz = ({history}) => {
    
     React.useEffect(() => {
         let quizID = quizInfo ? quizInfo._id : null
-        Axios.get(`https://dbms-back.herokuapp.com/questions/${quizID}`)
+        Axios.get(`http://dbms-back.herokuapp.com/questions/${quizID}`)
         .then(res => {
             if(res.data.success) {
                 let question = res.data.data
@@ -330,7 +367,7 @@ const Quiz = ({history}) => {
                 return toast.error('Quiz submission is closed')
             }
         }
-        Axios.post('https://dbms-back.herokuapp.com/submitquiz', quizResponse)
+        Axios.post('http://dbms-back.herokuapp.com/submitquiz', quizResponse)
         .then(res => {
             if(res.data.success) {
                 console.log(res.data)
@@ -345,7 +382,7 @@ const Quiz = ({history}) => {
     const startQuiz = () => {
         setIsActive(true)
         forceUpdate()
-        Axios.post(`https://dbms-back.herokuapp.com/startquiz/${quizInfo._id}`)
+        Axios.post(`http://dbms-back.herokuapp.com/startquiz/${quizInfo._id}`)
         .then(res => {
             if(res.data.success) {
                 
@@ -358,7 +395,7 @@ const Quiz = ({history}) => {
         console.log('ending quiz')
         setIsActive(false)
         forceUpdate()
-        Axios.post(`https://dbms-back.herokuapp.com/endquiz/${quizInfo._id}`)
+        Axios.post(`http://dbms-back.herokuapp.com/endquiz/${quizInfo._id}`)
         .then(res => {
             if(res.data.success) {
                
@@ -369,13 +406,13 @@ const Quiz = ({history}) => {
     
     const deleteQuiz = () => {
         let quizID = quizInfo._id
-        Axios.post(`https://dbms-back.herokuapp.com/deletequiz/${quizID}`)
+        Axios.post(`http://dbms-back.herokuapp.com/deletequiz/${quizID}`)
         .then(res => {
             if(res.data.success) {
-                Axios.post(`https://dbms-back.herokuapp.com/deletequestion/${quizID}`)
+                Axios.post(`http://dbms-back.herokuapp.com/deletequestion/${quizID}`)
                 .then(res1 => {
                     if(res1.data.success) {
-                        Axios.post(`https://dbms-back.herokuapp.com/deletequizsubmission/${quizID}`)
+                        Axios.post(`http://dbms-back.herokuapp.com/deletequizsubmission/${quizID}`)
                         .then(res2 => {
                             if(res2.data.success) {
                                toast.success('Deleted quiz successfully')
@@ -391,7 +428,7 @@ const Quiz = ({history}) => {
 
     const renameQuiz = () => {
         let quizID = quizInfo._id
-        Axios.post(`https://dbms-back.herokuapp.com/renamequiz/${quizID}`, {quiz_name: quizNewName})
+        Axios.post(`http://dbms-back.herokuapp.com/renamequiz/${quizID}`, {quiz_name: quizNewName})
         .then(res => {
             if(res.data.success) {
                 setQuizNewName('')
@@ -414,13 +451,17 @@ const Quiz = ({history}) => {
 
 	return (
 		
-		<div className={"background course-container"} style={{paddingLeft: 0, paddingRight: 0}}>
+		<div className={"background course-container"} style={{paddingLeft: 0, paddingRight: 0, paddingBottom: 70}}>
               
             <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 25, marginLeft: 20}} >
                 <ArrowLeft size={27} className="sub" style={{cursor: "pointer"}} onClick={() => history.goBack()}/>                 
                 <h2 className="course-title" style={{fontSize: 30, margin: 0, marginLeft: 20}}>{quizInfo ? quizInfo.quiz_title : null}</h2>
                 
             </div>
+
+            <div className={"new-post boxshadow"} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}} onClick={() =>generatePDF(quizResults ? quizResults : [])}>
+					<Download size={30} color="white"/>
+			</div>
             {
                 userType === 'student' ?
                 <React.Fragment>
@@ -709,7 +750,6 @@ const Quiz = ({history}) => {
 
 
 			</Modal>
-
             
 
         </div>
@@ -808,7 +848,7 @@ const styles = {
                                                 ticks: {
                                                     stepSize: 10,
                                                     beginAtZero: true,
-                                                    max: quizResults.length  ? quizResults[0].total_marks : 0
+                                                    max: quizResults.length  ? quizResults[0].total_marks + 2 : 0
                                                 },  
                                             }]
                                         },
@@ -907,7 +947,7 @@ const BarChartCustom = ({quizResults}) => {
                                                 ticks: {
                                                     stepSize: 10,
                                                     beginAtZero: true,
-                                                    max: quizResults.length  ? quizResults[0].total_marks : 0
+                                                    max: quizResults.length  ? quizResults[0].total_marks + 2 : 0
                                                 },  
                                             }]
                                         },
