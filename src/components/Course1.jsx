@@ -235,11 +235,16 @@ const Post = ({postType, title, info, assID, quizID, noOfQues, totalMarks, isAct
 const Message = ({name, message, time, userType, userID, prev}) => {
 
 	let time_real = new Date(parseInt(time)).toLocaleString()
-	time_real = time_real.slice(0, time_real.length - 6).concat(time_real.slice(time_real.length - 3, time_real.length+1))
+	time_real = time_real.slice(0, time_real.length - 6).concat(time_real.slice(time_real.length - 3, time_real.length+1)).slice(11,time_real.length+1)
 	
-	if((new Date(Date.now()) - new Date(parseInt(time))) < 86400000) {
-		time_real = time_real.slice(11,time_real.length+1)
-	}
+	const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	
+	let date = new Date(parseInt(time))
+	let yesterday = prev ? new Date(parseInt(prev.time_stamp)) : undefined
+
+	let todayDay = days[date.getDay()] + ', ' + date.getDate() + ' ' + months[date.getMonth()] + ' ' + date.getFullYear() + ''
+	let yesterdayDay = yesterday ? days[yesterday.getDay()] + ', ' + yesterday.getDate() + ' ' + months[yesterday.getMonth()] + ' ' + yesterday.getFullYear() + '' : null
 
 	let prevUser = prev ? prev.user_name : ''
 	let prevUserType = prev ? prev.user_type : ''
@@ -247,21 +252,29 @@ const Message = ({name, message, time, userType, userID, prev}) => {
 	let name_real = (prevUser === name && prevUserType === userType) ? '' : name
 	
 	let isTeacher = user._id === userID
-	return (
+	
+	return ( 
+	<React.Fragment>
+		<p style={{fontFamily: 'Poppins', fontSize: 13, letterSpacing: 0.3, margin:'10px auto', padding: 0, fontWeight: 500,textAlign: 'center', display: todayDay == yesterdayDay ? 'none' : 'flex', alignItems: 'center', flexDirection: 'column'}} className={"sub"}>
+			<div className="changeColorBG" style={{padding: '4px 10px' ,borderRadius: 50, margin:'5px auto'}}>
+			{todayDay}
+			</div>
+		</p>
 		<div style={{width: 'auto', minHeight: 50, margin:'0 20px 5px 0px', display: 'flex', flexDirection: 'column', alignItems: isTeacher ? 'flex-end' : 'flex-start'}}>
 			<p style={{fontFamily: 'Poppins', fontSize: 12, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: isTeacher ? 0:55, marginRight: isTeacher? 55:0, fontWeight: 500, color: isTeacher? '#09a407':''}} className="subnotimp">{name_real}</p>
 			
-			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start'}}>
-				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0, marginTop: 2}}>
+			<div style={{width: '70%', minHeight: 40, display: 'flex', flexDirection: isTeacher ?'row-reverse' : 'row', justifyContent: 'flex-start', paddingRight: ((prevUser === name) && (prevUserType === userType) && isTeacher && (todayDay == yesterdayDay)) ? 40 : 0,paddingLeft: ((prevUser === name) && (prevUserType === userType) && !isTeacher && (todayDay == yesterdayDay)) ? 40 : 0}}>
+				<div className="changeColorBG"  style={{width: 40, height: 40, borderRadius: 25, backgroundColor: '#eee', display: (prevUser === name && prevUserType === userType && (todayDay == yesterdayDay)) ? 'none' : "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", marginLeft: 0, marginRight: 0 , marginTop: 2, }}>
                         <img className="changeColorBG" src={randomUser} style={{width: 35, height: 35, marginRight: 0, marginTop: 5}}/>
                 </div>
 				
-				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':'', paddingBottom: 2}} className="changeColorBGnotimp">
-					<p style={{fontFamily: 'Poppins', fontSize: 14.5, letterSpacing: 0.1, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 3}} className="changeColor">{message}</p>
-					<p style={{fontFamily: 'Poppins', fontSize: 10.5, letterSpacing: 0.3, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 400, marginTop: 0, textAlign: 'right'}} className="sub">{time_real}</p>
+				<div style={{width: 'auto', padding: '10px 15px', display: 'flex', flexDirection: 'column', borderRadius: 10, marginLeft: isTeacher ? 0 :8, marginRight: isTeacher? 8:0, maxWidth: '90%', backgroundColor: isTeacher? '#09a40725':'', paddingBottom: 3}} className="changeColorBGnotimp">
+					<p style={{fontFamily: 'Poppins', fontSize: 14.5, letterSpacing: 0.1, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 500, marginTop: 1}} className="changeColor">{message}</p>
+					<p style={{fontFamily: 'Poppins', fontSize: 10, letterSpacing: 0.6, margin:0, padding: 0, marginBottom: 0, marginLeft: 0, fontWeight: 400, marginTop: 3,  textAlign: isTeacher ? 'right' : 'left'}} className="sub">{time_real}</p>
 				</div>
 			</div>
 		</div>
+	</React.Fragment>
 	)
 }
 
@@ -665,13 +678,15 @@ const Course1 = (props) => {
 			if(res.data.success) {
 				console.log(res.data.data)
 			}
+			Axios.get(`http://dbms-back.herokuapp.com/messagesfromcourse/${loc[loc.length-1]}`)
+			.then(res => {
+				if(res.data.success) {
+					setMessages(res.data.data)
+				}
+			})
 		})
-		Axios.get(`http://dbms-back.herokuapp.com/messagesfromcourse/${loc[loc.length-1]}`)
-		.then(res => {
-			if(res.data.success) {
-				setMessages(res.data.data)
-			}
-		})
+		
+		//forceUpdate()
 	}
 
 	React.useEffect(() => {
@@ -747,6 +762,7 @@ const Course1 = (props) => {
 							<div onClick={() => {
 									removeStudent(user._id,courseID);
 									toast.success('Left course successfully')}}
+								className="settings-icon"
 							>
 								<LogOut size={25} color="#09a407" style={{}}/>
 							</div>
@@ -879,11 +895,12 @@ const Course1 = (props) => {
 
 						{userType === 'teacher' ?
 						<React.Fragment>
-						<div style={{display: "flex", flexDirection:"row",fontFamily: 'Poppins',  height: "40px",alignItems: "center",marginBottom: 20}}>
-						<p className="" style={{ fontSize: 16, color: '#232323', fontWeight: 600, textAlign: "left",paddingTop: 20, marginBottom:15}}>
-						Course Students' Report: </p>
-						<button onClick={() => generatePDF(courseStudents)} style={{color: 'white',backgroundColor: "#09A407",justifyContent: "center",width: "100px",height: "40px", fontWeight: 500, letterSpacing: 0.6, fontSize: 16, marginLeft:10, padding: 0,alignItems:"center"}}>
-						Download</button>
+						<div style={{display: "flex", flexDirection:"row",fontFamily: 'Poppins',  height: "40px",alignItems: "center",marginBottom: 20, }}>
+							<p className="sub" style={{ fontSize: 16, color: '#232323', fontWeight: 600, textAlign: "left",paddingTop: 20, marginBottom:15, marginRight: 5}}>
+							Download Course Students' Report </p>
+							<button onClick={() => generatePDF(courseStudents)} className={"settings-icon changeColorBG"} style={{padding:0}}>
+								<Download size={18} color="#09a407"/>
+							</button>
 						</div>
 						<p className="changeColor" style={{fontFamily: 'Poppins', fontSize: 16, color: '#232323', fontWeight: 600, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:15}}>Add more students</p>
 						<div className="changeColorBG" style={{width: 200, height: 40, borderRadius: 5, display: "flex", flexDirection: 'row-reverse', alignItems: "center", marginTop: 10, overflow: "hidden", paddingLeft: 10, justifyContent: "space-between", marginBottom: 0}}>
