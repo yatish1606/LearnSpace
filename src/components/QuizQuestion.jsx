@@ -185,7 +185,7 @@ const QuizQuestion = ({history}) => {
 
         let insertID = null
 
-        Axios.post('http://localhost:8000/quiz', quiz)
+        Axios.post('https://dbms-back.herokuapp.com/quiz', quiz)
         .then(res => {
             if(res.data.success) {
                 insertID = res.data.data.insertId
@@ -194,7 +194,7 @@ const QuizQuestion = ({history}) => {
                     quiz.questions.map(ques => {
                         ques.quizID = insertID
                         console.log(ques)
-                        Axios.post('http://localhost:8000/question', ques)
+                        Axios.post('https://dbms-back.herokuapp.com/question', ques)
                         .then(res => console.log(res))
                         .catch(e => console.log(e))
                     })
