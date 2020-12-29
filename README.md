@@ -8,8 +8,11 @@ This app is used for the front-end of the LearnSpace™ application.
 Created by : 
 
 Yatish Kelkar
+
 Gaurav Khairnar
+
 Mahesh Nahak
+
 Kshitij Chitnis
 
 ## What is LearnSpace ? 
