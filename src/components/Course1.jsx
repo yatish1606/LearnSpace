@@ -8,6 +8,9 @@ import {FileText, Grid, Book, Edit, User, Download, Copy, Plus, X, UserX, ArrowL
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import userImage from '../assets/user.png'
+import userImage2 from '../assets/user2.png'
+import userImage3 from '../assets/user3.png'
+import userImage4 from '../assets/user4.png'
 import Modal from 'react-modal';
 import {customStyles} from './CreateCourse'
 import DayPickerInput from 'react-day-picker/DayPickerInput';
@@ -818,10 +821,16 @@ const Course1 = (props) => {
 				<p style={{fontSize: 17, color: '#232323', fontFamily: 'Poppins', fontWeight: 600, margin:0, padding: 0, marginTop: 20}} className="heading">Description</p>
 				<p style={{fontSize: 16, color: '#878787', fontFamily: 'Mulish', fontWeight: 500, margin:0, padding: 0, marginTop: 5, textAlign: "left"}} className="sub">
 				{courseInfo.description}</p>
+				<div className="students-box" style={{marginBottom:0, paddingBottom:0, marginTop:10}}>
+					<div className="students-box-circle" style={{marginLeft: 0, background: '#09a407'}}><img src={userImage}/></div>
+					<div className="students-box-circle" style={{marginLeft: 17,  background: '#0F98D9', transform: 'scale(1.02)'}}><img src={userImage3}/></div>
+					<div className="students-box-circle" style={{marginLeft: 34,  background: '#545454', transform: 'scale(1.05)'}}><img src={userImage4}/></div>
+					<p className="sub" style={{marginLeft: 70, fontFamily:'Poppins', fontSize: 13.5, color: '#434343', fontWeight: 500, marginTop: 30, letterSpacing:0.3}}>You and {courseStudents.length ? courseStudents.length -1 : 0} other students enrolled</p>
+				</div>
 			</div>
 
 
-			<div style={{width: '100%', marginTop: 20}}>
+			<div style={{width: '100%', marginTop: 0}}>
 				<AntTabs value={index} fullWidth onChange={handleChange} variant="scrollable">
 					<AntTab label={<div> Stream   </div>} />
 					<AntTab label={<div> Chat   </div>} />
@@ -1092,30 +1101,30 @@ const Course1 = (props) => {
 
 
 				<Modal
-	isOpen={courseNameModalIsOpen}
-	onRequestClose={closeCourseNameModal}
-	style={changeCourseNameStyles}
-	contentLabel="Modal"
-	closeTimeoutMS={200}
-	className="background"
-	>
-<div>
-	<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Change Course Name</p>
-	<input type="text" placeholder="Enter new course name.." style={{height:40, marginTop: 30}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
-	
-	<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
-		<button onClick={changeCourseName}>
-			<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
-		</button>
-		<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeCourseNameModal}>
-			<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
-		</button>
-	</div>
-	</div>
-	<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeCourseNameModal}/>
+				isOpen={courseNameModalIsOpen}
+				onRequestClose={closeCourseNameModal}
+				style={changeCourseNameStyles}
+				contentLabel="Modal"
+				closeTimeoutMS={200}
+				className="background"
+				>
+				<div>
+					<p className="sub" style={{fontFamily: 'Poppins', fontSize: 15, fontWeight: 500, margin:0, padding:0, textAlign: "left",marginTop: 10, marginBottom:0}}>Change Course Name</p>
+					<input type="text" placeholder="Enter new course name.." style={{height:40, marginTop: 30}} value={newCourseName} onChange={t => setNewCourseName(t.target.value)}></input>
+					
+					<div style={{position: "absolute", bottom: 25, right: 25, display: "flex", flexDirection: "row-reverse", alignItems: "center"}}>
+						<button onClick={changeCourseName}>
+							<p style={{fontSize: 16, fontWeight: 600, color: '#fff', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8,}}>Save</p>
+						</button>
+						<button style={{backgroundColor: 'transparent', boxShadow: 'none'}} onClick={closeCourseNameModal}>
+							<p style={{fontSize: 16, fontWeight: 600, color: '#09a407', margin:0, fontFamily: 'Poppins', letterSpacing: 0.8}}>Cancel</p>
+						</button>
+					</div>
+				</div>
+				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeCourseNameModal}/>
 
 
-</Modal>
+				</Modal>
 
 
 

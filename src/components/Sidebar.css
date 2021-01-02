@@ -36,6 +36,7 @@
 	height: 100vh;
 	display: flex;
 	position: fixed;
+	/* overflow: clip; */
 	top: 0;
 	left: -100%;
 	/* transition: 0.85s; */
@@ -204,4 +205,32 @@
 
 .toggle.react-toggle--checked .react-toggle-thumb {
 	border: 2px solid #d3d3d3;
+}
+
+.profile-option {
+	height: 35px;
+	border-radius: 50px;
+	background-color: var(--grey);
+	margin: 20px 0;
+	padding: 3px 15px;
+	display: flex;
+	flex-direction: row;
+	width: auto;
+	flex-grow: 1;
+	align-items: center;
+	transition: 0.2s ease-in;
+	cursor: pointer;
+	margin-right: 10px;
+	/* border: 2px solid var(--grey); */
+	justify-content: center;
+}
+
+.profile-option:last-child {
+	margin-right: 0;
+}
+
+.profile-option:hover {
+	background-color: #09a4072a;
+	transition: 0.2s ease-in;
+	/* border: 2px solid var(--background); */
 }

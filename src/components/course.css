@@ -521,7 +521,7 @@ html img{
     /* border: 3px solid transparent; */
 }
 .course-box:hover {
-    transform: scale(1.04);
+    transform: scale(1.025);
     transition: 0.2s ease-in
 }
 

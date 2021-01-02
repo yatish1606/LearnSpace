@@ -23,6 +23,7 @@ import "react-toggle/style.css"
 import {Line, Bar} from 'react-chartjs-2'
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import GaugeChart from 'react-gauge-chart'
 
 let userType = JSON.parse(localStorage.getItem('userType'))
 //let userType = 
@@ -123,6 +124,7 @@ const Quiz = ({history}) => {
     }, [isActive])
 
     React.useEffect(() => {
+        window.scroll({top:0, left:0, behavior: 'smooth'})
         let loc = window.location.href.split('/')
         let quizid = loc[loc.length - 1]
         Axios.get(`http://dbms-back.herokuapp.com/quizresult/${quizid}`)
@@ -131,6 +133,7 @@ const Quiz = ({history}) => {
                 setQuizResults(res.data.data)
             }
         })
+        
     }, [])
 
    
@@ -238,30 +241,31 @@ const Quiz = ({history}) => {
                 return (
                     <div style={{width: '100%', height: 'auto', margin: '0 0 25px 0', zIndex: 0,display: 'flex', flexDirection: 'row'}}>
                         <div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 10}}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end', marginBottom: 15}}>
                                 <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginRight: 15}}>Q.{index+1}</p>
                                 <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.question_title}</p>
+                                <p className="sub" style={{fontSize: 14, fontWeight: 500, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginLeft: 10}}>1 mark</p>
                             </div>
 
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 1)}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 13, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 1)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 1 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_1}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 2)}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 13, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 2)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 2 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_2}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 3)}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 13, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 3)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 3 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
                                 <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question.option_3}</p>
                             </div>
-                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 10, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 4)}>
+                            <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 13, cursor: 'pointer'}} onClick={() => handleMCQAnswer(index, 4)}>
                                 <div style={{width: 20, height: 20, borderRadius: 10, margin: '3px 10px 3px 0', display: 'flex', alignItems: 'center', justifyContent: 'center'}} className={" mcqhover"}>
                                     <div style={{width: 20, height: 20, borderRadius: 10, margin: 0, backgroundColor: '#09a407', display: answers[index] === 4 ? 'block' : 'none' }}><div style={{width: 14, height: 14, borderRadius: 10, margin: 3,display: 'flex', alignItems: 'center', justifyContent: 'center'  }} className="background"><div style={{width: 8, height: 8, borderRadius: 10, margin: 3.2, backgroundColor: '#09a407'}}></div></div></div>
                                 </div>
@@ -459,7 +463,7 @@ const Quiz = ({history}) => {
                 
             </div>
 
-            <div className={"new-post boxshadow"} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab'}} onClick={() =>generatePDF(quizResults ? quizResults : [])}>
+            <div className={"new-post boxshadow"} style={{width: 60, height: 60, boxShadow: '1px 1px 5px #ababab', display: userType === 'teacher' ? 'flex' : 'none'}} onClick={() =>generatePDF(quizResults ? quizResults : [])}>
 					<Download size={30} color="white"/>
 			</div>
             {
@@ -513,7 +517,7 @@ const Quiz = ({history}) => {
                                : <EmptyStateSmall title="No responses yet" d1="No students have submitted the quiz yet. Refesh the page to check again"/>
                             }
 
-                            
+                            {quizResults.length ? 
                                 <div style={{display: "flex", flexDirection: 'row', width: '100%', marginTop: 20, paddingRight: 15, paddingLeft: 15}}>
                                     <div style={{width: '85%'}}>
                                         <div style={{marginTop: -30, marginLeft: '92%'}}>
@@ -568,7 +572,8 @@ const Quiz = ({history}) => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> :  null 
+                            }
 
 
                             </div>
@@ -689,11 +694,22 @@ const Quiz = ({history}) => {
                     className="background"
 				>
 
-				<X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModalResult}/>		
+				{/* <X size={25} color="#ababab" style={{position: "absolute", top: 25, right: 25, cursor: "pointer"}} onClick={closeModalResult}/>		 */}
 
 
-				<h2 className="sub" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 15, padding:0, marginBottom:0, marginTop: 50, letterSpacing: 0.5}}>QUIZ RESULT</h2>
-				<h2 className="changeColor" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 20, padding:0, marginBottom:0,marginTop: 50 }}>You obtained {quizResponse ? quizResponse.marksObtained : null} out of {quizResponse ? quizResponse.totalMarks : null} marks in {quizInfo ? quizInfo.quiz_title : null}</h2>
+				<h2 className="sub" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 17, padding:0, marginBottom:0, marginTop: 15, letterSpacing: 0.5}}>QUIZ RESULT</h2>
+
+                <GaugeChart id="gauge-chart3" 
+                nrOfLevels={5} 
+                colors={["#09a4072a", '#09a4075a', "#09a4078a", '#09a407bf', '#09a407']} 
+                arcWidth={0.3}
+                hideText
+                className="grey" 
+                style={{width:350, alignSelf: 'center', margin:'20px auto', marginBottom:10}}
+                percent={quizResponse ? (quizResponse.marksObtained/quizResponse.totalMarks).toFixed(2) : 0.5} 
+                />
+
+				<h2 className="changeColor" style={{textAlign: "center", fontFamily: 'Poppins', color: '#232323', fontWeight: 600, fontSize: 19, padding:0, marginBottom:0,marginTop: 0 }}>You obtained {quizResponse ? quizResponse.marksObtained : null} out of {quizResponse ? quizResponse.totalMarks : null} marks in {quizInfo ? quizInfo.quiz_title : null}</h2>
 
                 
 
