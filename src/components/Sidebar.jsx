@@ -11,6 +11,10 @@ import "react-toggle/style.css"
 import Modal from 'react-modal';
 import {toast} from 'react-toastify'
 import Axios from 'axios'
+import { Scrollbars } from 'react-custom-scrollbars';
+
+let width = window.innerWidth * 0.2
+let height = window.innerHeight * 2
 
 
 let randomUser = getRandomUser()
@@ -276,7 +280,20 @@ const Sidebar = (props) => {
 				</div> */}
 				
 			</div>
-			<nav className={'nav-menu active'} style={{backgroundColor: theme === 'dark' ? '#212121' : '#f8f8f8'}}>
+			
+			<nav className={'nav-menu active'} style={{backgroundColor: theme === 'dark' ? '#212121' : '#f8f8f8', height: 1000}}>
+			{/* <div style={{overflow: 'visible',width:'100%'}}> */}
+			<Scrollbars 
+				style={{width, height,}}
+				autoHide
+				autoHideDuration={1000}
+				autoHideTimeout={800}
+				renderThumbVertical={({ style, ...props }) =>
+				<div {...props} className="subBG" style={{ ...style, opacity: 0.4 ,borderRadius: 10 , width: 8, paddingRight: 20, marginRight: 20}}/>
+				}
+				
+			>
+				
 					<div onClick={showSidebar} className="nav-menu-items justify-content-center justify-items-center">
 						
 						<Link to="/">
@@ -288,7 +305,40 @@ const Sidebar = (props) => {
 						</div>
 						</Link>
 					
-						<br/>
+						<br style={{display: GetCurrentPath() === '/' ? 'block' : 'none'}}/>
+
+						<div style={{width: '86%', height: 'auto', borderRadius: 10, margin:'20px 7% 30px 7%', padding: 0, display: GetCurrentPath() === '/' ? 'none' : 'block'}} className="">
+							<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start'}}>
+								
+								<div className="changeColorBG" style={{width: 50, height: 50, borderRadius: 25, backgroundColor: '#eee', display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexDirection: "row", cursor: "pointer"}} onClick={openModalProfile}>
+									<img className="changeColorBG" src={randomUser} style={{width: 40, height: 40, marginLeft: 0, marginTop: 5}}/>
+								</div>
+								<div style={{display: 'flex', flexDirection:'column',}}>
+									<p className="changeColor" style={{fontFamily:'Poppins', fontWeight: 500, color: !isLightTheme ? '#878787' : '#434343', fontSize: 14, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0, marginLeft: 10}}>Hey,</p>
+									<p className="changeColor" style={{fontFamily:'Poppins', fontWeight: 500, color: !isLightTheme ? '#878787' : '#434343', fontSize: 18, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0, marginLeft: 10, marginTop: 3}}>{user.fname} {user.lname}</p>
+								</div>
+								
+					
+							</div>
+							<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+								
+								<div className="profile-option" onClick={openModal}>
+									<Edit3 size={15}/>
+									<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: !isLightTheme ? '#878787' : '#434343', fontSize: 13, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0, marginLeft: 10}}>Edit profile</p>
+								</div>
+								<Link to="/registerlogin">
+								<div className="profile-option">
+									
+										<LogOut size={15} className="changeColor"/>
+										<p className="sub" style={{fontFamily:'Poppins', fontWeight: 500, color: !isLightTheme ? '#878787' : '#434343', fontSize: 13, textAlign: "left", letterSpacing: 0.3,  margin:0, padding:0, marginLeft: 10}}>Logout</p>
+									
+								</div>
+								</Link>
+								
+					
+							</div>
+							
+						</div>
 						
 
 						
@@ -342,6 +392,8 @@ const Sidebar = (props) => {
 							)
 						})}
 
+						
+
 						{/* <div style={{width: '90%', height:1.5, backgroundColor: '#DDDDDD', borderRadius: 10, marginTop: 25, marginLeft: '5%'}}></div>
 						<p style={{marginLeft: 30, fontFamily:'Poppins', fontWeight: 500, color: '#434343', fontSize: 16, textAlign: "left", marginTop: 25, letterSpacing: 0.3, marginBottom: 10}}>OPTIONS</p> */}
 {/* 						
@@ -358,7 +410,11 @@ const Sidebar = (props) => {
 						
 						
 					</div>
+					</Scrollbars>
+					{/* </div> */}
 				</nav>
+				
+				
 
 				<Modal
 				isOpen={modalIsOpen}

@@ -34,8 +34,10 @@ export const RenderQuestion = ({question, option1, option2, option3, option4, co
             </div>:null
             }
             <div>
-                <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
-
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-end'}}>
+                    <p className="changeColor" style={{fontSize: 17, fontWeight: 600, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{question}</p>
+                    <p className="sub" style={{fontSize: 14, fontWeight: 500, margin:'5px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0, marginLeft: 10}}>1 mark</p>
+                </div>
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                     <div style={{width: 18, height: 18, borderRadius: 10, margin: '2px 10px 2px 0'}} className="changeColorBG"></div>
                     <p className="sub" style={{fontSize: 15, fontWeight: 500, margin:'2px 0', fontFamily: 'Poppins', letterSpacing: 0.4, padding: 0}}>{option1}</p>
@@ -191,6 +193,7 @@ const QuizQuestion = ({history}) => {
                 insertID = res.data.data.insertId
                 console.log(insertID)
                 if(insertID) {
+                    toast.success('Quiz created')
                     quiz.questions.map(ques => {
                         ques.quizID = insertID
                         console.log(ques)
@@ -204,6 +207,7 @@ const QuizQuestion = ({history}) => {
             }
         })
         .catch(e => console.log('error', e))
+        window.location.href = `/course/${parseInt(loc[loc.length - 1])}`
     }
 	
 	
@@ -216,7 +220,7 @@ const QuizQuestion = ({history}) => {
             
             
             {/* Question Input */}
-            <div style={{height: 250, display: 'flex', zIndex: 0,  flexDirection: 'row',  boxShadow: '-4px -4px 10px #eee', padding:'30px 10px', position: 'fixed', bottom: 0, width: '80%', alignSelf: 'center', borderTopLeftRadius: 15, borderTopRightRadius: 15, paddingBottom: 10,  }} className={"background borderrad"}>
+            <div style={{height: 250, display: 'flex', zIndex: 0,  flexDirection: 'row',  boxShadow: '-4px -4px 10px #eee', padding:'30px 10px', position: 'fixed', bottom: 0, width: '80%', alignSelf: 'center', borderTopLeftRadius: 15, borderTopRightRadius: 15, paddingBottom: 10,  }} className={"background borderrad boxshadowtop"}>
                 {/* <div style={{width: '200px', height: '90%', borderRadius: 10, marginRight: 10, margin:'5% 10px 5% 0'}} className="changeColorBG">
 
                 </div> */}
