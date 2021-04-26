@@ -205,9 +205,10 @@ const QuizQuestion = ({history}) => {
             } else {
 
             }
+            
         })
         .catch(e => console.log('error', e))
-        window.location.href = `/course/${parseInt(loc[loc.length - 1])}`
+        .finally(() => window.location.href = `/course/${parseInt(loc[loc.length - 1])}`)
     }
 	
 	

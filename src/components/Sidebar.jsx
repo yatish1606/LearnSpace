@@ -345,7 +345,7 @@ const Sidebar = (props) => {
 						{menuOptions.map((item, index) => {
 							return (
 								<Link to={item.path}>
-								<div key={index} className="nav-text" style={{paddingLeft: 15, fontFamily:'Poppins', marginBottom: 5}}>
+								<div key={index} className="nav-text" style={{fontFamily:'Poppins', paddingBottom: 5, paddingTop: 5, borderColor: GetCurrentPath() === item.path ? '#09a407aa' : 'transparent', backgroundColor: GetCurrentPath() === item.path ? '#09a40716' : ''}}>
 									
 										<span className="row" style={{color: GetCurrentPath() === item.path ? '#17B903' : theme === 'dark' ? '#BABABA' : "#232323", fontSize: 17, letterSpacing: 0.4, fontWeight: 500}}>{item.icon}   {item.title} </span>
 									

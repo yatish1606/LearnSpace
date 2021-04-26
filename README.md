@@ -5,14 +5,14 @@
 A Web app created using React, Node.js, MySQL, Express and hosted on Heroku.
 This repository contains the code for the front-end of the LearnSpace™ application.
 
-Created by : 
+#### Created by
 
-Yatish Kelkar
-Gaurav Khairnar
-Mahesh Nahak
-Kshitij Chitnis
+[Yatish Kelkar](https://github.com/yatish1606)<br/>
+[Gaurav Khairnar](https://github.com/gaurav1620)<br/>
+[Mahesh Nahak](https://github.com/maheshn22)<br/>
+[Kshitij Chitnis](https://github.com/m0rphtail)
 
-## What is LearnSpace ? 
+### What is LearnSpace ? 
 
 LearnSpace™ is an application that is aimed at helping the students and teachers with online learning during the pandemic era. With the COVID pandemic showing no sight of slowing down, it becomes imperative to search for permanent solutions for online based classroom learning. 
 
@@ -26,13 +26,13 @@ The application is now available in both light as well as dark mode with increas
 
 
 Created as a part of the Database Management Systems Project for Third Year Curriculum of SPPU. 
-Backend Repo for this app can be found here [https://github.com/gaurav1620/Learnspace_API](https://github.com/gaurav1620/Learnspace_API).
+Backend Repo for this app can be found here [Learnspace_API](https://github.com/gaurav1620/Learnspace_API).
 
-## To run locally, 
+### To run locally, 
 
 Clone the repository to your device. In the project directory, cd over to /LearnSpace and in the command line, run: 
 
-### `npm locstart`
+#### `npm locstart`
 
 Starts the server on port 8080. You can visit [https://localhost:8080/registerlogin](https://localhost:8080/registerlogin) to view the app.
 

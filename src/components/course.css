@@ -536,6 +536,10 @@ html img{
     border-radius: 10px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    /* background: url('../assets/pattern.svg'); */
+    object-fit: contain;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
 }
 
 .course-box-bottom {
