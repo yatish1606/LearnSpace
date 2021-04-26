@@ -12,6 +12,8 @@ This repository contains the code for the front-end of the LearnSpace™ applica
 [Mahesh Nahak](https://github.com/maheshn22)<br/>
 [Kshitij Chitnis](https://github.com/m0rphtail)
 
+![LearnSpace](./images/LearnSpace.svg "LearnSpace")
+
 ### What is LearnSpace ? 
 
 LearnSpace™ is an application that is aimed at helping the students and teachers with online learning during the pandemic era. With the COVID pandemic showing no sight of slowing down, it becomes imperative to search for permanent solutions for online based classroom learning. 
