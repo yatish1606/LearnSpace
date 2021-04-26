@@ -417,7 +417,7 @@ const Course1 = (props) => {
 	},[ignore])
 
 	React.useEffect(() => {
-		Axios.get(`http://dbms-back.herokuapp.com/quizfromcourse/${courseInfo._id}`)
+		Axios.get(`http://dbms-back.herokuapp.com/quizfromcourse/${courseID}`)
 		.then(res => {
 			if(res.data.success) {
 				setQuizzes(res.data.data)

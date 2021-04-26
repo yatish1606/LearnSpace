@@ -305,18 +305,23 @@ const Quiz = ({history}) => {
     }
 
     const calculateScore = (questions, answers) => {
+        
         let score = 0
         let questionsAttempted = 0
+
         questions.map((ques, index) => {
+            
             if(ques.question_type === 'mcq') {
+                
                 if(answers[index]) {
+                                    
                     if(answers[index] === ques.correct_option){
-                        score++
-                        
+                        score++  
                     }
                     questionsAttempted++
                 } 
             } else {
+                
                 if(answers[index]) {
                     let presentKeywords = 0
                     let charPercent = 0
@@ -326,19 +331,25 @@ const Quiz = ({history}) => {
                             presentKeywords++
                         }
                     })
+
                     const keywordPercent = parseFloat(presentKeywords/ques.keywords.length).toFixed(2)
                     
                     if(answers[index].trim().length > ques.min_char){
                         charPercent = 1
-                    } else {
+                    } 
+                    else {
                         charPercent = parseFloat((answers[index].trim().length/ques.min_char).toFixed(2))
                     } 
+
                     const textScore = parseFloat((ques.textual_ques_marks * 0.8 * keywordPercent).toFixed(2))  + parseFloat((ques.textual_ques_marks * 0.2 * charPercent).toFixed(2))
+                    
                     score +=  Math.round(textScore)
+                    
                     questionsAttempted++
                 }
             }
         })
+        
         return {score, questionsAttempted}
     }
 
