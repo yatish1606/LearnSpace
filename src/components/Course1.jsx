@@ -498,6 +498,7 @@ const Course1 = (props) => {
 			}
 		}
 
+		console.log(materialData)
 		Axios.post('https://dbms-back.herokuapp.com/assignment', materialData)
 		.then(res => {
 						var formData = new FormData();
@@ -514,7 +515,7 @@ const Course1 = (props) => {
 					})
 					.catch(err => {
 						console.log(err)
-						toast.error("error")
+						toast.error("attachment error")
 					})
 			console.log(res.data.data.insertId)
 			if(isAssignment===true){
