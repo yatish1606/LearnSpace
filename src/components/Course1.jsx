@@ -491,6 +491,9 @@ const Course1 = (props) => {
 				return
 			}
 		}
+		else if(isQuiz){
+			
+		}
 		else {
 			if (!(validateTitle() && validateDescription())) {
 				toast.error('Form is invalid')

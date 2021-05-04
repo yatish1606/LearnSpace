@@ -196,9 +196,11 @@ const QuizQuestion = ({history}) => {
                     toast.success('Quiz created')
                     quiz.questions.map(ques => {
                         ques.quizID = insertID
+                        ques.QID=1
                         console.log(ques)
+                        console.log("ques",ques)
                         Axios.post('http://dbms-back.herokuapp.com/question', ques)
-                        .then(res => console.log(res))
+                        .then(res => console.log("res",res))
                         .catch(e => console.log(e))
                     })
                 }
@@ -209,6 +211,15 @@ const QuizQuestion = ({history}) => {
         })
         .catch(e => console.log('error', e))
         .finally(() => window.location.href = `/course/${parseInt(loc[loc.length - 1])}`)
+        quiz.questions.map(ques => {
+            ques.quizID = insertID
+            ques.QID=1
+            console.log(ques)
+            console.log("ques",ques)
+            Axios.post('http://dbms-back.herokuapp.com/question', ques)
+            .then(res => console.log("res",res))
+            .catch(e => console.log(e))
+        })
     }
 	
 	
