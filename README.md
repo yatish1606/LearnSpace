@@ -34,7 +34,9 @@ Backend Repo for this app can be found here [Learnspace_API](https://github.com/
 
 Clone the repository to your device. In the project directory, cd over to /LearnSpace and in the command line, run: 
 
-#### `npm locstart`
+```sh
+npm locstart
+```
 
 Starts the server on port 8080. You can visit [https://localhost:8080/registerlogin](https://localhost:8080/registerlogin) to view the app.
 
